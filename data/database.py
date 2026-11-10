@@ -195,7 +195,7 @@ def seed_from_sample_if_empty(db_path: Path = DB_PATH):
 
                 # Insert Media: Cloud Photos (Google Drive Unit Folder & Building Exterior)
                 drive_folder = cloud_media.get("google_drive_photos_folder")
-                building_folder = cloud_media.get("building_exterior_folder") or "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO"
+                building_folder = cloud_media.get("building_exterior_folder") or "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0"
                 building_photo = cloud_media.get("building_exterior_photo") or "Screenshot 2026-09-10 12.54.46 PM.png"
 
                 # 1. Building exterior photo (required for every posting)
@@ -244,7 +244,8 @@ def get_all_units(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
 
         # Extract cloud media for modern UI
         cloud_media = {
-            "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+            "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0",
+            "building_exterior_direct_url": "https://drive.google.com/file/d/185EGZHPUiw_bkYOQPyqds8ZvSH6qJ6JZ/view",
             "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
             "youtube_playlist": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U"
         }

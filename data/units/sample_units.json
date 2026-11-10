@@ -33,10 +33,15 @@
         "parking_spots": 1
       },
       "financials": {
-        "target_rent": 1695,
+        "target_rent": 1895,
         "currency": "CAD",
-        "utilities_included": ["Heat", "Water"],
-        "utilities_extra": ["Hydro"],
+        "utilities_included": [
+          "Heat",
+          "Water"
+        ],
+        "utilities_extra": [
+          "Hydro"
+        ],
         "lease_term_months": 12,
         "available_date": "Immediate"
       },
@@ -54,10 +59,11 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/watch?v=TxRy1OvaRZo",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1zfvp1t8dGae8QzJpF8ah80Eb3SV1Z6gQ",
-        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
-        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
-        "include_building_exterior": true
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1zfvp1t8dGae8QzJpF8ah8oEb3SV1Z6gQ",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0",
+        "building_exterior_photo": "Copy of Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true,
+        "building_exterior_direct_url": "https://drive.google.com/file/d/185EGZHPUiw_bkYOQPyqds8ZvSH6qJ6JZ/view"
       },
       "notes": "Lower Level Unit 1 is half above ground and half below. Lots of light. Second bedroom is smaller (ideal for office/den). Renovated."
     },
@@ -78,10 +84,15 @@
         "parking_spots": 1
       },
       "financials": {
-        "target_rent": 1695,
+        "target_rent": 1895,
         "currency": "CAD",
-        "utilities_included": ["Heat", "Water"],
-        "utilities_extra": ["Hydro"],
+        "utilities_included": [
+          "Heat",
+          "Water"
+        ],
+        "utilities_extra": [
+          "Hydro"
+        ],
         "lease_term_months": 12,
         "available_date": "December 1"
       },
@@ -98,10 +109,11 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/watch?v=TxRy1OvaRZo",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1fSz-DPJ8HVOXI33BdZNHNkXahriMmi2v",
-        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1fSz-DPJ8HVOXI33BdZNHNkXahriMmI2v",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0",
         "building_exterior_photo": "Copy of Screenshot 2026-09-10 12.54.46 PM.png",
-        "include_building_exterior": true
+        "include_building_exterior": true,
+        "building_exterior_direct_url": "https://drive.google.com/file/d/185EGZHPUiw_bkYOQPyqds8ZvSH6qJ6JZ/view"
       },
       "notes": "Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout. Sister lower-level video walkthrough available while Unit 2 video is being filmed."
     },
@@ -124,8 +136,13 @@
       "financials": {
         "target_rent": 2075,
         "currency": "CAD",
-        "utilities_included": ["Heat", "Water"],
-        "utilities_extra": ["Hydro"],
+        "utilities_included": [
+          "Heat",
+          "Water"
+        ],
+        "utilities_extra": [
+          "Hydro"
+        ],
         "lease_term_months": 12,
         "available_date": "Immediate"
       },
@@ -142,13 +159,14 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/watch?v=Y4_7Kd_KESA",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
-        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
-        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/16WDhx0E49w5yOTlmhJQg6cTi15e_ZkOU",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0",
+        "building_exterior_photo": "Copy of Screenshot 2026-09-10 12.54.46 PM.png",
         "include_building_exterior": true,
         "zumper_listing_id": "65302296",
         "zumper_manage_url": "https://www.zumper.com/manage/properties/listing/65302296",
-        "zumper_virtual_tour_title": "Tour 315 Kent Street #3"
+        "zumper_virtual_tour_title": "Tour 315 Kent Street #3",
+        "building_exterior_direct_url": "https://drive.google.com/file/d/185EGZHPUiw_bkYOQPyqds8ZvSH6qJ6JZ/view"
       },
       "notes": "Upper Level Unit 3 features a private walkout balcony overlooking the property grounds. Full 2 bedroom layout."
     },
@@ -171,8 +189,13 @@
       "financials": {
         "target_rent": 2050,
         "currency": "CAD",
-        "utilities_included": ["Heat", "Water"],
-        "utilities_extra": ["Hydro"],
+        "utilities_included": [
+          "Heat",
+          "Water"
+        ],
+        "utilities_extra": [
+          "Hydro"
+        ],
         "lease_term_months": 12,
         "available_date": "Immediate"
       },
@@ -188,10 +211,11 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
-        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
-        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
-        "include_building_exterior": true
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1LAoH1O1rb8z9_5ILhBZJ2d-5oBVzggtv",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0",
+        "building_exterior_photo": "Copy of Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true,
+        "building_exterior_direct_url": "https://drive.google.com/file/d/185EGZHPUiw_bkYOQPyqds8ZvSH6qJ6JZ/view"
       },
       "notes": "Unit 4 features clean modern laminate/hardwood style flooring in a quiet, peaceful building setting."
     },
@@ -214,8 +238,13 @@
       "financials": {
         "target_rent": 2075,
         "currency": "CAD",
-        "utilities_included": ["Heat", "Water"],
-        "utilities_extra": ["Hydro"],
+        "utilities_included": [
+          "Heat",
+          "Water"
+        ],
+        "utilities_extra": [
+          "Hydro"
+        ],
         "lease_term_months": 12,
         "available_date": "Immediate"
       },
@@ -231,10 +260,11 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
-        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
-        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
-        "include_building_exterior": true
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/13_p8DSx6D3mkO4xa0UeHjMj30uoMI0ND",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0",
+        "building_exterior_photo": "Copy of Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true,
+        "building_exterior_direct_url": "https://drive.google.com/file/d/185EGZHPUiw_bkYOQPyqds8ZvSH6qJ6JZ/view"
       },
       "notes": "Upper Level Unit 5 with expansive picture windows and elevated views. Full kitchen with ample cabinet storage."
     },
@@ -257,8 +287,13 @@
       "financials": {
         "target_rent": 2075,
         "currency": "CAD",
-        "utilities_included": ["Heat", "Water"],
-        "utilities_extra": ["Hydro"],
+        "utilities_included": [
+          "Heat",
+          "Water"
+        ],
+        "utilities_extra": [
+          "Hydro"
+        ],
         "lease_term_months": 12,
         "available_date": "Immediate"
       },
@@ -274,10 +309,11 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
-        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
-        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
-        "include_building_exterior": true
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/19jMcKkDMG2PAky38unqhMM1dli83IdXS",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0",
+        "building_exterior_photo": "Copy of Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true,
+        "building_exterior_direct_url": "https://drive.google.com/file/d/185EGZHPUiw_bkYOQPyqds8ZvSH6qJ6JZ/view"
       },
       "notes": "Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces."
     }
