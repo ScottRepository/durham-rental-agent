@@ -135,25 +135,54 @@
           </div>
         </div>
 
-        <!-- Video Walkthrough Section -->
-        <div class="mb-8 p-5 bg-slate-50 rounded-2xl border border-slate-200">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-xl">
+        <!-- 100% Cloud Media: YouTube & Google Drive Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <!-- YouTube Video Card -->
+          <div class="p-5 bg-red-50/50 rounded-2xl border border-red-200 flex flex-col justify-between">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-xl bg-red-600 text-white flex items-center justify-center text-xl shrink-0 shadow-sm">
                 <i class="fa-brands fa-youtube"></i>
               </div>
-              <div>
-                <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">Video Walkthrough (Kijiji & FB Embed)</span>
-                <p id="mediaVideoUrlDisplay" class="text-sm font-semibold text-blue-600 break-all"></p>
-                <p id="mediaVideoPathDisplay" class="text-xs text-slate-500 font-mono"></p>
+              <div class="space-y-1 overflow-hidden">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs uppercase font-bold text-red-700 tracking-wider">YouTube Walkthrough Video</span>
+                  <span class="text-[10px] bg-red-100 text-red-800 font-semibold px-2 py-0.5 rounded-full">Kijiji & Zumper Embed</span>
+                </div>
+                <p id="mediaVideoUrlDisplay" class="text-xs font-semibold text-slate-800 truncate"></p>
+                <p class="text-[11px] text-slate-500">Unlisted YouTube video embedded directly into Kijiji search badge and Zumper virtual tour.</p>
               </div>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="testMediaVideo()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1">
+            <div class="flex items-center gap-2 mt-4 pt-3 border-t border-red-100">
+              <button onclick="testMediaVideo()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
                 <i class="fa-solid fa-play"></i> Watch Tour
               </button>
-              <button onclick="copyCurrentVideoUrl()" class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center gap-1">
+              <button onclick="copyCurrentVideoUrl()" class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
                 <i class="fa-solid fa-copy"></i> Copy Link
+              </button>
+            </div>
+          </div>
+
+          <!-- Google Drive Photos Card -->
+          <div class="p-5 bg-blue-50/50 rounded-2xl border border-blue-200 flex flex-col justify-between">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xl shrink-0 shadow-sm">
+                <i class="fa-brands fa-google-drive"></i>
+              </div>
+              <div class="space-y-1 overflow-hidden">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs uppercase font-bold text-blue-700 tracking-wider">Google Drive Photos Folder</span>
+                  <span class="text-[10px] bg-blue-100 text-blue-800 font-semibold px-2 py-0.5 rounded-full">Cloud Storage</span>
+                </div>
+                <p id="mediaDriveUrlDisplay" class="text-xs font-semibold text-slate-800 truncate"></p>
+                <p class="text-[11px] text-slate-500">Zero local computer storage. All high-res pictures for this unit reside in your shared Google Drive folder.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 mt-4 pt-3 border-t border-blue-100">
+              <a id="mediaDriveOpenBtn" href="#" target="_blank" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Google Drive
+              </a>
+              <button onclick="copyCurrentDriveUrl()" class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-copy"></i> Copy Drive Link
               </button>
             </div>
           </div>
@@ -287,9 +316,9 @@
             <div>
               <label class="text-xs font-semibold text-slate-500 uppercase block mb-1">Destination Platform</label>
               <select id="postingPlatformSelect" onchange="renderPlatformListing()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2 font-medium">
+                <option value="kijiji">Kijiji Ontario (YouTube Embed Badge)</option>
+                <option value="zumper">Zumper & PadMapper (Virtual Tour Link)</option>
                 <option value="facebook">Facebook Marketplace</option>
-                <option value="kijiji">Kijiji Ontario</option>
-                <option value="zumper">Zumper & PadMapper</option>
                 <option value="rentals_ca">Rentals.ca</option>
               </select>
             </div>
@@ -533,15 +562,13 @@
         specs: { bedrooms: 2, bathrooms: 1, sqft: 850, parking_spots: 1 },
         financials: { target_rent: 2100, utilities_included: ["Water"], utilities_extra: ["Heat", "Hydro (40% split)"], lease_term_months: 12, available_date: "2026-12-01" },
         amenities: ["In-suite laundry", "Private side entrance", "Stainless steel appliances", "Quartz countertops", "Large egress windows", "Ductless A/C & heat pump", "Near Ontario Tech & 401"],
-        media: {
-          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_1",
-          video_local_path: "media/unit_1/walkthrough.mp4",
-          photos_dir: "media/unit_1/photos"
+        cloud_media: {
+          youtube_video_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_1",
+          google_drive_photos_folder: "https://drive.google.com/drive/folders/EXAMPLE_DRIVE_FOLDER_UNIT_1",
+          cover_photo_url: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"
         },
         photos: [
-          { url: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600", caption: "Living Room & Kitchen", is_cover: true },
-          { url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600", caption: "Master Bedroom", is_cover: false },
-          { url: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600", caption: "Modern Bathroom", is_cover: false }
+          { url: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600", caption: "Google Drive Photo Assets", is_cover: true }
         ],
         postings: {
           facebook: { status: "draft", last_posted: null },
@@ -558,14 +585,13 @@
         specs: { bedrooms: 3, bathrooms: 1.5, sqft: 1250, parking_spots: 2 },
         financials: { target_rent: 2750, utilities_included: ["Water"], utilities_extra: ["Heat (60% split)", "Hydro (60% split)"], lease_term_months: 12, available_date: "2026-12-01" },
         amenities: ["Dedicated garage & driveway", "Spacious private deck", "Ensuite laundry", "Hardwood flooring", "Open-concept living/dining", "Dishwasher included"],
-        media: {
-          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2",
-          video_local_path: "media/unit_2/walkthrough.mp4",
-          photos_dir: "media/unit_2/photos"
+        cloud_media: {
+          youtube_video_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2",
+          google_drive_photos_folder: "https://drive.google.com/drive/folders/EXAMPLE_DRIVE_FOLDER_UNIT_2",
+          cover_photo_url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800"
         },
         photos: [
-          { url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600", caption: "Main Living Area", is_cover: true },
-          { url: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=600", caption: "Kitchen & Dining", is_cover: false }
+          { url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600", caption: "Google Drive Photo Assets", is_cover: true }
         ],
         postings: {
           facebook: { status: "draft", last_posted: null },
@@ -582,13 +608,13 @@
         specs: { bedrooms: 1, bathrooms: 1, sqft: 650, parking_spots: 1 },
         financials: { target_rent: 1850, utilities_included: ["Water", "Heat"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "2026-12-15" },
         amenities: ["Walk to Downtown Whitby restaurants", "5 min to Whitby GO", "Modern laminate floors", "Secure keyless entry", "On-site card laundry"],
-        media: {
-          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3",
-          video_local_path: "media/unit_3/walkthrough.mp4",
-          photos_dir: "media/unit_3/photos"
+        cloud_media: {
+          youtube_video_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3",
+          google_drive_photos_folder: "https://drive.google.com/drive/folders/EXAMPLE_DRIVE_FOLDER_UNIT_3",
+          cover_photo_url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
         },
         photos: [
-          { url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600", caption: "Executive Bedroom", is_cover: true }
+          { url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600", caption: "Google Drive Photo Assets", is_cover: true }
         ],
         postings: {
           facebook: { status: "draft", last_posted: null },
@@ -605,13 +631,13 @@
         specs: { bedrooms: 2, bathrooms: 2, sqft: 1050, parking_spots: 1 },
         financials: { target_rent: 2400, utilities_included: [], utilities_extra: ["All utilities paid by tenant"], lease_term_months: 12, available_date: "2027-01-01" },
         amenities: ["Attached garage with interior access", "Private balcony", "Primary bedroom with ensuite & walk-in", "Central A/C", "Steps to Ajax GO"],
-        media: {
-          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4",
-          video_local_path: "media/unit_4/walkthrough.mp4",
-          photos_dir: "media/unit_4/photos"
+        cloud_media: {
+          youtube_video_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4",
+          google_drive_photos_folder: "https://drive.google.com/drive/folders/EXAMPLE_DRIVE_FOLDER_UNIT_4",
+          cover_photo_url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"
         },
         photos: [
-          { url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600", caption: "Townhouse Exterior & Balcony", is_cover: true }
+          { url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600", caption: "Google Drive Photo Assets", is_cover: true }
         ],
         postings: {
           facebook: { status: "draft", last_posted: null },
@@ -628,13 +654,13 @@
         specs: { bedrooms: 1.5, bathrooms: 1, sqft: 700, parking_spots: 1 },
         financials: { target_rent: 2200, utilities_included: ["Water", "Heat"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "2026-12-01" },
         amenities: ["Separate enclosed den (home office)", "Direct pedestrian bridge to Pickering GO", "Floor-to-ceiling windows", "Gym & rooftop patio", "Underground parking & locker"],
-        media: {
-          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5",
-          video_local_path: "media/unit_5/walkthrough.mp4",
-          photos_dir: "media/unit_5/photos"
+        cloud_media: {
+          youtube_video_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5",
+          google_drive_photos_folder: "https://drive.google.com/drive/folders/EXAMPLE_DRIVE_FOLDER_UNIT_5",
+          cover_photo_url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800"
         },
         photos: [
-          { url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600", caption: "Condo Living Area", is_cover: true }
+          { url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600", caption: "Google Drive Photo Assets", is_cover: true }
         ],
         postings: {
           facebook: { status: "draft", last_posted: null },
@@ -651,13 +677,13 @@
         specs: { bedrooms: 3, bathrooms: 1, sqft: 1100, parking_spots: 2 },
         financials: { target_rent: 2500, utilities_included: ["Water"], utilities_extra: ["Heat & Hydro (70% split)"], lease_term_months: 12, available_date: "2027-01-15" },
         amenities: ["Large private fenced backyard", "Spacious front porch", "In-suite laundry", "Close to schools & parks", "Minutes to 401 & future Bowmanville GO"],
-        media: {
-          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6",
-          video_local_path: "media/unit_6/walkthrough.mp4",
-          photos_dir: "media/unit_6/photos"
+        cloud_media: {
+          youtube_video_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6",
+          google_drive_photos_folder: "https://drive.google.com/drive/folders/EXAMPLE_DRIVE_FOLDER_UNIT_6",
+          cover_photo_url: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800"
         },
         photos: [
-          { url: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600", caption: "Upper Unit Exterior", is_cover: true }
+          { url: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600", caption: "Google Drive Photo Assets", is_cover: true }
         ],
         postings: {
           facebook: { status: "draft", last_posted: null },
@@ -841,8 +867,12 @@
       const unitId = document.getElementById('mediaUnitSelect').value || portfolioData[0].id;
       const unit = portfolioData.find(u => u.id === unitId) || portfolioData[0];
 
-      document.getElementById('mediaVideoUrlDisplay').innerText = unit.media.video_walkthrough_url || 'No URL configured';
-      document.getElementById('mediaVideoPathDisplay').innerText = `Local File: ${unit.media.video_local_path || 'None'}`;
+      const videoUrl = (unit.cloud_media && unit.cloud_media.youtube_video_url) || (unit.media && unit.media.video_walkthrough_url) || 'No YouTube link set';
+      const driveUrl = (unit.cloud_media && unit.cloud_media.google_drive_photos_folder) || 'https://drive.google.com';
+
+      document.getElementById('mediaVideoUrlDisplay').innerText = videoUrl;
+      document.getElementById('mediaDriveUrlDisplay').innerText = driveUrl;
+      document.getElementById('mediaDriveOpenBtn').href = driveUrl;
 
       const grid = document.getElementById('mediaGalleryGrid');
       grid.innerHTML = '';
@@ -868,8 +898,19 @@
       const unitId = document.getElementById('mediaUnitSelect').value;
       const unit = portfolioData.find(u => u.id === unitId);
       if (unit) {
-        navigator.clipboard.writeText(unit.media.video_walkthrough_url);
-        showToast("Walkthrough video link copied!");
+        const url = (unit.cloud_media && unit.cloud_media.youtube_video_url) || (unit.media && unit.media.video_walkthrough_url) || '';
+        navigator.clipboard.writeText(url);
+        showToast("YouTube video link copied!");
+      }
+    }
+
+    function copyCurrentDriveUrl() {
+      const unitId = document.getElementById('mediaUnitSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId);
+      if (unit) {
+        const url = (unit.cloud_media && unit.cloud_media.google_drive_photos_folder) || '';
+        navigator.clipboard.writeText(url);
+        showToast("Google Drive folder link copied!");
       }
     }
 

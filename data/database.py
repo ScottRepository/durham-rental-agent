@@ -128,21 +128,23 @@ def seed_from_sample_if_empty(db_path: Path = DB_PATH):
                     p.get("notes", "")
                 ))
 
-                # Insert Media: Video
-                video_url = p.get("media", {}).get("video_walkthrough_url")
-                video_local = p.get("media", {}).get("video_local_path")
-                if video_url or video_local:
+                # Insert Media: Cloud Video (YouTube)
+                cloud_media = p.get("cloud_media", {})
+                video_url = cloud_media.get("youtube_video_url") or p.get("media", {}).get("video_walkthrough_url")
+                if video_url:
                     cur.execute("""
                     INSERT INTO media (unit_id, media_type, file_path, web_url, caption, is_cover, sort_order)
-                    VALUES (?, 'video', ?, ?, 'Full Video Walkthrough', 0, 0)
-                    """, (p["id"], video_local, video_url))
+                    VALUES (?, 'video', NULL, ?, 'YouTube Walkthrough Tour', 0, 0)
+                    """, (p["id"], video_url))
 
-                # Insert Media: Photos
-                photos_dir = p.get("media", {}).get("photos_dir")
+                # Insert Media: Cloud Photos (Google Drive & Cover)
+                drive_folder = cloud_media.get("google_drive_photos_folder")
+                cover_url = cloud_media.get("cover_photo_url") or "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"
+
                 cur.execute("""
                 INSERT INTO media (unit_id, media_type, file_path, web_url, caption, is_cover, sort_order)
-                VALUES (?, 'photo', ?, 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600', 'Cover Photo', 1, 1)
-                """, (p["id"], photos_dir))
+                VALUES (?, 'photo', ?, ?, 'Google Drive Photo Assets', 1, 1)
+                """, (p["id"], drive_folder, cover_url))
 
                 # Initialize Default Posting Records
                 for plat in ['facebook', 'kijiji', 'zumper', 'rentals_ca']:

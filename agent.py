@@ -42,7 +42,9 @@ def cmd_list(args):
     table.add_column("Video Tour", style="blue")
 
     for u in units:
-        has_video = "✅ Yes" if u.get("media", {}).get("video_walkthrough_url") else "❌ Missing"
+        cloud = u.get("cloud_media", {})
+        legacy = u.get("media", {})
+        has_video = "✅ YouTube" if (cloud.get("youtube_video_url") or legacy.get("video_walkthrough_url")) else "❌ Missing"
         table.add_row(
             u["id"],
             u["name"],
