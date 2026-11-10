@@ -3,7 +3,7 @@
 **Target Rent**: $1,695 CAD/mo | **Move-in**: Immediate
 **Applicant Intake Form**: https://forms.gle/UZSrP8PUSh9GsdLX8
 **YouTube Walkthrough Video**: https://www.youtube.com/watch?v=TxRy1OvaRZo
-**Google Drive Photos Folder**: `https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing`
+**Google Drive Photos Folder**: `https://drive.google.com/drive/folders/1zfvp1t8dGae8QzJpF8ah80Eb3SV1Z6gQ`
 
 ---
 

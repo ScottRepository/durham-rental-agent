@@ -9,7 +9,10 @@
     "country": "Canada",
     "total_units": 6,
     "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
-    "google_drive_master_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
+    "google_drive_master_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+    "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+    "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+    "building_exterior_photo_note": "Building exterior photo from Google Drive must be included in every unit posting",
     "youtube_playlist": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U"
   },
   "properties": [
@@ -51,8 +54,10 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/watch?v=TxRy1OvaRZo",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-        "cover_photo_url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1zfvp1t8dGae8QzJpF8ah80Eb3SV1Z6gQ",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true
       },
       "notes": "Lower Level Unit 1 is half above ground and half below. Lots of light. Second bedroom is smaller (ideal for office/den). Renovated."
     },
@@ -93,8 +98,10 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/watch?v=TxRy1OvaRZo",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-        "cover_photo_url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800"
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1fSz-DPJ8HVOXI33BdZNHNkXahriMmi2v",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+        "building_exterior_photo": "Copy of Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true
       },
       "notes": "Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout. Sister lower-level video walkthrough available while Unit 2 video is being filmed."
     },
@@ -135,8 +142,13 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/watch?v=Y4_7Kd_KESA",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-        "cover_photo_url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true,
+        "zumper_listing_id": "65302296",
+        "zumper_manage_url": "https://www.zumper.com/manage/properties/listing/65302296",
+        "zumper_virtual_tour_title": "Tour 315 Kent Street #3"
       },
       "notes": "Upper Level Unit 3 features a private walkout balcony overlooking the property grounds. Full 2 bedroom layout."
     },
@@ -176,8 +188,10 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-        "cover_photo_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true
       },
       "notes": "Unit 4 features clean modern laminate/hardwood style flooring in a quiet, peaceful building setting."
     },
@@ -217,8 +231,10 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-        "cover_photo_url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800"
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true
       },
       "notes": "Upper Level Unit 5 with expansive picture windows and elevated views. Full kitchen with ample cabinet storage."
     },
@@ -258,8 +274,10 @@
       "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-        "cover_photo_url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800"
+        "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+        "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+        "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+        "include_building_exterior": true
       },
       "notes": "Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces."
     }

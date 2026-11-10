@@ -456,12 +456,49 @@
                 </div>
                 <input id="listingVideo" type="text" oninput="onFieldChanged()" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 rounded-xl px-3 py-2 text-xs text-blue-700 font-medium">
               </div>
-              <div class="flex items-center justify-between p-2.5 bg-blue-50/50 rounded-xl border border-blue-100 text-xs">
-                <span class="text-slate-700 font-medium flex items-center gap-1.5 truncate">
-                  <i class="fa-brands fa-google-drive text-blue-600"></i>
-                  <span id="listingPhotosPath" class="truncate">Google Drive Photos</span>
-                </span>
-                <a href="https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing" target="_blank" class="text-blue-600 hover:underline font-bold shrink-0 ml-2">Open Photos &rarr;</a>
+              <!-- Google Drive Photos Database Links (Unit + Building Exterior) -->
+              <div class="space-y-2">
+                <div class="flex items-center justify-between p-2.5 bg-blue-50/60 rounded-xl border border-blue-200 text-xs">
+                  <div class="space-y-0.5 overflow-hidden">
+                    <span class="text-[10px] uppercase font-bold text-blue-800 tracking-wider flex items-center gap-1">
+                      <i class="fa-brands fa-google-drive text-blue-600"></i> Unit Photos Folder (Google Drive)
+                    </span>
+                    <p id="listingPhotosPath" class="text-slate-700 font-semibold truncate text-[11px]">Google Drive Unit Photos</p>
+                  </div>
+                  <a id="listingPhotosOpenBtn" href="https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt" target="_blank" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[11px] font-bold shadow-sm transition shrink-0 ml-2">
+                    Open Photos &rarr;
+                  </a>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 bg-emerald-50/60 rounded-xl border border-emerald-200 text-xs">
+                  <div class="space-y-0.5 overflow-hidden">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-[10px] uppercase font-bold text-emerald-800 tracking-wider flex items-center gap-1">
+                        <i class="fa-solid fa-camera text-emerald-600"></i> Building Exterior Photo
+                      </span>
+                      <span class="text-[9px] bg-emerald-200 text-emerald-900 font-bold px-1.5 py-0.2 rounded">Required on all ads</span>
+                    </div>
+                    <p class="text-slate-700 font-medium truncate text-[11px]">Copy of Screenshot 2026-09-10 12.54.46 PM.png</p>
+                  </div>
+                  <a id="listingBuildingOpenBtn" href="https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO" target="_blank" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-[11px] font-bold shadow-sm transition shrink-0 ml-2">
+                    Open Building &rarr;
+                  </a>
+                </div>
+
+                <!-- Zumper Dedicated Virtual Tour Highlight Box -->
+                <div id="zumperVirtualTourBox" class="p-3 bg-purple-50/80 rounded-xl border border-purple-200 text-xs space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-purple-900 flex items-center gap-1.5">
+                      <i class="fa-solid fa-vr-cardboard text-purple-600"></i> Zumper Dedicated Virtual Tour URL
+                    </span>
+                    <button type="button" onclick="copyZumperVirtualTourLink()" class="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-[11px] font-bold shadow-sm transition">
+                      <i class="fa-regular fa-copy mr-1"></i> Copy for Zumper
+                    </button>
+                  </div>
+                  <p class="text-[11px] text-purple-800 leading-tight">
+                    ⚡ <strong>Zumper Specific Field:</strong> On Zumper (<a href="https://www.zumper.com/manage" target="_blank" class="underline font-semibold">zumper.com/manage</a>), paste this link directly into the dedicated <strong>Virtual Tour / Video</strong> box so Zumper displays the <em>"1 Video / Tour 315 Kent Street"</em> tab for renters!
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -1374,7 +1411,7 @@
   <!-- App Data & Logic -->
   <script>
     // Portfolio Data with Nested Media Database & Posting Records
-    let portfolioData = [
+        let portfolioData = [
       {
             "id": "unit_1",
             "name": "Unit 1 - 315 Kent Street",
@@ -1413,16 +1450,29 @@
                   "Five minute walk to everything including 401 and GO Train",
                   "Beautiful property yard with great neighbours in quiet 6-unit building"
             ],
+            "pet_policy": "No Pets",
+            "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
             "cloud_media": {
                   "youtube_video_url": "https://www.youtube.com/watch?v=TxRy1OvaRZo",
-                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-                  "cover_photo_url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1zfvp1t8dGae8QzJpF8ah80Eb3SV1Z6gQ",
+                  "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                  "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+                  "include_building_exterior": true
             },
+            "notes": "Lower Level Unit 1 is half above ground and half below. Lots of light. Second bedroom is smaller (ideal for office/den). Renovated.",
             "photos": [
                   {
-                        "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
-                        "caption": "Google Drive Photo Assets (Unit 1 - 315 Kent Street)",
+                        "url": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                        "caption": "Building Exterior Photo (Google Drive - Required on all posts)",
+                        "file_name": "Screenshot 2026-09-10 12.54.46 PM.png",
+                        "is_building": true,
                         "is_cover": true
+                  },
+                  {
+                        "url": "https://drive.google.com/drive/folders/1zfvp1t8dGae8QzJpF8ah80Eb3SV1Z6gQ",
+                        "caption": "Unit Photo Collection (Google Drive - Unit 1 - 315 Kent Street)",
+                        "is_cover": false
                   }
             ],
             "postings": {
@@ -1446,9 +1496,7 @@
                         "status": "draft",
                         "last_posted": null
                   }
-            },
-            "notes": "Lower Level Unit 1 is half above ground and half below. Lots of light. Second bedroom is smaller (ideal for office/den). Renovated.",
-            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
+            }
       },
       {
             "id": "unit_2",
@@ -1487,16 +1535,29 @@
                   "Safe neighbourhood and quiet 6-unit apartment community",
                   "Five minute walk to shopping, grocery stores, transit, 401 and GO Train"
             ],
+            "pet_policy": "No Pets",
+            "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
             "cloud_media": {
                   "youtube_video_url": "https://www.youtube.com/watch?v=TxRy1OvaRZo",
-                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-                  "cover_photo_url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800"
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1fSz-DPJ8HVOXI33BdZNHNkXahriMmi2v",
+                  "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                  "building_exterior_photo": "Copy of Screenshot 2026-09-10 12.54.46 PM.png",
+                  "include_building_exterior": true
             },
+            "notes": "Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout. Sister lower-level video walkthrough available while Unit 2 video is being filmed.",
             "photos": [
                   {
-                        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
-                        "caption": "Google Drive Photo Assets (Unit 2 - 315 Kent Street)",
+                        "url": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                        "caption": "Building Exterior Photo (Google Drive - Required on all posts)",
+                        "file_name": "Copy of Screenshot 2026-09-10 12.54.46 PM.png",
+                        "is_building": true,
                         "is_cover": true
+                  },
+                  {
+                        "url": "https://drive.google.com/drive/folders/1fSz-DPJ8HVOXI33BdZNHNkXahriMmi2v",
+                        "caption": "Unit Photo Collection (Google Drive - Unit 2 - 315 Kent Street)",
+                        "is_cover": false
                   }
             ],
             "postings": {
@@ -1520,9 +1581,7 @@
                         "status": "draft",
                         "last_posted": null
                   }
-            },
-            "notes": "Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout. Sister lower-level video walkthrough available while Unit 2 video is being filmed.",
-            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
+            }
       },
       {
             "id": "unit_3",
@@ -1561,16 +1620,32 @@
                   "5-minute walk to Downtown Whitby restaurants, shopping & GO Transit",
                   "Rapid access to Highway 401 and Durham transit links"
             ],
+            "pet_policy": "No Pets",
+            "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
             "cloud_media": {
                   "youtube_video_url": "https://www.youtube.com/watch?v=Y4_7Kd_KESA",
-                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-                  "cover_photo_url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+                  "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                  "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+                  "include_building_exterior": true,
+                  "zumper_listing_id": "65302296",
+                  "zumper_manage_url": "https://www.zumper.com/manage/properties/listing/65302296",
+                  "zumper_virtual_tour_title": "Tour 315 Kent Street #3"
             },
+            "notes": "Upper Level Unit 3 features a private walkout balcony overlooking the property grounds. Full 2 bedroom layout.",
             "photos": [
                   {
-                        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
-                        "caption": "Google Drive Photo Assets (Unit 3 - 315 Kent Street)",
+                        "url": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                        "caption": "Building Exterior Photo (Google Drive - Required on all posts)",
+                        "file_name": "Screenshot 2026-09-10 12.54.46 PM.png",
+                        "is_building": true,
                         "is_cover": true
+                  },
+                  {
+                        "url": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+                        "caption": "Unit Photo Collection (Google Drive - Unit 3 - 315 Kent Street)",
+                        "is_cover": false
                   }
             ],
             "postings": {
@@ -1594,9 +1669,7 @@
                         "status": "draft",
                         "last_posted": null
                   }
-            },
-            "notes": "Upper Level Unit 3 features a private walkout balcony overlooking the property grounds. Full 2 bedroom layout.",
-            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
+            }
       },
       {
             "id": "unit_4",
@@ -1634,16 +1707,29 @@
                   "On-site laundry facilities and lovely shared yard",
                   "Steps to downtown Whitby amenities & quick 401/GO commute"
             ],
+            "pet_policy": "No Pets",
+            "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
             "cloud_media": {
                   "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-                  "cover_photo_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+                  "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                  "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+                  "include_building_exterior": true
             },
+            "notes": "Unit 4 features clean modern laminate/hardwood style flooring in a quiet, peaceful building setting.",
             "photos": [
                   {
-                        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
-                        "caption": "Google Drive Photo Assets (Unit 4 - 315 Kent Street)",
+                        "url": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                        "caption": "Building Exterior Photo (Google Drive - Required on all posts)",
+                        "file_name": "Screenshot 2026-09-10 12.54.46 PM.png",
+                        "is_building": true,
                         "is_cover": true
+                  },
+                  {
+                        "url": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+                        "caption": "Unit Photo Collection (Google Drive - Unit 4 - 315 Kent Street)",
+                        "is_cover": false
                   }
             ],
             "postings": {
@@ -1667,9 +1753,7 @@
                         "status": "draft",
                         "last_posted": null
                   }
-            },
-            "notes": "Unit 4 features clean modern laminate/hardwood style flooring in a quiet, peaceful building setting.",
-            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
+            }
       },
       {
             "id": "unit_5",
@@ -1707,16 +1791,29 @@
                   "On-site coin laundry facilities",
                   "5 minutes walk to Whitby GO station, shopping, 401 & downtown"
             ],
+            "pet_policy": "No Pets",
+            "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
             "cloud_media": {
                   "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-                  "cover_photo_url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800"
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+                  "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                  "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+                  "include_building_exterior": true
             },
+            "notes": "Upper Level Unit 5 with expansive picture windows and elevated views. Full kitchen with ample cabinet storage.",
             "photos": [
                   {
-                        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800",
-                        "caption": "Google Drive Photo Assets (Unit 5 - 315 Kent Street)",
+                        "url": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                        "caption": "Building Exterior Photo (Google Drive - Required on all posts)",
+                        "file_name": "Screenshot 2026-09-10 12.54.46 PM.png",
+                        "is_building": true,
                         "is_cover": true
+                  },
+                  {
+                        "url": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+                        "caption": "Unit Photo Collection (Google Drive - Unit 5 - 315 Kent Street)",
+                        "is_cover": false
                   }
             ],
             "postings": {
@@ -1740,9 +1837,7 @@
                         "status": "draft",
                         "last_posted": null
                   }
-            },
-            "notes": "Upper Level Unit 5 with expansive picture windows and elevated views. Full kitchen with ample cabinet storage.",
-            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
+            }
       },
       {
             "id": "unit_6",
@@ -1780,16 +1875,29 @@
                   "On-site laundry facilities in boutique 6-plex",
                   "Close to schools, shopping, Whitby Marina, and GO Transit"
             ],
+            "pet_policy": "No Pets",
+            "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
             "cloud_media": {
                   "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-                  "cover_photo_url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800"
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+                  "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                  "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+                  "include_building_exterior": true
             },
+            "notes": "Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.",
             "photos": [
                   {
-                        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800",
-                        "caption": "Google Drive Photo Assets (Unit 6 - 315 Kent Street)",
+                        "url": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+                        "caption": "Building Exterior Photo (Google Drive - Required on all posts)",
+                        "file_name": "Screenshot 2026-09-10 12.54.46 PM.png",
+                        "is_building": true,
                         "is_cover": true
+                  },
+                  {
+                        "url": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt",
+                        "caption": "Unit Photo Collection (Google Drive - Unit 6 - 315 Kent Street)",
+                        "is_cover": false
                   }
             ],
             "postings": {
@@ -1813,9 +1921,7 @@
                         "status": "draft",
                         "last_posted": null
                   }
-            },
-            "notes": "Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.",
-            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
+            }
       }
 ];
 
@@ -2182,7 +2288,9 @@
         if (currentUnitFilter === 'occupied' && vacant) return;
 
         const psqft = (u.financials.target_rent / u.specs.sqft).toFixed(2);
-        const coverPhoto = u.photos && u.photos.length > 0 ? u.photos[0].url : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600";
+        const driveUrl = (u.cloud_media && u.cloud_media.google_drive_photos_folder) || 'https://drive.google.com';
+        const buildingFolder = (u.cloud_media && u.cloud_media.building_exterior_folder) || 'https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO';
+        const videoUrl = (u.cloud_media && u.cloud_media.youtube_video_url) || '';
         const fbStatus = u.postings.facebook.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
         const kjStatus = u.postings.kijiji.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
         const zmStatus = u.postings.zumper.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
@@ -2198,13 +2306,34 @@
         card.className = `bg-white rounded-2xl border ${vacant ? 'border-emerald-300 ring-1 ring-emerald-500/20' : 'border-slate-200'} overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between`;
         card.innerHTML = `
           <div>
-            <div class="relative h-48 bg-slate-100 overflow-hidden">
-              <img src="${coverPhoto}" alt="${u.name}" class="w-full h-full object-cover">
-              <div class="absolute top-3 left-3">
-                ${vacancyBadgeHtml}
+            <!-- Authentic Property Showcase Header (Zero stock photos) -->
+            <div class="relative p-5 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white flex flex-col justify-between min-h-[175px] overflow-hidden border-b border-slate-200">
+              <div class="absolute -right-4 -bottom-4 opacity-10 text-8xl pointer-events-none">
+                <i class="fa-solid fa-building-circle-check"></i>
               </div>
-              <div class="absolute top-3 right-3 bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full shadow">
-                $${u.financials.target_rent.toLocaleString()}/mo
+              <div class="flex items-center justify-between z-10">
+                ${vacancyBadgeHtml}
+                <div class="bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full shadow">
+                  $${u.financials.target_rent.toLocaleString()}/mo
+                </div>
+              </div>
+              <div class="z-10 mt-3 mb-2">
+                <div class="text-[10px] font-bold tracking-wider uppercase text-blue-300 flex items-center gap-1.5">
+                  <i class="fa-solid fa-location-dot text-amber-400"></i> 315 Kent Street • Whitby Central
+                </div>
+                <div class="text-base font-extrabold text-white leading-tight mt-0.5">${u.name}</div>
+              </div>
+              <div class="z-10 flex flex-wrap items-center gap-1.5 pt-2 border-t border-white/10 text-[10px]">
+                <a href="${driveUrl}" target="_blank" class="px-2.5 py-1 rounded-lg bg-blue-600/90 hover:bg-blue-600 text-white font-semibold transition flex items-center gap-1 shadow-sm" title="Open Google Drive Photos Folder">
+                  <i class="fa-brands fa-google-drive"></i> Unit Photos
+                </a>
+                <a href="${buildingFolder}" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-700/90 hover:bg-emerald-600 text-white font-semibold transition flex items-center gap-1 shadow-sm" title="Google Drive Building Exterior Photo (Always Included)">
+                  <i class="fa-solid fa-camera"></i> Building Photo
+                </a>
+                ${videoUrl ? `
+                <a href="${videoUrl}" target="_blank" class="px-2.5 py-1 rounded-lg bg-red-600/90 hover:bg-red-600 text-white font-semibold transition flex items-center gap-1 shadow-sm" title="Watch YouTube Walkthrough Tour">
+                  <i class="fa-brands fa-youtube"></i> Video Tour
+                </a>` : ''}
               </div>
             </div>
             <div class="p-5 space-y-3">
@@ -2273,16 +2402,61 @@
       const grid = document.getElementById('mediaGalleryGrid');
       grid.innerHTML = '';
 
-      unit.photos.forEach((p, idx) => {
-        const item = document.createElement('div');
-        item.className = "relative rounded-xl overflow-hidden border border-slate-200 group bg-slate-100";
-        item.innerHTML = `
-          <img src="${p.url}" alt="${p.caption}" class="w-full h-36 object-cover">
-          ${p.is_cover ? `<span class="absolute top-2 left-2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">Cover Photo</span>` : ''}
-          <div class="p-2 bg-white text-[11px] font-medium text-slate-700 truncate">${p.caption || `Photo ${idx + 1}`}</div>
+      // 1. Building Exterior Photo Card (Included with every unit)
+      const bCard = document.createElement('div');
+      bCard.className = "relative rounded-2xl overflow-hidden border-2 border-emerald-500 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white p-4 flex flex-col justify-between shadow-sm min-h-[160px]";
+      bCard.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="bg-emerald-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">⭐ Required on All Posts</span>
+          <span class="text-xs text-emerald-300 font-bold"><i class="fa-solid fa-building"></i> Building</span>
+        </div>
+        <div class="my-2">
+          <h4 class="text-xs font-bold text-white">Copy of Screenshot 2026-09-10 12.54.46 PM.png</h4>
+          <p class="text-[10px] text-slate-300">Exterior building photo for 315 Kent Street</p>
+        </div>
+        <a href="https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO" target="_blank" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow">
+          <i class="fa-brands fa-google-drive"></i> Open Building Folder
+        </a>
+      `;
+      grid.appendChild(bCard);
+
+      // 2. Unit Photos Folder Card
+      const uCard = document.createElement('div');
+      uCard.className = "relative rounded-2xl overflow-hidden border-2 border-blue-500 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white p-4 flex flex-col justify-between shadow-sm min-h-[160px]";
+      uCard.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="bg-blue-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">Unit Photos</span>
+          <span class="text-xs text-blue-300 font-bold"><i class="fa-solid fa-images"></i> Suite Gallery</span>
+        </div>
+        <div class="my-2">
+          <h4 class="text-xs font-bold text-white">${unit.name} Photo Database</h4>
+          <p class="text-[10px] text-slate-300">All high-resolution suite pictures in Google Drive</p>
+        </div>
+        <a href="${driveUrl}" target="_blank" class="px-2.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow">
+          <i class="fa-brands fa-google-drive"></i> Open Unit Folder
+        </a>
+      `;
+      grid.appendChild(uCard);
+
+      // 3. YouTube Walkthrough Card
+      if (videoUrl && videoUrl !== 'No YouTube link set') {
+        const vCard = document.createElement('div');
+        vCard.className = "relative rounded-2xl overflow-hidden border border-red-300 bg-gradient-to-br from-slate-900 via-rose-950 to-slate-900 text-white p-4 flex flex-col justify-between shadow-sm min-h-[160px]";
+        vCard.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="bg-red-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">Virtual Tour</span>
+            <span class="text-xs text-red-300 font-bold"><i class="fa-brands fa-youtube"></i> Walkthrough</span>
+          </div>
+          <div class="my-2">
+            <h4 class="text-xs font-bold text-white">${unit.name} Video Tour</h4>
+            <p class="text-[10px] text-slate-300">Dedicated virtual walkthrough tour link</p>
+          </div>
+          <a href="${videoUrl}" target="_blank" class="px-2.5 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow">
+            <i class="fa-solid fa-play"></i> Watch Walkthrough
+          </a>
         `;
-        grid.appendChild(item);
-      });
+        grid.appendChild(vCard);
+      }
     }
 
     function testMediaVideo() {
@@ -2307,6 +2481,18 @@
         const url = (unit.cloud_media && unit.cloud_media.google_drive_photos_folder) || '';
         navigator.clipboard.writeText(url);
         showToast("Google Drive folder link copied!");
+      }
+    }
+
+    function copyZumperVirtualTourLink() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId);
+      const video = document.getElementById('listingVideo').value || (unit && unit.cloud_media && unit.cloud_media.youtube_video_url) || "";
+      if (video) {
+        navigator.clipboard.writeText(video);
+        showToast("Zumper Dedicated Virtual Tour URL copied! Paste into Zumper Virtual Tour field.");
+      } else {
+        showToast("No video walkthrough URL found for this unit.");
       }
     }
 
@@ -2675,7 +2861,8 @@
       const video = document.getElementById('listingVideo').value || (unit.cloud_media && unit.cloud_media.youtube_video_url) || "";
       const description = document.getElementById('listingDescription').value || "";
 
-      const coverPhoto = (unit.photos && unit.photos[0] && unit.photos[0].url) || (unit.cloud_media && unit.cloud_media.cover_photo_url) || "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800";
+      const driveUrl = (unit.cloud_media && unit.cloud_media.google_drive_photos_folder) || 'https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt';
+      const buildingFolder = (unit.cloud_media && unit.cloud_media.building_exterior_folder) || 'https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO';
       const isMobile = currentPreviewDevice === 'mobile';
       const formattedDesc = formatTextWithClickableLinks(description);
 
@@ -2709,22 +2896,40 @@
 
           <!-- Body -->
           <div class="${isMobile ? 'flex flex-col' : 'grid grid-cols-1 lg:grid-cols-12'} bg-slate-50">
-            <!-- Left: Photos & Video Preview -->
+            <!-- Left: Photos & Video Preview (Authentic Google Drive Database) -->
             <div class="${isMobile ? 'w-full' : 'lg:col-span-7'} p-4 bg-slate-900 flex flex-col justify-between">
-              <div class="relative rounded-xl overflow-hidden bg-black flex items-center justify-center min-h-[300px] max-h-[440px]">
-                <img src="${coverPhoto}" alt="${title}" class="w-full h-full object-cover">
-                <div class="absolute top-3 left-3 bg-black/70 backdrop-blur-md text-white text-[11px] font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                  <i class="fa-solid fa-camera"></i> Photos from Google Drive
+              <div class="relative rounded-xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex flex-col justify-between min-h-[300px] max-h-[440px] p-5 text-white border border-slate-800 shadow-inner">
+                <div class="flex items-center justify-between">
+                  <span class="bg-blue-600/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow flex items-center gap-1.5">
+                    <i class="fa-brands fa-google-drive"></i> Real Drive Photos
+                  </span>
+                  <span class="bg-emerald-600/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow flex items-center gap-1.5">
+                    <i class="fa-solid fa-camera"></i> Building Photo Included
+                  </span>
                 </div>
-                ${video ? `
-                  <a href="${video}" target="_blank" class="absolute bottom-3 right-3 bg-red-600/90 hover:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm flex items-center gap-1.5 transition">
-                    <i class="fa-brands fa-youtube text-white text-sm"></i> Watch Walkthrough Tour
-                  </a>
-                ` : ''}
-              </div>
-              <div class="flex items-center gap-2 mt-3 overflow-x-auto pb-1">
-                <div class="w-16 h-12 rounded-lg border-2 border-[#1877f2] overflow-hidden shrink-0"><img src="${coverPhoto}" class="w-full h-full object-cover"></div>
-                <div class="w-16 h-12 rounded-lg border border-slate-700 bg-slate-800 overflow-hidden shrink-0 flex items-center justify-center text-slate-400 text-xs"><i class="fa-solid fa-plus"></i> Drive</div>
+                <div class="my-auto py-4 text-center">
+                  <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md mx-auto flex items-center justify-center text-3xl text-amber-400 mb-3 shadow-inner">
+                    <i class="fa-solid fa-building-circle-check"></i>
+                  </div>
+                  <h3 class="text-base font-extrabold text-white">${title}</h3>
+                  <p class="text-xs text-blue-200 mt-1">315 Kent Street Apartments • Whitby Central</p>
+                  <p class="text-[11px] text-slate-300 mt-1">Photo assets directly pulling from owner Google Drive database</p>
+                </div>
+                <div class="flex items-center justify-between gap-2 pt-3 border-t border-white/10">
+                  <div class="flex items-center gap-1.5">
+                    <a href="${driveUrl}" target="_blank" class="px-2.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shadow">
+                      <i class="fa-brands fa-google-drive"></i> Unit Photos
+                    </a>
+                    <a href="${buildingFolder}" target="_blank" class="px-2.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shadow">
+                      <i class="fa-solid fa-camera"></i> Building Photo
+                    </a>
+                  </div>
+                  ${video ? `
+                    <a href="${video}" target="_blank" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow transition flex items-center gap-1">
+                      <i class="fa-brands fa-youtube"></i> Watch Video Tour
+                    </a>
+                  ` : ''}
+                </div>
               </div>
             </div>
 
@@ -2804,13 +3009,34 @@
 
             <!-- Media Preview & Kijiji Video Badge -->
             <div class="${isMobile ? 'flex flex-col' : 'grid grid-cols-1 lg:grid-cols-3'} gap-4">
-              <div class="lg:col-span-2 relative rounded-xl overflow-hidden bg-slate-900 h-64">
-                <img src="${coverPhoto}" class="w-full h-full object-cover">
-                ${video ? `
-                  <div class="absolute top-3 right-3 bg-red-600 text-white font-bold text-xs px-3 py-1 rounded-full flex items-center gap-1 shadow-md">
-                    <i class="fa-solid fa-circle-play"></i> Video Tour
+              <div class="lg:col-span-2 relative rounded-xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 h-64 p-5 text-white flex flex-col justify-between border border-slate-800">
+                <div class="flex items-center justify-between">
+                  <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <i class="fa-brands fa-google-drive"></i> Google Drive Photos
+                  </span>
+                  <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <i class="fa-solid fa-camera"></i> Building Photo Included
+                  </span>
+                </div>
+                <div class="text-center my-auto">
+                  <h3 class="text-base font-bold text-white">${title}</h3>
+                  <p class="text-xs text-blue-200 mt-0.5">315 Kent Street • Unit Photos Loaded from Google Drive</p>
+                </div>
+                <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/10 text-xs">
+                  <div class="flex items-center gap-1.5">
+                    <a href="${driveUrl}" target="_blank" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
+                      <i class="fa-brands fa-google-drive mr-1"></i> Unit Photos
+                    </a>
+                    <a href="${buildingFolder}" target="_blank" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-lg transition">
+                      <i class="fa-solid fa-camera mr-1"></i> Building Photo
+                    </a>
                   </div>
-                ` : ''}
+                  ${video ? `
+                    <a href="${video}" target="_blank" class="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition flex items-center gap-1">
+                      <i class="fa-solid fa-play"></i> Video Tour
+                    </a>
+                  ` : ''}
+                </div>
               </div>
               <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                 <h3 class="text-xs font-bold text-slate-700 uppercase">Listing Details</h3>
@@ -2851,8 +3077,7 @@
           </div>
 
           <div class="p-5 bg-white space-y-4">
-            <div class="relative h-64 rounded-2xl overflow-hidden bg-slate-900">
-              <img src="${coverPhoto}" class="w-full h-full object-cover">
+            <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-5 text-white flex flex-col justify-between min-h-[180px] border border-slate-800">
               <div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-slate-900 text-xs font-bold flex items-center gap-1.5 shadow">
                 <i class="fa-solid fa-person-walking text-teal-600"></i> Walk Score: 82 (Very Walkable)
               </div>
@@ -2891,8 +3116,7 @@
           </div>
 
           <div class="p-5 bg-white space-y-4">
-            <div class="relative h-64 rounded-2xl overflow-hidden bg-slate-900">
-              <img src="${coverPhoto}" class="w-full h-full object-cover">
+            <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-5 text-white flex flex-col justify-between min-h-[180px] border border-slate-800">
               <div class="absolute top-3 left-3 bg-emerald-600 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow">
                 Available ${availDate}
               </div>
@@ -2921,8 +3145,7 @@
           </div>
 
           <div class="p-5 bg-white space-y-4">
-            <div class="relative h-64 rounded-2xl overflow-hidden bg-slate-900">
-              <img src="${coverPhoto}" class="w-full h-full object-cover">
+            <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-5 text-white flex flex-col justify-between min-h-[180px] border border-slate-800">
               <div class="absolute top-3 left-3 bg-teal-800 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow">
                 Move-in: ${availDate}
               </div>
@@ -3116,7 +3339,17 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
       document.getElementById('listingPrice').value = rentVal;
       document.getElementById('listingBeds').value = `${unit.specs.bedrooms} Bed`;
       document.getElementById('listingVideo').value = videoVal;
-      document.getElementById('listingPhotosPath').innerText = (unit.cloud_media && unit.cloud_media.google_drive_photos_folder) || 'Google Drive Master Folder';
+      const unitDriveFolder = (unit.cloud_media && unit.cloud_media.google_drive_photos_folder) || 'https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt';
+      const buildingDriveFolder = (unit.cloud_media && unit.cloud_media.building_exterior_folder) || 'https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO';
+      
+      const photosPathEl = document.getElementById('listingPhotosPath');
+      if (photosPathEl) photosPathEl.innerText = unitDriveFolder;
+      
+      const photosBtnEl = document.getElementById('listingPhotosOpenBtn');
+      if (photosBtnEl) photosBtnEl.href = unitDriveFolder;
+
+      const buildingBtnEl = document.getElementById('listingBuildingOpenBtn');
+      if (buildingBtnEl) buildingBtnEl.href = buildingDriveFolder;
       document.getElementById('listingDescription').value = description;
       document.getElementById('charCount').innerText = `${description.length} characters`;
       document.getElementById('platformRulesBox').innerHTML = rulesHtml;

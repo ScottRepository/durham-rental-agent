@@ -8,15 +8,21 @@ Replicated authentically from owner's standard 315 Kent Street listing template.
 from typing import Dict, Any
 
 DEFAULT_INTAKE_FORM_URL = "https://forms.gle/UZSrP8PUSh9GsdLX8"
+BUILDING_EXTERIOR_FOLDER = "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO"
+BUILDING_EXTERIOR_PHOTO = "Screenshot 2026-09-10 12.54.46 PM.png"
+MASTER_DRIVE_FOLDER = "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt"
+DEFAULT_PLAYLIST_URL = "https://www.youtube.com/playlist?list=PLLwTe84kfw7U"
 
 def _get_media(unit: Dict[str, Any]) -> Dict[str, str]:
     cloud = unit.get("cloud_media", {})
     legacy = unit.get("media", {})
     return {
-        "video_url": cloud.get("youtube_video_url") or legacy.get("video_walkthrough_url") or "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-        "drive_folder": cloud.get("google_drive_photos_folder") or legacy.get("photos_dir") or "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-        "cover_photo": cloud.get("cover_photo_url") or "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
-        "intake_form": unit.get("intake_form_url") or DEFAULT_INTAKE_FORM_URL
+        "video_url": cloud.get("youtube_video_url") or legacy.get("video_walkthrough_url") or DEFAULT_PLAYLIST_URL,
+        "drive_folder": cloud.get("google_drive_photos_folder") or legacy.get("photos_dir") or MASTER_DRIVE_FOLDER,
+        "building_folder": cloud.get("building_exterior_folder") or BUILDING_EXTERIOR_FOLDER,
+        "building_photo": cloud.get("building_exterior_photo") or BUILDING_EXTERIOR_PHOTO,
+        "intake_form": unit.get("intake_form_url") or DEFAULT_INTAKE_FORM_URL,
+        "playlist_url": DEFAULT_PLAYLIST_URL
     }
 
 def get_unit_specific_bullet(unit: Dict[str, Any]) -> str:
@@ -179,8 +185,11 @@ def generate_zumper_listing(unit: Dict[str, Any]) -> Dict[str, str]:
         "bathrooms": str(specs['bathrooms']),
         "sqft": str(specs['sqft']),
         "virtual_tour_url": media_info['video_url'],
+        "virtual_tour_field_instruction": "Paste the virtual_tour_url into Zumper's dedicated Virtual Tour/Video field so Zumper creates the '1 Video / Tour 315 Kent Street' tab.",
         "description": zumper_desc,
         "drive_folder": media_info['drive_folder'],
+        "building_exterior_folder": media_info['building_folder'],
+        "building_exterior_photo": media_info['building_photo'],
         "intake_form": media_info['intake_form'],
         "auto_reply_message": auto_reply
     }

@@ -169,14 +169,22 @@ def seed_from_sample_if_empty(db_path: Path = DB_PATH):
                     VALUES (?, 'video', NULL, ?, 'YouTube Walkthrough Tour', 0, 0)
                     """, (p["id"], video_url))
 
-                # Insert Media: Cloud Photos (Google Drive & Cover)
+                # Insert Media: Cloud Photos (Google Drive Unit Folder & Building Exterior)
                 drive_folder = cloud_media.get("google_drive_photos_folder")
-                cover_url = cloud_media.get("cover_photo_url") or "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"
+                building_folder = cloud_media.get("building_exterior_folder") or "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO"
+                building_photo = cloud_media.get("building_exterior_photo") or "Screenshot 2026-09-10 12.54.46 PM.png"
 
+                # 1. Building exterior photo (required for every posting)
                 cur.execute("""
                 INSERT INTO media (unit_id, media_type, file_path, web_url, caption, is_cover, sort_order)
-                VALUES (?, 'photo', ?, ?, 'Google Drive Photo Assets', 1, 1)
-                """, (p["id"], drive_folder, cover_url))
+                VALUES (?, 'photo', ?, ?, 'Building Exterior Photo (Google Drive - Required on all posts)', 1, 1)
+                """, (p["id"], building_folder, f"{building_folder} - {building_photo}"))
+
+                # 2. Unit-specific photo collection
+                cur.execute("""
+                INSERT INTO media (unit_id, media_type, file_path, web_url, caption, is_cover, sort_order)
+                VALUES (?, 'photo', ?, ?, 'Unit Photo Collection (Google Drive)', 0, 2)
+                """, (p["id"], drive_folder, drive_folder))
 
                 # Initialize Default Posting Records
                 for plat in ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent']:
@@ -210,6 +218,21 @@ def get_all_units(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
         posting_rows = cur.fetchall()
         posting_dict = {p["platform"]: dict(p) for p in posting_rows}
 
+        # Extract cloud media for modern UI
+        cloud_media = {
+            "building_exterior_folder": "https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO",
+            "building_exterior_photo": "Screenshot 2026-09-10 12.54.46 PM.png",
+            "youtube_playlist": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U"
+        }
+        for m in media_list:
+            if m["media_type"] == "video":
+                cloud_media["youtube_video_url"] = m["web_url"]
+            elif m["media_type"] == "photo":
+                if "Building" in (m.get("caption") or ""):
+                    cloud_media["building_exterior_folder"] = m["file_path"]
+                else:
+                    cloud_media["google_drive_photos_folder"] = m["file_path"]
+
         results.append({
             "id": u["id"],
             "name": u["name"],
@@ -237,6 +260,7 @@ def get_all_units(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
             "pet_policy": u["pet_policy"],
             "smoking_policy": u["smoking_policy"],
             "notes": u["notes"],
+            "cloud_media": cloud_media,
             "media_assets": media_list,
             "postings": posting_dict
         })
