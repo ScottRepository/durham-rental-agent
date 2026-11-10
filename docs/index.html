@@ -2073,13 +2073,20 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
         title = `${unit.address.street} - 2 Bed / 1 Bath Boutique Suite | Whitby`;
         postUrl = "https://www.zumper.com/manage";
         rulesHtml = `
-          <strong>Zumper 1-Click Posting:</strong>
-          <ul class="list-disc ml-4 mt-1 space-y-1">
-            <li>Pre-fills virtual tour URL with YouTube walkthrough link.</li>
-            <li>Syndicates to PadMapper & Walk Score automatically.</li>
+          <strong class="text-amber-900 font-bold"><i class="fa-solid fa-shield-halved text-amber-600 mr-1"></i> Zumper Link Filter Workarounds:</strong>
+          <ul class="list-disc ml-4 mt-1 space-y-1 text-[11px] text-amber-900">
+            <li><strong>Auto-Reply (Recommended):</strong> Set an instant auto-responder in your Zumper Inbox with your form link. Outbound links are NOT blocked in chat messages!</li>
+            <li><strong>Bypass in Description:</strong> Uses spaced URL format (<code>forms . gle / UZSrP8PUSh9GsdLX8</code>) so Zumper's automated bot parser won't strip it.</li>
+            <li><strong>YouTube Link:</strong> Directs renters to the video description where your Google Form link is live and clickable.</li>
           </ul>
         `;
-        description = standardReplicatedDesc;
+        const zumperSafeForm = "forms . gle / UZSrP8PUSh9GsdLX8 (copy into browser, remove spaces)";
+        description = standardReplicatedDesc
+          .replaceAll(formUrl, zumperSafeForm)
+          .replace(
+            "We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.",
+            "We will contact qualified candidates for a showing. Please copy/paste the form link above or send an inquiry message here on Zumper to receive the direct link instantly."
+          );
       } else if (platform === "rentals_ca") {
         platformName = "Rentals.ca";
         title = `Whitby Central - Renovated 2-Bed Apartment (${unit.name})`;

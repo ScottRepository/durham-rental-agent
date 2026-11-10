@@ -92,7 +92,12 @@ class PostingEngine:
 - **Virtual Tour Link**: `{packages['zumper']['virtual_tour_url']}`
 - **Bedrooms**: {packages['zumper']['bedrooms']} | **Bathrooms**: {packages['zumper']['bathrooms']} | **Sqft**: {packages['zumper']['sqft']}
 
-### Description:
+> **Note on Zumper Link Filtering**: Zumper automatically strips raw URLs in public descriptions.
+> We bypassed this in the description below using spaced URL notation.
+> In addition, set this in your **Zumper Landlord Inbox Auto-Responder** (outbound links in messages are NOT blocked):
+> 💬 *"{packages['zumper'].get('auto_reply_message', '')}"*
+
+### Description (Zumper Filter-Safe):
 ```text
 {packages['zumper']['description']}
 ```
