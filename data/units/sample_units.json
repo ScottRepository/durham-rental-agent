@@ -1,0 +1,254 @@
+{
+  "properties": [
+    {
+      "id": "unit_1",
+      "name": "Unit 1 - 2 Bed Lower Suite",
+      "address": {
+        "street": "123 Simcoe St N",
+        "city": "Oshawa",
+        "region": "Durham Region",
+        "postal_code": "L1G 4S6",
+        "country": "Canada"
+      },
+      "type": "Basement Apartment",
+      "specs": {
+        "bedrooms": 2,
+        "bathrooms": 1,
+        "sqft": 850,
+        "parking_spots": 1
+      },
+      "financials": {
+        "target_rent": 2100,
+        "currency": "CAD",
+        "utilities_included": ["Water"],
+        "utilities_extra": ["Heat", "Hydro (40% split)"],
+        "lease_term_months": 12,
+        "available_date": "2026-12-01"
+      },
+      "amenities": [
+        "In-suite laundry",
+        "Private side entrance",
+        "Full kitchen with stainless steel appliances",
+        "Quartz countertops",
+        "Large egress windows (bright daylight)",
+        "Ductless A/C & heat pump",
+        "Shared backyard access",
+        "Near Ontario Tech / Durham College & 401"
+      ],
+      "media": {
+        "video_walkthrough_url": "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_1",
+        "video_local_path": "/home/scottcarpentier/Property Management Posting/media/unit_1/walkthrough.mp4",
+        "photos_dir": "/home/scottcarpentier/Property Management Posting/media/unit_1/photos"
+      },
+      "pet_policy": "Pets considered (Ontario standard)",
+      "smoking_policy": "Strictly non-smoking unit",
+      "notes": "Ideal for young working professionals or graduate students. 5 min to Oshawa GO / Durham Transit stop at corner."
+    },
+    {
+      "id": "unit_2",
+      "name": "Unit 2 - 3 Bed Main Floor",
+      "address": {
+        "street": "123 Simcoe St N",
+        "city": "Oshawa",
+        "region": "Durham Region",
+        "postal_code": "L1G 4S6",
+        "country": "Canada"
+      },
+      "type": "Main Floor House",
+      "specs": {
+        "bedrooms": 3,
+        "bathrooms": 1.5,
+        "sqft": 1250,
+        "parking_spots": 2
+      },
+      "financials": {
+        "target_rent": 2750,
+        "currency": "CAD",
+        "utilities_included": ["Water"],
+        "utilities_extra": ["Heat (60% split)", "Hydro (60% split)"],
+        "lease_term_months": 12,
+        "available_date": "2026-12-01"
+      },
+      "amenities": [
+        "Dedicated garage + driveway parking",
+        "Spacious private deck",
+        "Ensuite laundry",
+        "Hardwood flooring throughout",
+        "Open-concept living & dining room",
+        "Dishwasher & microwave included"
+      ],
+      "media": {
+        "video_walkthrough_url": "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2",
+        "video_local_path": "/home/scottcarpentier/Property Management Posting/media/unit_2/walkthrough.mp4",
+        "photos_dir": "/home/scottcarpentier/Property Management Posting/media/unit_2/photos"
+      },
+      "pet_policy": "Pets welcome",
+      "smoking_policy": "Strictly non-smoking unit",
+      "notes": "Main level unit with exclusive backyard deck access."
+    },
+    {
+      "id": "unit_3",
+      "name": "Unit 3 - 1 Bed Executive Suite",
+      "address": {
+        "street": "45 Brock St E",
+        "city": "Whitby",
+        "region": "Durham Region",
+        "postal_code": "L1N 2H8",
+        "country": "Canada"
+      },
+      "type": "Apartment Suite",
+      "specs": {
+        "bedrooms": 1,
+        "bathrooms": 1,
+        "sqft": 650,
+        "parking_spots": 1
+      },
+      "financials": {
+        "target_rent": 1850,
+        "currency": "CAD",
+        "utilities_included": ["Water", "Heat"],
+        "utilities_extra": ["Hydro"],
+        "lease_term_months": 12,
+        "available_date": "2026-12-15"
+      },
+      "amenities": [
+        "Walking distance to Downtown Whitby restaurants",
+        "Quick access to Whitby GO Station",
+        "Modern laminate floors",
+        "Secure keyless entry",
+        "On-site card laundry"
+      ],
+      "media": {
+        "video_walkthrough_url": "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3",
+        "video_local_path": "/home/scottcarpentier/Property Management Posting/media/unit_3/walkthrough.mp4",
+        "photos_dir": "/home/scottcarpentier/Property Management Posting/media/unit_3/photos"
+      },
+      "pet_policy": "Quiet pets permitted",
+      "smoking_policy": "Non-smoking unit",
+      "notes": "Close to 401 & Whitby entertainment district."
+    },
+    {
+      "id": "unit_4",
+      "name": "Unit 4 - 2 Bed Townhouse Unit",
+      "address": {
+        "street": "78 Kingston Rd W",
+        "city": "Ajax",
+        "region": "Durham Region",
+        "postal_code": "L1S 7J4",
+        "country": "Canada"
+      },
+      "type": "Townhouse",
+      "specs": {
+        "bedrooms": 2,
+        "bathrooms": 2,
+        "sqft": 1050,
+        "parking_spots": 1
+      },
+      "financials": {
+        "target_rent": 2400,
+        "currency": "CAD",
+        "utilities_included": [],
+        "utilities_extra": ["All utilities paid by tenant"],
+        "lease_term_months": 12,
+        "available_date": "2027-01-01"
+      },
+      "amenities": [
+        "Attached garage with direct interior access",
+        "Balcony",
+        "Primary bedroom with ensuite bathroom & walk-in closet",
+        "Central Air Conditioning",
+        "Steps to Durham Centre shopping & Ajax GO"
+      ],
+      "media": {
+        "video_walkthrough_url": "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4",
+        "video_local_path": "/home/scottcarpentier/Property Management Posting/media/unit_4/walkthrough.mp4",
+        "photos_dir": "/home/scottcarpentier/Property Management Posting/media/unit_4/photos"
+      },
+      "pet_policy": "Pets permitted",
+      "smoking_policy": "Non-smoking",
+      "notes": "Ideal commuter location with direct Durham transit & GO access."
+    },
+    {
+      "id": "unit_5",
+      "name": "Unit 5 - 1 Bed + Den Condo Style",
+      "address": {
+        "street": "1400 Bayly St",
+        "city": "Pickering",
+        "region": "Durham Region",
+        "postal_code": "L1W 3R2",
+        "country": "Canada"
+      },
+      "type": "Condo / Suite",
+      "specs": {
+        "bedrooms": 1.5,
+        "bathrooms": 1,
+        "sqft": 700,
+        "parking_spots": 1
+      },
+      "financials": {
+        "target_rent": 2200,
+        "currency": "CAD",
+        "utilities_included": ["Water", "Heat"],
+        "utilities_extra": ["Hydro"],
+        "lease_term_months": 12,
+        "available_date": "2026-12-01"
+      },
+      "amenities": [
+        "Separate enclosed den perfect for work-from-home",
+        "Direct pedestrian bridge access to Pickering GO",
+        "Floor to ceiling windows",
+        "Gym & rooftop patio access in building",
+        "Underground parking space + storage locker"
+      ],
+      "media": {
+        "video_walkthrough_url": "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5",
+        "video_local_path": "/home/scottcarpentier/Property Management Posting/media/unit_5/walkthrough.mp4",
+        "photos_dir": "/home/scottcarpentier/Property Management Posting/media/unit_5/photos"
+      },
+      "pet_policy": "Small pets allowed per condo bylaws",
+      "smoking_policy": "Strictly non-smoking building",
+      "notes": "Direct bridge connection to Pickering GO Station (28 mins to Union Station)."
+    },
+    {
+      "id": "unit_6",
+      "name": "Unit 6 - 3 Bed Detached Upper Unit",
+      "address": {
+        "street": "210 King St E",
+        "city": "Bowmanville (Clarington)",
+        "region": "Durham Region",
+        "postal_code": "L1C 1P2",
+        "country": "Canada"
+      },
+      "type": "Upper Level House",
+      "specs": {
+        "bedrooms": 3,
+        "bathrooms": 1,
+        "sqft": 1100,
+        "parking_spots": 2
+      },
+      "financials": {
+        "target_rent": 2500,
+        "currency": "CAD",
+        "utilities_included": ["Water"],
+        "utilities_extra": ["Heat & Hydro (70% split)"],
+        "lease_term_months": 12,
+        "available_date": "2027-01-15"
+      },
+      "amenities": [
+        "Large private fenced backyard",
+        "Spacious front porch",
+        "In-suite laundry",
+        "Family-friendly neighbourhood close to schools",
+        "Minutes from Highway 401 & future Bowmanville GO extension"
+      ],
+      "media": {
+        "video_walkthrough_url": "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6",
+        "video_local_path": "/home/scottcarpentier/Property Management Posting/media/unit_6/walkthrough.mp4",
+        "photos_dir": "/home/scottcarpentier/Property Management Posting/media/unit_6/photos"
+      },
+      "pet_policy": "Pets welcome",
+      "smoking_policy": "Non-smoking unit",
+      "notes": "Quiet residential street in historic downtown Bowmanville."
+    }
+  ]
+}

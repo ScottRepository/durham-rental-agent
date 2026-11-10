@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Durham Region Rental Agent & Market Research Dashboard</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .tab-active {
+      border-color: #3b82f6;
+      color: #2563eb;
+      background-color: #eff6ff;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md">
+          <i class="fa-solid fa-building-user text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            Durham Rental Agent
+            <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-0.5 rounded-full border border-blue-200">GitHub Web Edition</span>
+          </h1>
+          <p class="text-xs text-slate-500">6-Unit Portfolio • Oshawa, Whitby, Ajax, Pickering & Bowmanville • Free Syndication & Comps</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="exportCurrentJSON()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 shadow-sm transition">
+          <i class="fa-solid fa-download text-slate-500"></i> Export Units JSON
+        </button>
+        <a href="https://github.com" target="_blank" id="ghRepoLink" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-slate-900 rounded-lg hover:bg-slate-800 shadow-sm transition">
+          <i class="fa-brands fa-github"></i> View in GitHub Actions
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-4 border-t border-slate-100 pt-1 overflow-x-auto">
+      <button onclick="switchTab('units')" id="tabBtn-units" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 tab-active transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-list-check"></i> 6 Units Portfolio
+      </button>
+      <button onclick="switchTab('comps')" id="tabBtn-comps" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-chart-line"></i> Market Research & Comps
+      </button>
+      <button onclick="switchTab('posting')" id="tabBtn-posting" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-bullhorn"></i> Multi-Platform Posting Engine
+      </button>
+      <button onclick="switchTab('platforms')" id="tabBtn-platforms" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-map-location-dot"></i> Durham Free Platforms Guide
+      </button>
+      <button onclick="switchTab('github')" id="tabBtn-github" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-robot"></i> GitHub Actions & Automation
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- TAB 1: 6 UNITS PORTFOLIO -->
+    <section id="tab-units" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Portfolio Status Overview</h2>
+          <p class="text-sm text-slate-500">6 residential units configured with video walkthroughs, high-res photos, and rental pricing.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <span class="text-xs text-slate-500 uppercase tracking-wider block">Total Projected Revenue</span>
+            <span id="totalMonthlyRent" class="text-xl font-extrabold text-blue-600">$13,800 CAD/mo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unit Grid -->
+      <div id="unitsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- TAB 2: MARKET RESEARCH & COMPS -->
+    <section id="tab-comps" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">Durham Region Rental Market Comps</h2>
+            <p class="text-sm text-slate-500">Live benchmarking by municipality, square footage, bedrooms, and amenities.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="text-sm font-medium text-slate-700">Select Unit:</label>
+            <select id="compsUnitSelect" onchange="renderCompsAnalysis()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 font-medium">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Comps Metrics Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-semibold text-slate-500 uppercase">Your Target Rent</span>
+            <p id="compTargetRent" class="text-2xl font-black text-slate-900 mt-1">$0</p>
+            <span id="compTargetPsqft" class="text-xs text-slate-500">$0.00 / sqft</span>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-semibold text-slate-500 uppercase">Market Comp Average</span>
+            <p id="compAvgRent" class="text-2xl font-black text-blue-600 mt-1">$0</p>
+            <span id="compAvgPsqft" class="text-xs text-slate-500">$0.00 / sqft</span>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-semibold text-slate-500 uppercase">Comp Rent Range</span>
+            <p id="compRentRange" class="text-2xl font-black text-slate-900 mt-1">$0 - $0</p>
+            <span class="text-xs text-slate-500">Min to Max Durham Comps</span>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-semibold text-slate-500 uppercase">Pricing Position</span>
+            <p id="compDelta" class="text-2xl font-black text-emerald-600 mt-1">$0</p>
+            <span id="compDeltaLabel" class="text-xs text-slate-500">vs local market avg</span>
+          </div>
+        </div>
+
+        <!-- Verdict Banner -->
+        <div id="compVerdictBox" class="p-4 rounded-xl mb-6 bg-blue-50 border border-blue-200 flex items-start gap-3">
+          <i class="fa-solid fa-circle-check text-blue-600 mt-0.5 text-lg"></i>
+          <div>
+            <h4 class="text-sm font-bold text-blue-900">Pricing Recommendation & Verdict:</h4>
+            <p id="compVerdictText" class="text-sm text-blue-800 mt-0.5"></p>
+          </div>
+        </div>
+
+        <!-- Chart and Live Search Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div class="lg:col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-chart-bar text-blue-600"></i> Target Rent vs. Nearby Active Comps
+            </h4>
+            <div class="h-64">
+              <canvas id="compsChart"></canvas>
+            </div>
+          </div>
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+            <div>
+              <h4 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-arrow-up-right-from-square text-indigo-600"></i> Real-Time Durham Links
+              </h4>
+              <p class="text-xs text-slate-600 mb-4">Click to inspect live active listings directly on the platforms:</p>
+              <div id="liveLinksContainer" class="space-y-2.5">
+                <!-- Links rendered here -->
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200 text-xs text-slate-500">
+              <i class="fa-solid fa-circle-info text-blue-500 mr-1"></i> Durham Region comps updated automatically via GitHub Actions weekly workflow.
+            </div>
+          </div>
+        </div>
+
+        <!-- Comps Table -->
+        <h4 class="text-sm font-bold text-slate-800 mb-3">Nearby Comparable Listings Detail</h4>
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-slate-700 text-xs uppercase font-semibold">
+              <tr>
+                <th class="px-4 py-3 text-left">Neighbourhood / City</th>
+                <th class="px-4 py-3 text-left">Type</th>
+                <th class="px-4 py-3 text-center">Beds / Baths</th>
+                <th class="px-4 py-3 text-right">Sq. Ft.</th>
+                <th class="px-4 py-3 text-right">Monthly Rent</th>
+                <th class="px-4 py-3 text-left">Utilities Included</th>
+                <th class="px-4 py-3 text-left">Source</th>
+              </tr>
+            </thead>
+            <tbody id="compsTableBody" class="divide-y divide-slate-200 bg-white">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: MULTI-PLATFORM POSTING ENGINE -->
+    <section id="tab-posting" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">Multi-Platform Posting Generator</h2>
+            <p class="text-sm text-slate-500">Generate, customize, and copy high-converting listings for Facebook Marketplace, Kijiji, and Zumper.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <div>
+              <label class="text-xs font-semibold text-slate-500 uppercase block mb-1">Unit</label>
+              <select id="postingUnitSelect" onchange="renderPlatformListing()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2 font-medium">
+                <!-- Populated by JS -->
+              </select>
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-slate-500 uppercase block mb-1">Platform</label>
+              <select id="postingPlatformSelect" onchange="renderPlatformListing()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2 font-medium">
+                <option value="facebook">Facebook Marketplace</option>
+                <option value="kijiji">Kijiji Ontario</option>
+                <option value="zumper">Zumper & PadMapper</option>
+                <option value="rentals_ca">Rentals.ca</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200 mb-6">
+          <div class="flex items-center gap-2">
+            <span id="platformBadge" class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full"></span>
+            <span id="platformCostBadge" class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full">100% Free</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="copyListingText()" class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition">
+              <i class="fa-solid fa-copy"></i> Copy Description
+            </button>
+            <button onclick="copyVideoUrl()" class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 shadow-sm transition">
+              <i class="fa-solid fa-video text-red-500"></i> Copy Video Link
+            </button>
+            <a id="platformDirectPostBtn" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 shadow-sm transition">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Posting Page
+            </a>
+          </div>
+        </div>
+
+        <!-- Listing Content Preview -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="space-y-4">
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Form Fields Ready to Fill</h4>
+              <div>
+                <label class="text-xs font-medium text-slate-600">Optimized Title:</label>
+                <div class="flex items-center gap-2 mt-1">
+                  <input id="listingTitle" type="text" readonly class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono font-medium">
+                  <button onclick="copyInput('listingTitle')" class="p-1.5 text-slate-500 hover:text-blue-600"><i class="fa-solid fa-copy"></i></button>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="text-xs font-medium text-slate-600">Price (CAD):</label>
+                  <input id="listingPrice" type="text" readonly class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono font-bold text-green-700">
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-slate-600">Bedrooms:</label>
+                  <input id="listingBeds" type="text" readonly class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono">
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-medium text-slate-600">Video Walkthrough URL:</label>
+                <div class="flex items-center gap-2 mt-1">
+                  <input id="listingVideo" type="text" readonly class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono text-blue-600 truncate">
+                  <button onclick="copyInput('listingVideo')" class="p-1.5 text-slate-500 hover:text-blue-600"><i class="fa-solid fa-copy"></i></button>
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-medium text-slate-600">Photos Directory:</label>
+                <p id="listingPhotosPath" class="text-xs font-mono bg-white p-2 border border-slate-300 rounded text-slate-600 break-all"></p>
+              </div>
+            </div>
+
+            <!-- Platform Specific Rules Box -->
+            <div id="platformRulesBox" class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-xs text-amber-900 space-y-1.5">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Description Box -->
+          <div class="lg:col-span-2">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-bold text-slate-800">Complete Formatted Listing Body</label>
+              <span id="charCount" class="text-xs text-slate-500 font-mono">0 characters</span>
+            </div>
+            <textarea id="listingDescription" rows="18" class="w-full p-4 font-mono text-xs bg-slate-900 text-slate-100 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: DURHAM FREE PLATFORMS GUIDE -->
+    <section id="tab-platforms" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 mb-1">Durham Region Free Rental Platforms Directory</h2>
+        <p class="text-sm text-slate-500 mb-6">Reach the largest pool of qualified renters in Oshawa, Whitby, Ajax, Pickering, and Clarington without paywalls.</p>
+        <div id="platformsDirectoryGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: GITHUB ACTIONS & AUTOMATION -->
+    <section id="tab-github" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-xl">
+            <i class="fa-brands fa-github"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">Running Your Agent on GitHub</h2>
+            <p class="text-sm text-slate-500">Automate market comps checks, listing generation, and host this dashboard 100% free with GitHub Actions & Pages.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+            <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mb-3">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">1. Free Web Dashboard</h3>
+            <p class="text-xs text-slate-600 mt-1">Hosted via <strong>GitHub Pages</strong> with zero servers, zero cost, and 24/7 availability on your custom GitHub domain.</p>
+          </div>
+          <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+            <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mb-3">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">2. Scheduled Comps Agent</h3>
+            <p class="text-xs text-slate-600 mt-1">GitHub Action runs weekly on schedule to check Oshawa/Whitby/Ajax rent trends and alert you on market shifts.</p>
+          </div>
+          <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3">
+              <i class="fa-solid fa-terminal"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">3. GitHub Codespaces Ready</h3>
+            <p class="text-xs text-slate-600 mt-1">Open the repository in any browser via Codespaces to launch the browser bot or edit your units with 1 click.</p>
+          </div>
+        </div>
+
+        <h3 class="font-bold text-slate-900 mb-3 text-base">Configured GitHub Workflows</h3>
+        <div class="space-y-3 font-mono text-xs">
+          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
+            <span class="flex items-center gap-2 text-slate-800">
+              <i class="fa-regular fa-file-code text-blue-600"></i>
+              .github/workflows/deploy_pages.yml
+            </span>
+            <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded text-[10px] font-semibold">Automatic on Push</span>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
+            <span class="flex items-center gap-2 text-slate-800">
+              <i class="fa-regular fa-file-code text-indigo-600"></i>
+              .github/workflows/weekly_market_comps.yml
+            </span>
+            <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-semibold">Weekly Schedule & Manual Trigger</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Video Walkthrough Modal -->
+  <div id="videoModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl">
+      <div class="flex items-center justify-between p-4 border-b border-slate-200">
+        <h3 id="videoModalTitle" class="font-bold text-slate-900">Walkthrough Tour</h3>
+        <button onclick="closeVideoModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="p-6 text-center space-y-4">
+        <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto text-2xl">
+          <i class="fa-brands fa-youtube"></i>
+        </div>
+        <h4 id="videoUnitHeader" class="text-lg font-bold text-slate-900"></h4>
+        <p class="text-sm text-slate-500 max-w-md mx-auto">This walkthrough tour video is ready to embed into Kijiji and share on Facebook Marketplace.</p>
+        <div class="p-3 bg-slate-100 rounded-lg border border-slate-200 font-mono text-xs text-blue-600 break-all" id="videoModalUrl"></div>
+        <div class="flex justify-center gap-3 pt-2">
+          <a id="videoModalOpenLink" href="#" target="_blank" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition">
+            <i class="fa-solid fa-play mr-1"></i> Open Video
+          </a>
+          <button onclick="copyModalVideoLink()" class="px-4 py-2 bg-slate-200 text-slate-800 rounded-lg text-sm font-semibold hover:bg-slate-300 transition">
+            <i class="fa-solid fa-copy mr-1"></i> Copy Video Link
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="hidden fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 transition-all duration-300">
+    <i class="fa-solid fa-check text-emerald-400"></i>
+    <span id="toastMsg">Copied to clipboard!</span>
+  </div>
+
+  <!-- App Data & Logic -->
+  <script>
+    // Embedded initial data for all 6 units
+    let portfolioData = [
+      {
+        id: "unit_1",
+        name: "Unit 1 - 2 Bed Lower Suite",
+        address: { street: "123 Simcoe St N", city: "Oshawa", region: "Durham Region", postal_code: "L1G 4S6" },
+        type: "Basement Apartment",
+        specs: { bedrooms: 2, bathrooms: 1, sqft: 850, parking_spots: 1 },
+        financials: { target_rent: 2100, utilities_included: ["Water"], utilities_extra: ["Heat", "Hydro (40% split)"], lease_term_months: 12, available_date: "2026-12-01" },
+        amenities: ["In-suite laundry", "Private side entrance", "Stainless steel appliances", "Quartz countertops", "Large egress windows", "Ductless A/C & heat pump", "Near Ontario Tech & 401"],
+        media: {
+          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_1",
+          photos_dir: "media/unit_1/photos"
+        },
+        image_preview: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&auto=format&fit=crop&q=80",
+        notes: "Ideal for young working professionals or students. 5 min to Oshawa GO."
+      },
+      {
+        id: "unit_2",
+        name: "Unit 2 - 3 Bed Main Floor",
+        address: { street: "123 Simcoe St N", city: "Oshawa", region: "Durham Region", postal_code: "L1G 4S6" },
+        type: "Main Floor House",
+        specs: { bedrooms: 3, bathrooms: 1.5, sqft: 1250, parking_spots: 2 },
+        financials: { target_rent: 2750, utilities_included: ["Water"], utilities_extra: ["Heat (60% split)", "Hydro (60% split)"], lease_term_months: 12, available_date: "2026-12-01" },
+        amenities: ["Dedicated garage & driveway", "Spacious private deck", "Ensuite laundry", "Hardwood flooring", "Open-concept living/dining", "Dishwasher included"],
+        media: {
+          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2",
+          photos_dir: "media/unit_2/photos"
+        },
+        image_preview: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&auto=format&fit=crop&q=80",
+        notes: "Main level unit with exclusive backyard deck access."
+      },
+      {
+        id: "unit_3",
+        name: "Unit 3 - 1 Bed Executive Suite",
+        address: { street: "45 Brock St E", city: "Whitby", region: "Durham Region", postal_code: "L1N 2H8" },
+        type: "Apartment Suite",
+        specs: { bedrooms: 1, bathrooms: 1, sqft: 650, parking_spots: 1 },
+        financials: { target_rent: 1850, utilities_included: ["Water", "Heat"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "2026-12-15" },
+        amenities: ["Walk to Downtown Whitby restaurants", "5 min to Whitby GO", "Modern laminate floors", "Secure keyless entry", "On-site card laundry"],
+        media: {
+          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3",
+          photos_dir: "media/unit_3/photos"
+        },
+        image_preview: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&auto=format&fit=crop&q=80",
+        notes: "Close to 401 & Whitby entertainment district."
+      },
+      {
+        id: "unit_4",
+        name: "Unit 4 - 2 Bed Townhouse Unit",
+        address: { street: "78 Kingston Rd W", city: "Ajax", region: "Durham Region", postal_code: "L1S 7J4" },
+        type: "Townhouse",
+        specs: { bedrooms: 2, bathrooms: 2, sqft: 1050, parking_spots: 1 },
+        financials: { target_rent: 2400, utilities_included: [], utilities_extra: ["All utilities paid by tenant"], lease_term_months: 12, available_date: "2027-01-01" },
+        amenities: ["Attached garage with interior access", "Private balcony", "Primary bedroom with ensuite & walk-in", "Central A/C", "Steps to Ajax GO"],
+        media: {
+          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4",
+          photos_dir: "media/unit_4/photos"
+        },
+        image_preview: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&auto=format&fit=crop&q=80",
+        notes: "Ideal commuter location with direct Durham transit & GO access."
+      },
+      {
+        id: "unit_5",
+        name: "Unit 5 - 1 Bed + Den Condo Style",
+        address: { street: "1400 Bayly St", city: "Pickering", region: "Durham Region", postal_code: "L1W 3R2" },
+        type: "Condo / Suite",
+        specs: { bedrooms: 1.5, bathrooms: 1, sqft: 700, parking_spots: 1 },
+        financials: { target_rent: 2200, utilities_included: ["Water", "Heat"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "2026-12-01" },
+        amenities: ["Separate enclosed den (home office)", "Direct pedestrian bridge to Pickering GO", "Floor-to-ceiling windows", "Gym & rooftop patio", "Underground parking & locker"],
+        media: {
+          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5",
+          photos_dir: "media/unit_5/photos"
+        },
+        image_preview: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&auto=format&fit=crop&q=80",
+        notes: "Direct pedestrian bridge connection to Pickering GO Station (28 mins to Union)."
+      },
+      {
+        id: "unit_6",
+        name: "Unit 6 - 3 Bed Detached Upper Unit",
+        address: { street: "210 King St E", city: "Bowmanville", region: "Durham Region", postal_code: "L1C 1P2" },
+        type: "Upper Level House",
+        specs: { bedrooms: 3, bathrooms: 1, sqft: 1100, parking_spots: 2 },
+        financials: { target_rent: 2500, utilities_included: ["Water"], utilities_extra: ["Heat & Hydro (70% split)"], lease_term_months: 12, available_date: "2027-01-15" },
+        amenities: ["Large private fenced backyard", "Spacious front porch", "In-suite laundry", "Close to schools & parks", "Minutes to 401 & future Bowmanville GO"],
+        media: {
+          video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6",
+          photos_dir: "media/unit_6/photos"
+        },
+        image_preview: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&auto=format&fit=crop&q=80",
+        notes: "Quiet residential street in historic Bowmanville."
+      }
+    ];
+
+    // Durham Comps Database
+    const compsDatabase = [
+      { id: "comp_osh_01", city: "Oshawa", neighbourhood: "Central Oshawa", type: "Basement Apartment", bedrooms: 2, bathrooms: 1, sqft: 800, rent: 2050, utilities: "Water", source: "Rentals.ca" },
+      { id: "comp_osh_02", city: "Oshawa", neighbourhood: "North Oshawa (near Ontario Tech)", type: "Basement Apartment", bedrooms: 2, bathrooms: 1, sqft: 900, rent: 2150, utilities: "All Inclusive", source: "Kijiji" },
+      { id: "comp_osh_03", city: "Oshawa", neighbourhood: "Oshawa South", type: "Basement Apartment", bedrooms: 2, bathrooms: 1, sqft: 850, rent: 1975, utilities: "Water", source: "Facebook Marketplace" },
+      { id: "comp_osh_04", city: "Oshawa", neighbourhood: "Central Oshawa", type: "Main Floor House", bedrooms: 3, bathrooms: 1.5, sqft: 1300, rent: 2800, utilities: "Water", source: "Zumper" },
+      { id: "comp_osh_05", city: "Oshawa", neighbourhood: "East Oshawa", type: "Main Floor House", bedrooms: 3, bathrooms: 1, sqft: 1200, rent: 2650, utilities: "None", source: "Kijiji" },
+      { id: "comp_whi_01", city: "Whitby", neighbourhood: "Downtown Whitby", type: "Apartment Suite", bedrooms: 1, bathrooms: 1, sqft: 620, rent: 1825, utilities: "Water, Heat", source: "Rentals.ca" },
+      { id: "comp_whi_02", city: "Whitby", neighbourhood: "Port Whitby", type: "Condo Suite", bedrooms: 1, bathrooms: 1, sqft: 680, rent: 1950, utilities: "Water", source: "Zumper" },
+      { id: "comp_ajx_01", city: "Ajax", neighbourhood: "Central Ajax", type: "Townhouse", bedrooms: 2, bathrooms: 2, sqft: 1100, rent: 2450, utilities: "None", source: "Rentals.ca" },
+      { id: "comp_ajx_02", city: "Ajax", neighbourhood: "South Ajax", type: "Townhouse", bedrooms: 2, bathrooms: 1.5, sqft: 1000, rent: 2350, utilities: "Water", source: "Zumper" },
+      { id: "comp_pck_01", city: "Pickering", neighbourhood: "Town Centre / Bayly St", type: "Condo / Suite", bedrooms: 1.5, bathrooms: 1, sqft: 680, rent: 2250, utilities: "Water, Heat", source: "Zumper" },
+      { id: "comp_bwm_01", city: "Bowmanville", neighbourhood: "Downtown Bowmanville", type: "Upper Level House", bedrooms: 3, bathrooms: 1, sqft: 1150, rent: 2475, utilities: "Water", source: "Kijiji" },
+      { id: "comp_bwm_02", city: "Bowmanville", neighbourhood: "North Bowmanville", type: "Townhouse", bedrooms: 3, bathrooms: 2.5, sqft: 1400, rent: 2650, utilities: "None", source: "Rentals.ca" }
+    ];
+
+    // Durham Free Platforms
+    const platformsDirectory = [
+      {
+        name: "Facebook Marketplace & Durham Groups",
+        cost: "100% Free",
+        badge: "Top Durham Traffic",
+        desc: "Highest inquiry rate across Oshawa, Whitby, and Ajax. Cross-post to groups like 'Durham Region Rentals' and 'Oshawa Apartments & Houses for Rent'.",
+        videoTip: "Paste video walkthrough link in the top 3 lines of your description.",
+        url: "https://www.facebook.com/marketplace/create/rental"
+      },
+      {
+        name: "Kijiji Ontario (Durham Region)",
+        cost: "Free (1-2 active ads per account)",
+        badge: "Essential for Suburban Ontario",
+        desc: "The traditional go-to for basement apartments, townhomes, and detached duplexes across the GTA east.",
+        videoTip: "Has a dedicated YouTube URL field that gives your ad a clickable 'Video' search badge.",
+        url: "https://www.kijiji.ca/p-post-ad.html?categoryId=37"
+      },
+      {
+        name: "Zumper & PadMapper",
+        cost: "Free Landlord Portal",
+        badge: "Young Professionals & Commuters",
+        desc: "Post once on Zumper and it automatically syndicates to PadMapper and Walk Score. Preferred by GTA commuters.",
+        videoTip: "Supports direct virtual tour / YouTube link embedding.",
+        url: "https://www.zumper.com/manage"
+      },
+      {
+        name: "Rentals.ca",
+        cost: "Free for first 3 properties",
+        badge: "Top Google Ranking",
+        desc: "Ranks #1 organically on Google in Canada for rental queries in Oshawa, Ajax, and Pickering.",
+        videoTip: "Supports virtual tour and video walkthrough links in listing highlights.",
+        url: "https://rentals.ca/landlord"
+      },
+      {
+        name: "Liv.rent",
+        cost: "Free (up to 2 active listings)",
+        badge: "Built-in Tenant Screening",
+        desc: "Canadian rental platform offering verified tenant profiles and built-in credit check capabilities.",
+        videoTip: "Embed video walkthrough links in listing features.",
+        url: "https://liv.rent/landlord"
+      },
+      {
+        name: "Places4Students (Oshawa)",
+        cost: "Free / Campus Season Partner",
+        badge: "Oshawa Student Housing",
+        desc: "Official off-campus partner for Ontario Tech University and Durham College students & faculty.",
+        videoTip: "Include video link for students relocating from out of town.",
+        url: "https://www.places4students.com/"
+      }
+    ];
+
+    let compsChartInstance = null;
+
+    // Initialize application
+    function initApp() {
+      renderUnitsGrid();
+      populateSelects();
+      renderCompsAnalysis();
+      renderPlatformListing();
+      renderPlatformsDirectory();
+      calculateTotalRevenue();
+    }
+
+    function calculateTotalRevenue() {
+      const total = portfolioData.reduce((acc, u) => acc + u.financials.target_rent, 0);
+      document.getElementById('totalMonthlyRent').innerText = `$${total.toLocaleString()} CAD/mo`;
+    }
+
+    function populateSelects() {
+      const compsSelect = document.getElementById('compsUnitSelect');
+      const postingSelect = document.getElementById('postingUnitSelect');
+      compsSelect.innerHTML = '';
+      postingSelect.innerHTML = '';
+
+      portfolioData.forEach(u => {
+        const opt1 = document.createElement('option');
+        opt1.value = u.id;
+        opt1.innerText = `${u.name} (${u.address.city} - $${u.financials.target_rent}/mo)`;
+        compsSelect.appendChild(opt1);
+
+        const opt2 = document.createElement('option');
+        opt2.value = u.id;
+        opt2.innerText = `${u.name} (${u.address.city})`;
+        postingSelect.appendChild(opt2);
+      });
+    }
+
+    function renderUnitsGrid() {
+      const grid = document.getElementById('unitsGrid');
+      grid.innerHTML = '';
+
+      portfolioData.forEach(u => {
+        const psqft = (u.financials.target_rent / u.specs.sqft).toFixed(2);
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="relative h-48 bg-slate-100 overflow-hidden">
+              <img src="${u.image_preview}" alt="${u.name}" class="w-full h-full object-cover">
+              <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
+                <i class="fa-solid fa-location-dot text-red-400 mr-1"></i>${u.address.city}
+              </div>
+              <div class="absolute top-3 right-3 bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full shadow">
+                $${u.financials.target_rent.toLocaleString()}/mo
+              </div>
+            </div>
+            <div class="p-5 space-y-3">
+              <h3 class="font-bold text-slate-900 text-base">${u.name}</h3>
+              <p class="text-xs text-slate-500">${u.address.street}, ${u.address.city}, ${u.address.region}</p>
+              
+              <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 text-center text-xs">
+                <div>
+                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Beds/Baths</span>
+                  <span class="font-bold text-slate-800">${u.specs.bedrooms}b / ${u.specs.bathrooms}ba</span>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Area</span>
+                  <span class="font-bold text-slate-800">${u.specs.sqft} sqft</span>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Rate</span>
+                  <span class="font-bold text-blue-600">$${psqft}/sf</span>
+                </div>
+              </div>
+
+              <div class="space-y-1">
+                <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400">Amenities:</span>
+                <div class="flex flex-wrap gap-1">
+                  ${u.amenities.slice(0, 3).map(a => `<span class="bg-slate-100 text-slate-700 text-[10px] px-2 py-0.5 rounded font-medium">${a}</span>`).join('')}
+                  ${u.amenities.length > 3 ? `<span class="bg-slate-100 text-slate-500 text-[10px] px-1.5 py-0.5 rounded font-medium">+${u.amenities.length - 3}</span>` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
+            <button onclick="openVideoModal('${u.id}')" class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition">
+              <i class="fa-solid fa-play"></i> Watch Tour
+            </button>
+            <button onclick="goToPosting('${u.id}')" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition">
+              Post Listing <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderCompsAnalysis() {
+      const unitId = document.getElementById('compsUnitSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId) || portfolioData[0];
+      const targetRent = unit.financials.target_rent;
+      const psqft = (targetRent / unit.specs.sqft).toFixed(2);
+
+      // Filter comps by bedroom proximity
+      const matchingComps = compsDatabase.filter(c => Math.abs(c.bedrooms - unit.specs.bedrooms) <= 0.5);
+      const rents = matchingComps.map(c => c.rent);
+      const avgRent = Math.round(rents.reduce((a, b) => a + b, 0) / rents.length);
+      const minRent = Math.min(...rents);
+      const maxRent = Math.max(...rents);
+      const diff = targetRent - avgRent;
+
+      document.getElementById('compTargetRent').innerText = `$${targetRent.toLocaleString()}`;
+      document.getElementById('compTargetPsqft').innerText = `$${psqft} / sqft`;
+      document.getElementById('compAvgRent').innerText = `$${avgRent.toLocaleString()}`;
+      document.getElementById('compAvgPsqft').innerText = `benchmark for ${unit.specs.bedrooms}-bed`;
+      document.getElementById('compRentRange').innerText = `$${minRent.toLocaleString()} - $${maxRent.toLocaleString()}`;
+
+      const deltaElem = document.getElementById('compDelta');
+      if (diff >= 0) {
+        deltaElem.innerText = `+$${diff}/mo`;
+        deltaElem.className = "text-2xl font-black text-blue-600 mt-1";
+      } else {
+        deltaElem.innerText = `-$${Math.abs(diff)}/mo`;
+        deltaElem.className = "text-2xl font-black text-emerald-600 mt-1";
+      }
+
+      // Verdict
+      const verdictBox = document.getElementById('compVerdictBox');
+      const verdictText = document.getElementById('compVerdictText');
+      if (Math.abs(diff) <= 75) {
+        verdictBox.className = "p-4 rounded-xl mb-6 bg-emerald-50 border border-emerald-200 flex items-start gap-3";
+        verdictText.innerText = `Optimal Market Alignment! Your target of $${targetRent.toLocaleString()}/mo is right on the Durham average ($${avgRent.toLocaleString()}). Expect qualified tenant applications quickly.`;
+      } else if (diff > 75) {
+        verdictBox.className = "p-4 rounded-xl mb-6 bg-amber-50 border border-amber-200 flex items-start gap-3";
+        verdictText.innerText = `Premium Pricing (+$${diff}/mo above average). Ensure your video tour highlights private laundry, high-end kitchen finishes, and parking to justify premium positioning.`;
+      } else {
+        verdictBox.className = "p-4 rounded-xl mb-6 bg-blue-50 border border-blue-200 flex items-start gap-3";
+        verdictText.innerText = `High-Demand / Value Pricing (-$${Math.abs(diff)}/mo below average). Strong tenant demand expected. Use strict tenant screening (credit report + paystubs).`;
+      }
+
+      // Chart rendering
+      const chartLabels = ['Your Target', ...matchingComps.map(c => `${c.neighbourhood} (${c.bedrooms}b)`)];
+      const chartData = [targetRent, ...matchingComps.map(c => c.rent)];
+      const chartColors = ['#2563eb', ...matchingComps.map(() => '#cbd5e1')];
+
+      if (compsChartInstance) {
+        compsChartInstance.destroy();
+      }
+
+      const ctx = document.getElementById('compsChart').getContext('2d');
+      compsChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: chartLabels,
+          datasets: [{
+            label: 'Monthly Rent (CAD)',
+            data: chartData,
+            backgroundColor: chartColors,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              min: Math.floor(minRent * 0.85)
+            }
+          }
+        }
+      });
+
+      // Render Comps Table
+      const tbody = document.getElementById('compsTableBody');
+      tbody.innerHTML = '';
+      matchingComps.forEach(c => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="px-4 py-3 font-medium text-slate-800">${c.neighbourhood}, ${c.city}</td>
+          <td class="px-4 py-3 text-slate-600">${c.type}</td>
+          <td class="px-4 py-3 text-center text-slate-700">${c.bedrooms}b / ${c.bathrooms}ba</td>
+          <td class="px-4 py-3 text-right font-mono text-slate-700">${c.sqft}</td>
+          <td class="px-4 py-3 text-right font-bold text-slate-900">$${c.rent.toLocaleString()}</td>
+          <td class="px-4 py-3 text-slate-600 text-xs">${c.utilities}</td>
+          <td class="px-4 py-3 text-slate-400 text-xs">${c.source}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Live links
+      const liveBox = document.getElementById('liveLinksContainer');
+      const citySlug = unit.address.city.toLowerCase().replace(' ', '-');
+      liveBox.innerHTML = `
+        <a href="https://rentals.ca/${citySlug}/${unit.specs.bedrooms}-bedrooms" target="_blank" class="block p-2 bg-white rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition text-xs font-semibold">
+          <i class="fa-solid fa-magnifying-glass mr-1.5 text-blue-500"></i> Rentals.ca ${unit.address.city} ${unit.specs.bedrooms}-Bed Comps
+        </a>
+        <a href="https://www.zumper.com/apartments-for-rent/${citySlug}-on/${unit.specs.bedrooms}-beds" target="_blank" class="block p-2 bg-white rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition text-xs font-semibold">
+          <i class="fa-solid fa-magnifying-glass mr-1.5 text-indigo-500"></i> Zumper ${unit.address.city} ${unit.specs.bedrooms}-Bed Comps
+        </a>
+        <a href="https://www.kijiji.ca/b-apartments-condos/${citySlug}/c37l1700140" target="_blank" class="block p-2 bg-white rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition text-xs font-semibold">
+          <i class="fa-solid fa-magnifying-glass mr-1.5 text-amber-500"></i> Kijiji ${unit.address.city} Rentals Feed
+        </a>
+      `;
+    }
+
+    function renderPlatformListing() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const platform = document.getElementById('postingPlatformSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId) || portfolioData[0];
+
+      const utilInc = unit.financials.utilities_included.length ? unit.financials.utilities_included.join(', ') : 'None';
+      const utilExt = unit.financials.utilities_extra.length ? unit.financials.utilities_extra.join(', ') : 'Included in rent';
+
+      let title = "";
+      let description = "";
+      let postUrl = "";
+      let platformName = "";
+      let rulesHtml = "";
+
+      if (platform === "facebook") {
+        platformName = "Facebook Marketplace";
+        title = `${unit.specs.bedrooms} Bed ${unit.specs.bathrooms} Bath - ${unit.type} in ${unit.address.city}`;
+        postUrl = "https://www.facebook.com/marketplace/create/rental";
+        rulesHtml = `
+          <strong>Facebook Tips:</strong>
+          <ul class="list-disc ml-4 mt-1 space-y-1">
+            <li>Link video walkthrough in the first 3 lines of copy.</li>
+            <li>Post to local Durham groups after publishing.</li>
+            <li>Use the web clipboard to paste descriptions directly.</li>
+          </ul>
+        `;
+        description = `✨ BEAUTIFULLY MAINTAINED ${unit.specs.bedrooms} BEDROOM RENTAL IN ${unit.address.city.toUpperCase()}, ON ✨\n\n` +
+          `📍 LOCATION: ${unit.address.street}, ${unit.address.city} (${unit.address.region})\n` +
+          `💰 RENT: $${unit.financials.target_rent.toLocaleString()}/month\n` +
+          `📅 MOVE-IN DATE: ${unit.financials.available_date}\n\n` +
+          `🎥 FULL VIDEO WALKTHROUGH TOUR:\n${unit.media.video_walkthrough_url}\n\n` +
+          `🏢 UNIT SPECS:\n` +
+          `• Bedrooms: ${unit.specs.bedrooms}\n` +
+          `• Bathrooms: ${unit.specs.bathrooms}\n` +
+          `• Size: ~${unit.specs.sqft} sq. ft.\n` +
+          `• Parking: ${unit.specs.parking_spots} dedicated parking spot(s)\n` +
+          `• Type: ${unit.type}\n\n` +
+          `🌟 FEATURES & AMENITIES:\n` +
+          unit.amenities.map(a => `• ${a}`).join('\n') + `\n\n` +
+          `💡 UTILITIES & LEASE:\n` +
+          `• Utilities Included: ${utilInc}\n` +
+          `• Utilities Extra: ${utilExt}\n` +
+          `• Lease: 1-Year Ontario Standard Tenancy Agreement\n\n` +
+          `🚇 COMMUTE & TRANSIT:\n${unit.notes}\n\n` +
+          `📋 REQUIREMENTS: Proof of income (paystubs), Equifax credit report, and references.\n` +
+          `📩 Message to book a private showing.`;
+      } else if (platform === "kijiji") {
+        platformName = "Kijiji Ontario";
+        title = `${unit.specs.bedrooms} Bed ${unit.type} for Rent in ${unit.address.city} - Video Tour`;
+        postUrl = "https://www.kijiji.ca/p-post-ad.html?categoryId=37";
+        rulesHtml = `
+          <strong>Kijiji Tips:</strong>
+          <ul class="list-disc ml-4 mt-1 space-y-1">
+            <li>Paste your YouTube walkthrough URL in Kijiji's <em>'YouTube Video'</em> field.</li>
+            <li>Free ad allowance: 1-2 active ads per account in Long-Term Rentals.</li>
+          </ul>
+        `;
+        description = `FOR RENT: Spacious & Clean ${unit.specs.bedrooms} Bed / ${unit.specs.bathrooms} Bath in ${unit.address.city}\n\n` +
+          `Watch the walkthrough video tour:\n${unit.media.video_walkthrough_url}\n\n` +
+          `PROPERTY DETAILS:\n` +
+          `- Address: ${unit.address.street}, ${unit.address.city}, ON\n` +
+          `- Rent: $${unit.financials.target_rent.toLocaleString()}/month\n` +
+          `- Bedrooms: ${unit.specs.bedrooms} | Bathrooms: ${unit.specs.bathrooms}\n` +
+          `- Approximate Size: ${unit.specs.sqft} sqft\n` +
+          `- Move-In Date: ${unit.financials.available_date}\n\n` +
+          `HIGHLIGHTS:\n` +
+          unit.amenities.map(a => `- ${a}`).join('\n') + `\n\n` +
+          `UTILITY BREAKDOWN:\n` +
+          `- Utilities Included: ${utilInc}\n` +
+          `- Utilities Extra: ${utilExt}\n\n` +
+          `Ontario Standard Lease. Reply with your intended move-in date and a short introduction.`;
+      } else if (platform === "zumper") {
+        platformName = "Zumper / PadMapper";
+        title = `${unit.address.street} - ${unit.specs.bedrooms} Bed / ${unit.specs.bathrooms} Bath`;
+        postUrl = "https://www.zumper.com/manage";
+        rulesHtml = `
+          <strong>Zumper Tips:</strong>
+          <ul class="list-disc ml-4 mt-1 space-y-1">
+            <li>Syndicates to PadMapper & Walk Score automatically.</li>
+            <li>Insert YouTube video link in the 'Virtual Tour URL' field.</li>
+          </ul>
+        `;
+        description = `Welcome to this renovated ${unit.specs.bedrooms}-bedroom, ${unit.specs.bathrooms}-bathroom rental in ${unit.address.city}, Durham Region.\n\n` +
+          `Unit Features:\n` +
+          `- Living Area: ~${unit.specs.sqft} sq ft\n` +
+          `- Parking: ${unit.specs.parking_spots} spot(s)\n` +
+          `- Available Date: ${unit.financials.available_date}\n\n` +
+          `Amenities:\n` +
+          unit.amenities.map(a => `• ${a}`).join('\n') + `\n\n` +
+          `Virtual Tour Link:\n${unit.media.video_walkthrough_url}\n\n` +
+          `Ontario Standard Tenancy Agreement. Full application, credit check, and proof of income required.`;
+      } else {
+        platformName = "Rentals.ca";
+        title = `${unit.specs.bedrooms} Bedroom Rental at ${unit.address.street}, ${unit.address.city}`;
+        postUrl = "https://rentals.ca/landlord";
+        rulesHtml = `
+          <strong>Rentals.ca Tips:</strong>
+          <ul class="list-disc ml-4 mt-1 space-y-1">
+            <li>Free for up to 3 individual property listings.</li>
+            <li>High visibility on Google organic searches in Durham.</li>
+          </ul>
+        `;
+        description = `Spacious ${unit.specs.bedrooms}-bedroom rental in ${unit.address.city}.\n\n` +
+          `Monthly Rent: $${unit.financials.target_rent.toLocaleString()}\n` +
+          `Available: ${unit.financials.available_date}\n` +
+          `Video Tour: ${unit.media.video_walkthrough_url}\n\n` +
+          unit.amenities.map(a => `- ${a}`).join('\n');
+      }
+
+      document.getElementById('platformBadge').innerText = platformName;
+      document.getElementById('platformDirectPostBtn').href = postUrl;
+      document.getElementById('listingTitle').value = title;
+      document.getElementById('listingPrice').value = `$${unit.financials.target_rent}`;
+      document.getElementById('listingBeds').value = `${unit.specs.bedrooms} Bed`;
+      document.getElementById('listingVideo').value = unit.media.video_walkthrough_url;
+      document.getElementById('listingPhotosPath').innerText = unit.media.photos_dir;
+      document.getElementById('listingDescription').value = description;
+      document.getElementById('charCount').innerText = `${description.length} characters`;
+      document.getElementById('platformRulesBox').innerHTML = rulesHtml;
+    }
+
+    function renderPlatformsDirectory() {
+      const container = document.getElementById('platformsDirectoryGrid');
+      container.innerHTML = '';
+      platformsDirectory.forEach(p => {
+        const card = document.createElement('div');
+        card.className = "p-5 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <h3 class="font-bold text-slate-900 text-sm">${p.name}</h3>
+              <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">${p.cost}</span>
+            </div>
+            <span class="inline-block text-[10px] bg-blue-100 text-blue-800 font-semibold px-2 py-0.5 rounded mb-3">${p.badge}</span>
+            <p class="text-xs text-slate-600 mb-3">${p.desc}</p>
+            <div class="p-2.5 bg-white rounded-lg border border-slate-200 text-[11px] text-slate-700 flex items-start gap-2 mb-4">
+              <i class="fa-solid fa-video text-red-500 mt-0.5"></i>
+              <span>${p.videoTip}</span>
+            </div>
+          </div>
+          <a href="${p.url}" target="_blank" class="w-full text-center px-3 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 text-xs font-semibold rounded-lg transition">
+            Open Platform <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+          </a>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Tab switching
+    function switchTab(tabId) {
+      ['units', 'comps', 'posting', 'platforms', 'github'].forEach(id => {
+        document.getElementById(`tab-${id}`).classList.add('hidden');
+        document.getElementById(`tabBtn-${id}`).classList.remove('tab-active');
+        document.getElementById(`tabBtn-${id}`).classList.add('border-transparent', 'text-slate-500');
+      });
+
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tabBtn-${tabId}`);
+      activeBtn.classList.add('tab-active');
+      activeBtn.classList.remove('border-transparent', 'text-slate-500');
+
+      if (tabId === 'comps') {
+        setTimeout(renderCompsAnalysis, 50);
+      }
+    }
+
+    function goToPosting(unitId) {
+      document.getElementById('postingUnitSelect').value = unitId;
+      switchTab('posting');
+      renderPlatformListing();
+    }
+
+    // Video modal handlers
+    function openVideoModal(unitId) {
+      const unit = portfolioData.find(u => u.id === unitId);
+      if (!unit) return;
+      document.getElementById('videoUnitHeader').innerText = unit.name;
+      document.getElementById('videoModalUrl').innerText = unit.media.video_walkthrough_url;
+      document.getElementById('videoModalOpenLink').href = unit.media.video_walkthrough_url;
+      document.getElementById('videoModal').classList.remove('hidden');
+    }
+
+    function closeVideoModal() {
+      document.getElementById('videoModal').classList.add('hidden');
+    }
+
+    function copyModalVideoLink() {
+      const url = document.getElementById('videoModalUrl').innerText;
+      navigator.clipboard.writeText(url);
+      showToast("Walkthrough video link copied!");
+    }
+
+    function copyListingText() {
+      const desc = document.getElementById('listingDescription').value;
+      navigator.clipboard.writeText(desc);
+      showToast("Full listing description copied to clipboard!");
+    }
+
+    function copyVideoUrl() {
+      const url = document.getElementById('listingVideo').value;
+      navigator.clipboard.writeText(url);
+      showToast("Walkthrough video URL copied!");
+    }
+
+    function copyInput(elemId) {
+      const val = document.getElementById(elemId).value;
+      navigator.clipboard.writeText(val);
+      showToast("Copied to clipboard!");
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2500);
+    }
+
+    function exportCurrentJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ properties: portfolioData }, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "durham_units_portfolio.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast("Exported portfolio JSON!");
+    }
+
+    window.onload = initApp;
+  </script>
+</body>
+</html>

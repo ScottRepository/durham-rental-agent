@@ -1,0 +1,52 @@
+name: Generate Rental Listing Dossiers
+
+on:
+  workflow_dispatch:
+    inputs:
+      unit_id:
+        description: 'Unit ID to package (leave blank for all 6 units)'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - unit_1
+          - unit_2
+          - unit_3
+          - unit_4
+          - unit_5
+          - unit_6
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 rich tabulate
+
+      - name: Generate Platform Postings
+        run: |
+          if [ "${{ github.event.inputs.unit_id }}" = "all" ]; then
+            python agent.py package
+          else
+            python agent.py package --unit ${{ github.event.inputs.unit_id }}
+          fi
+
+      - name: Upload Generated Dossiers
+        uses: actions/upload-artifact@v4
+        with:
+          name: rental-posting-dossiers
+          path: reports/dossiers/

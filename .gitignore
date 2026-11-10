@@ -1,0 +1,18 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Browser profile & personal cookies
+.browser_profile/
+.property_agent_browser_profile/
+
+# OS files
+.DS_Store
+Thumbs.db
