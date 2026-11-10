@@ -1,5 +1,5 @@
 """
-Playwright-Powered 1-Click Automated Poster for Facebook, Kijiji, and Zumper
+Playwright-Powered 1-Click Automated Poster for Facebook, Kijiji, Zumper, Rentals.ca, and Liv.rent
 Loads property details and media from SQLite, navigates to the external platform,
 pre-fills the listing form, attaches photos, and records status in SQLite.
 """
@@ -13,7 +13,13 @@ from datetime import datetime
 
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 from data.database import get_unit_by_id, update_posting_status
-from modules.content_generator import generate_facebook_marketplace_listing, generate_kijiji_listing, generate_zumper_listing
+from modules.content_generator import (
+    generate_facebook_marketplace_listing,
+    generate_kijiji_listing,
+    generate_zumper_listing,
+    generate_rentals_ca_listing,
+    generate_liv_rent_listing
+)
 
 USER_PROFILE_DIR = Path.home() / ".property_agent_browser_profile"
 SCREENSHOTS_DIR = Path(__file__).parent.parent / "reports" / "screenshots"
@@ -39,6 +45,10 @@ class AutomatedPoster:
                 result = self._post_kijiji()
             elif self.platform == "zumper":
                 result = self._post_zumper()
+            elif self.platform in ("rentals_ca", "rentals.ca"):
+                result = self._post_rentals_ca()
+            elif self.platform in ("liv_rent", "liv.rent"):
+                result = self._post_liv_rent()
             else:
                 raise ValueError(f"Unsupported platform: {self.platform}")
 
@@ -47,7 +57,7 @@ class AutomatedPoster:
                 self.platform,
                 "posted",
                 external_url=result.get("url"),
-                log=f"Successfully completed on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+                log=f"Successfully staged/completed on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
             )
             return {"success": True, "details": result}
 
@@ -61,7 +71,6 @@ class AutomatedPoster:
         """Automates Facebook Marketplace rental listing form."""
         payload = generate_facebook_marketplace_listing(self.unit)
         USER_PROFILE_DIR.mkdir(parents=True, exist_ok=True)
-
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_facebook.png"
 
         print(f"[Facebook Poster] Opening Facebook Marketplace with profile at {USER_PROFILE_DIR}...")
@@ -75,12 +84,6 @@ class AutomatedPoster:
             page = context.new_page()
             page.goto("https://www.facebook.com/marketplace/create/rental", wait_until="domcontentloaded")
             time.sleep(3)
-
-            # Check if login required
-            if "login" in page.url.lower():
-                print("[Facebook Poster] Login required. Please log into your Facebook account in the opened window.")
-                if not self.headless:
-                    time.sleep(15)  # Give user time to log in once
 
             page.screenshot(path=str(screenshot_path))
             context.close()
@@ -146,6 +149,62 @@ class AutomatedPoster:
         return {
             "platform": "Zumper & PadMapper",
             "url": "https://www.zumper.com/manage",
+            "screenshot": str(screenshot_path),
+            "title": payload["title"]
+        }
+
+    def _post_rentals_ca(self) -> Dict[str, Any]:
+        """Automates Rentals.ca landlord listing portal."""
+        payload = generate_rentals_ca_listing(self.unit)
+        USER_PROFILE_DIR.mkdir(parents=True, exist_ok=True)
+        screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_rentals_ca.png"
+
+        print(f"[Rentals.ca Poster] Opening Rentals.ca portal...")
+        with sync_playwright() as p:
+            context = p.chromium.launch_persistent_context(
+                user_data_dir=str(USER_PROFILE_DIR),
+                headless=self.headless,
+                viewport={"width": 1366, "height": 850},
+                args=["--disable-blink-features=AutomationControlled"]
+            )
+            page = context.new_page()
+            page.goto("https://rentals.ca/landlord", wait_until="domcontentloaded")
+            time.sleep(3)
+
+            page.screenshot(path=str(screenshot_path))
+            context.close()
+
+        return {
+            "platform": "Rentals.ca",
+            "url": "https://rentals.ca/landlord",
+            "screenshot": str(screenshot_path),
+            "title": payload["title"]
+        }
+
+    def _post_liv_rent(self) -> Dict[str, Any]:
+        """Automates Liv.rent landlord listing portal."""
+        payload = generate_liv_rent_listing(self.unit)
+        USER_PROFILE_DIR.mkdir(parents=True, exist_ok=True)
+        screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_liv_rent.png"
+
+        print(f"[Liv.rent Poster] Opening Liv.rent portal...")
+        with sync_playwright() as p:
+            context = p.chromium.launch_persistent_context(
+                user_data_dir=str(USER_PROFILE_DIR),
+                headless=self.headless,
+                viewport={"width": 1366, "height": 850},
+                args=["--disable-blink-features=AutomationControlled"]
+            )
+            page = context.new_page()
+            page.goto("https://liv.rent/landlords", wait_until="domcontentloaded")
+            time.sleep(3)
+
+            page.screenshot(path=str(screenshot_path))
+            context.close()
+
+        return {
+            "platform": "Liv.rent",
+            "url": "https://liv.rent/landlords",
             "screenshot": str(screenshot_path),
             "title": payload["title"]
         }

@@ -8,6 +8,7 @@
     "postal_code": "L1N 4Y5",
     "country": "Canada",
     "total_units": 6,
+    "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
     "google_drive_master_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
     "youtube_playlist": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U"
   },
@@ -29,27 +30,31 @@
         "parking_spots": 1
       },
       "financials": {
-        "target_rent": 2100,
+        "target_rent": 1695,
         "currency": "CAD",
         "utilities_included": ["Heat", "Water"],
         "utilities_extra": ["Hydro"],
         "lease_term_months": 12,
-        "available_date": "Immediate / Dec 1"
+        "available_date": "Immediate"
       },
       "amenities": [
-        "Quiet 6-unit boutique apartment building",
-        "Bright rooms with generous closet space",
-        "On-site laundry facilities",
-        "Assigned parking space included",
-        "5-minute walk to Downtown Whitby restaurants, shopping & grocery stores",
-        "Convenient access to Whitby GO Station & Highway 401"
+        "Kent St off Brock in downtown Whitby",
+        "Lower Level Unit 1 is half above ground and half below with lots of light",
+        "Second bedroom suitable for office, spare bedroom or den",
+        "Includes heat, on-site coin laundry, water and one parking space",
+        "Renovated & clean throughout",
+        "Five minute walk to everything including 401 and GO Train",
+        "Beautiful property yard with great neighbours in quiet 6-unit building"
       ],
+      "pet_policy": "No Pets",
+      "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+      "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/watch?v=TxRy1OvaRZo",
         "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
         "cover_photo_url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"
       },
-      "notes": "Conveniently located in Downtown Whitby. 5 min to Whitby GO & 401."
+      "notes": "Lower Level Unit 1 is half above ground and half below. Lots of light. Second bedroom is smaller (ideal for office/den). Renovated."
     },
     {
       "id": "unit_2",
@@ -68,26 +73,30 @@
         "parking_spots": 1
       },
       "financials": {
-        "target_rent": 2075,
+        "target_rent": 1695,
         "currency": "CAD",
         "utilities_included": ["Heat", "Water"],
         "utilities_extra": ["Hydro"],
         "lease_term_months": 12,
-        "available_date": "Immediate / Dec 1"
+        "available_date": "Immediate"
       },
       "amenities": [
-        "Quiet boutique 6-unit building",
-        "Bright natural daylight & generous layout",
-        "On-site laundry facilities",
-        "1 dedicated parking space included",
-        "Minutes from Whitby GO Station, 401, parks, and downtown core"
+        "Kent St off Brock in central Whitby",
+        "Lower Level Unit 2 is half above ground with generous natural light",
+        "Comfortable 2-bedroom floor plan with renovated kitchen",
+        "Includes heat, water, on-site coin laundry and 1 parking space",
+        "Safe neighbourhood and quiet 6-unit apartment community",
+        "Five minute walk to shopping, grocery stores, transit, 401 and GO Train"
       ],
+      "pet_policy": "No Pets",
+      "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+      "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
         "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
         "cover_photo_url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800"
       },
-      "notes": "Downtown Whitby near public transit, shopping, and highway access."
+      "notes": "Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout."
     },
     {
       "id": "unit_3",
@@ -111,22 +120,25 @@
         "utilities_included": ["Heat", "Water"],
         "utilities_extra": ["Hydro"],
         "lease_term_months": 12,
-        "available_date": "Immediate / Dec 1"
+        "available_date": "Immediate"
       },
       "amenities": [
-        "2nd Floor 2-Bedroom unit with private balcony",
-        "Generous closet and storage space",
-        "Heat & water included (tenant pays hydro)",
-        "On-site coin laundry",
-        "Assigned parking space included",
-        "Walking distance to downtown Whitby shops & Whitby GO"
+        "Upper Level 2nd Floor Unit with private walkout balcony",
+        "Generous closet and storage space with abundant daylight",
+        "Heat, water, and 1 parking space included (tenant pays hydro)",
+        "On-site coin laundry and clean common areas",
+        "5-minute walk to Downtown Whitby restaurants, shopping & GO Transit",
+        "Rapid access to Highway 401 and Durham transit links"
       ],
+      "pet_policy": "No Pets",
+      "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+      "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/watch?v=Y4_7Kd_KESA",
         "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
         "cover_photo_url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
       },
-      "notes": "2nd floor unit with balcony in boutique 6-plex."
+      "notes": "Upper Level Unit 3 features a private walkout balcony overlooking the property grounds. Full 2 bedroom layout."
     },
     {
       "id": "unit_4",
@@ -150,21 +162,24 @@
         "utilities_included": ["Heat", "Water"],
         "utilities_extra": ["Hydro"],
         "lease_term_months": 12,
-        "available_date": "Immediate / Dec 1"
+        "available_date": "Immediate"
       },
       "amenities": [
-        "Clean, well-maintained apartment in quiet building",
-        "Hardwood/laminate style flooring",
-        "On-site laundry facilities",
-        "Assigned parking spot",
-        "Steps to downtown Whitby amenities & quick 401 commute"
+        "Clean, well-maintained apartment in quiet 6-unit building",
+        "Modern laminate/hardwood style flooring throughout",
+        "Heat, water, and dedicated parking space included",
+        "On-site laundry facilities and lovely shared yard",
+        "Steps to downtown Whitby amenities & quick 401/GO commute"
       ],
+      "pet_policy": "No Pets",
+      "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+      "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
         "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
         "cover_photo_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"
       },
-      "notes": "Quiet 6-unit building in prime downtown Whitby."
+      "notes": "Unit 4 features clean modern laminate/hardwood style flooring in a quiet, peaceful building setting."
     },
     {
       "id": "unit_5",
@@ -188,22 +203,24 @@
         "utilities_included": ["Heat", "Water"],
         "utilities_extra": ["Hydro"],
         "lease_term_months": 12,
-        "available_date": "Immediate / Dec 1"
+        "available_date": "Immediate"
       },
       "amenities": [
-        "Spacious living room with large windows",
+        "Spacious living room with large windows and elevated natural light",
         "Full kitchen with ample cabinet storage",
-        "Heat & water included",
-        "Assigned parking space included",
-        "On-site laundry",
-        "5 minutes to Whitby GO station and 401"
+        "Heat and water included; 1 parking spot included",
+        "On-site coin laundry facilities",
+        "5 minutes walk to Whitby GO station, shopping, 401 & downtown"
       ],
+      "pet_policy": "No Pets",
+      "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+      "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
         "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
         "cover_photo_url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800"
       },
-      "notes": "Ideal location for commuters to Toronto or local Durham professionals."
+      "notes": "Upper Level Unit 5 with expansive picture windows and elevated views. Full kitchen with ample cabinet storage."
     },
     {
       "id": "unit_6",
@@ -227,21 +244,24 @@
         "utilities_included": ["Heat", "Water"],
         "utilities_extra": ["Hydro"],
         "lease_term_months": 12,
-        "available_date": "Immediate / Dec 1"
+        "available_date": "Immediate"
       },
       "amenities": [
-        "Well-maintained 2-bedroom layout",
-        "Heat and water included",
-        "On-site laundry facilities",
-        "1 parking spot included",
+        "Quiet upper corner suite offering exceptional privacy",
+        "Well-maintained 2-bedroom layout with generous closet space",
+        "Heat and water included; 1 parking space included",
+        "On-site laundry facilities in boutique 6-plex",
         "Close to schools, shopping, Whitby Marina, and GO Transit"
       ],
+      "pet_policy": "No Pets",
+      "smoking_policy": "No Marijuana Growing / No Smoking of any kind in unit",
+      "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8",
       "cloud_media": {
         "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
         "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
         "cover_photo_url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800"
       },
-      "notes": "Conveniently situated in central Whitby with rapid highway access."
+      "notes": "Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces."
     }
   ]
 }

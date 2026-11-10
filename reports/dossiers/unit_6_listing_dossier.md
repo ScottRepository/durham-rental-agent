@@ -1,6 +1,7 @@
 # Rental Listing Packet: Unit 6 - 315 Kent Street
 **Property Address**: 315 Kent Street, Unit 6, Whitby, Durham Region
-**Target Rent**: $2075 CAD/mo | **Move-in**: Immediate / Dec 1
+**Target Rent**: $2,075 CAD/mo | **Move-in**: Immediate
+**Applicant Intake Form**: https://forms.gle/UZSrP8PUSh9GsdLX8
 **YouTube Walkthrough Video**: https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 **Google Drive Photos Folder**: `https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing`
 
@@ -8,131 +9,208 @@
 
 ## 1. Facebook Marketplace
 - **Direct Link to Post**: https://www.facebook.com/marketplace/create/rental
-- **Listing Title**: `2 Bed 1 Bath - Apartment Suite | Whitby`
+- **Listing Title**: `2 Bed 1 Bath - Unit 6 - 315 Kent Street | Whitby Central`
 - **Price**: `$2075`
 - **Category**: Property Rentals > Apartment Suite
 - **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-✨ BEAUTIFULLY MAINTAINED 2 BEDROOM RENTAL IN WHITBY, ON ✨
+Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 6 - 315 Kent Street
 
-📍 LOCATION: 315 Kent Street, Unit 6, Whitby (Durham Region)
-💰 RENT: $2,075/month
-📅 MOVE-IN DATE: Immediate / Dec 1
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
 
-🎥 YOUTUBE WALKTHROUGH TOUR:
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+
+Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
+
+🎥 YouTube Walkthrough Tour:
 https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
-🏢 UNIT HIGHLIGHTS & SPECS:
-• Bedrooms: 2
-• Bathrooms: 1
-• Approximate Size: ~840 sq. ft.
-• Parking: 1 dedicated parking spot(s)
-• Type: Apartment Suite
+KEY HIGHLIGHTS:
+• Kent St off Brock, Whitby
+* Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.
+• Includes heat, on-site coin laundry, water and one parking space
+• Renovated & very clean
+• Five minute walk to everything including 401 and GO Train
+• $2,075 per month includes heat and water. Tenant pays hydro
+• No Marijuana Growing / No Smoking of any kind in unit
+• No Pets
+• Suitable for Professional, retired or mature student
+• Owners have many past references from previous tenants providing quality service
+• Available Immediately
 
-🌟 FEATURES & AMENITIES:
-• Well-maintained 2-bedroom layout
-• Heat and water included
-• On-site laundry facilities
-• 1 parking spot included
-• Close to schools, shopping, Whitby Marina, and GO Transit
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
 
-💡 UTILITIES & LEASE TERMS:
-• Included: Heat, Water
-• Extra: Hydro
-• Lease: 12 Month Standard Ontario Residential Tenancy Agreement
-• Pets: Pets considered (Ontario standard)
-• Smoking: Strictly non-smoking unit
-
-🚇 COMMUTE & TRANSIT:
-Conveniently situated in central Whitby with rapid highway access.
-
-📋 REQUIREMENTS FOR APPLICATION:
-1. Proof of income / recent paystubs & employment letter
-2. Credit check / Equifax score report
-3. Photo ID & references
-
-📩 TO BOOK A SHOWING:
-Please message directly with a brief introduction about yourself and anyone who would be living with you, your target move-in date, and reason for moving.
+We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.
 ```
 
 ---
 
 ## 2. Kijiji Ontario
 - **Direct Link to Post**: https://www.kijiji.ca/p-post-ad.html?categoryId=37
-- **Title**: `2 Bedroom Apartment Suite for Rent in Whitby - Video Tour Available`
+- **Title**: `Whitby Central 2-Bed Apt - Most Utilities (unit_6)`
 - **Price**: `$2075`
 - **Dedicated YouTube Video Link Field**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
 - **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-FOR RENT: Spacious & Clean 2 Bed / 1 Bath Unit in Whitby
+Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 6 - 315 Kent Street
 
-Watch the full YouTube walkthrough tour here:
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
+
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+
+Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
+
+🎥 YouTube Walkthrough Tour:
 https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
-UNIT DETAILS:
-- Address: 315 Kent Street, Unit 6, Whitby, ON (L1N 4Y5)
-- Rent: $2,075/month
-- Bedrooms: 2
-- Bathrooms: 1
-- Square Footage: approx. 840 sqft
-- Parking: 1 space(s) included
-- Move-In Availability: Immediate / Dec 1
+KEY HIGHLIGHTS:
+* Kent St off Brock, Whitby
+* Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.
+* Includes heat, on-site coin laundry, water and one parking space
+* Renovated & very clean
+* Five minute walk to everything including 401 and GO Train
+* $2,075 per month includes heat and water. Tenant pays hydro
+* No Marijuana Growing / No Smoking of any kind in unit
+* No Pets
+* Suitable for Professional, retired or mature student
+* Owners have many past references from previous tenants providing quality service
+* Available Immediately
 
-AMENITIES & HIGHLIGHTS:
-- Well-maintained 2-bedroom layout
-- Heat and water included
-- On-site laundry facilities
-- 1 parking spot included
-- Close to schools, shopping, Whitby Marina, and GO Transit
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
 
-UTILITY BREAKDOWN:
-- Utilities Included: Heat, Water
-- Utilities Extra: Hydro
-
-LEASE TERMS & VETTING:
-- 1-Year Ontario Standard Lease Agreement
-- First & last month's rent deposit required upon lease signing
-- Required: Credit check, letter of employment, recent pay stubs, reference check
-
-LOCATION HIGHLIGHTS:
-Conveniently situated in central Whitby with rapid highway access.
-
-Interested? Send a message with your intended move-in date and a short introduction.
+We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.
 ```
 
 ---
 
 ## 3. Zumper / PadMapper
 - **Direct Link to Post**: https://www.zumper.com/manage
-- **Title**: `315 Kent Street, Unit 6, Unit - 2 Bed / 1 Bath in Whitby`
+- **Title**: `315 Kent Street, Unit 6 - 2 Bed / 1 Bath Boutique Suite | Whitby`
 - **Price**: `$2075`
 - **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
 - **Bedrooms**: 2 | **Bathrooms**: 1 | **Sqft**: 840
 
 ### Description:
 ```text
-Welcome to this modern 2-bedroom, 1-bathroom rental located at 315 Kent Street, Unit 6 in desirable Whitby, Durham Region.
+Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 6 - 315 Kent Street
 
-Key Unit Features:
-- Living Area: Approximately 840 sq ft
-- Parking: 1 spot(s)
-- Available Date: Immediate / Dec 1
-- Lease Duration: 12 months
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
 
-Amenities:
-• Well-maintained 2-bedroom layout
-• Heat and water included
-• On-site laundry facilities
-• 1 parking spot included
-• Close to schools, shopping, Whitby Marina, and GO Transit
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
 
-YouTube Virtual Walkthrough:
+Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
+
+🎥 YouTube Walkthrough Tour:
 https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
-Lease Terms:
-Standard Ontario Tenancy Agreement. Full application, credit evaluation, and employment verification required.
+KEY HIGHLIGHTS:
+* Kent St off Brock, Whitby
+* Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.
+* Includes heat, on-site coin laundry, water and one parking space
+* Renovated & very clean
+* Five minute walk to everything including 401 and GO Train
+* $2,075 per month includes heat and water. Tenant pays hydro
+* No Marijuana Growing / No Smoking of any kind in unit
+* No Pets
+* Suitable for Professional, retired or mature student
+* Owners have many past references from previous tenants providing quality service
+* Available Immediately
+
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
+
+We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.
+```
+
+---
+
+## 4. Rentals.ca
+- **Direct Link to Post**: https://rentals.ca/landlord
+- **Title**: `Whitby Central - Renovated 2-Bed Apartment (Unit 6 - 315 Kent Street)`
+- **Price**: `$2075`
+- **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1
+
+### Description:
+```text
+Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 6 - 315 Kent Street
+
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
+
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+
+Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
+
+🎥 YouTube Walkthrough Tour:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+
+KEY HIGHLIGHTS:
+* Kent St off Brock, Whitby
+* Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.
+* Includes heat, on-site coin laundry, water and one parking space
+* Renovated & very clean
+* Five minute walk to everything including 401 and GO Train
+* $2,075 per month includes heat and water. Tenant pays hydro
+* No Marijuana Growing / No Smoking of any kind in unit
+* No Pets
+* Suitable for Professional, retired or mature student
+* Owners have many past references from previous tenants providing quality service
+* Available Immediately
+
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
+
+We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.
+```
+
+---
+
+## 5. Liv.rent
+- **Direct Link to Post**: https://liv.rent/landlords
+- **Title**: `Whitby Central 2-Bedroom Suite - Unit 6 - 315 Kent Street`
+- **Price**: `$2075`
+- **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1
+
+### Description:
+```text
+Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 6 - 315 Kent Street
+
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
+
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+
+Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
+
+🎥 YouTube Walkthrough Tour:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+
+KEY HIGHLIGHTS:
+* Kent St off Brock, Whitby
+* Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.
+* Includes heat, on-site coin laundry, water and one parking space
+* Renovated & very clean
+* Five minute walk to everything including 401 and GO Train
+* $2,075 per month includes heat and water. Tenant pays hydro
+* No Marijuana Growing / No Smoking of any kind in unit
+* No Pets
+* Suitable for Professional, retired or mature student
+* Owners have many past references from previous tenants providing quality service
+* Available Immediately
+
+FILL OUT FORM TO SET SHOWING DATE/TIME:
+https://forms.gle/UZSrP8PUSh9GsdLX8
+
+We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.
 ```

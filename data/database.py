@@ -71,7 +71,7 @@ def init_db(db_path: Path = DB_PATH):
     CREATE TABLE IF NOT EXISTS posting_history (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         unit_id TEXT NOT NULL,
-        platform TEXT NOT NULL CHECK(platform IN ('facebook', 'kijiji', 'zumper', 'rentals_ca')),
+        platform TEXT NOT NULL CHECK(platform IN ('facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent')),
         status TEXT NOT NULL CHECK(status IN ('draft', 'in_progress', 'posted', 'failed')),
         external_url TEXT,
         last_posted_at TIMESTAMP,
@@ -147,7 +147,7 @@ def seed_from_sample_if_empty(db_path: Path = DB_PATH):
                 """, (p["id"], drive_folder, cover_url))
 
                 # Initialize Default Posting Records
-                for plat in ['facebook', 'kijiji', 'zumper', 'rentals_ca']:
+                for plat in ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent']:
                     cur.execute("""
                     INSERT INTO posting_history (unit_id, platform, status, external_url, last_posted_at, log_output)
                     VALUES (?, ?, 'draft', NULL, NULL, 'Ready for automated posting')

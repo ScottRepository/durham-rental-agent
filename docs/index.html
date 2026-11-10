@@ -58,6 +58,9 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <a href="https://forms.gle/UZSrP8PUSh9GsdLX8" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 shadow-sm transition">
+          <i class="fa-solid fa-clipboard-question text-purple-600"></i> Tenant Intake Form
+        </a>
         <button onclick="exportCurrentJSON()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 shadow-sm transition">
           <i class="fa-solid fa-download text-slate-500"></i> Export DB
         </button>
@@ -316,10 +319,11 @@
             <div>
               <label class="text-xs font-semibold text-slate-500 uppercase block mb-1">Destination Platform</label>
               <select id="postingPlatformSelect" onchange="renderPlatformListing()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2 font-medium">
+                <option value="facebook">Facebook Marketplace & Groups</option>
                 <option value="kijiji">Kijiji Ontario (YouTube Embed Badge)</option>
                 <option value="zumper">Zumper & PadMapper (Virtual Tour Link)</option>
-                <option value="facebook">Facebook Marketplace</option>
-                <option value="rentals_ca">Rentals.ca</option>
+                <option value="rentals_ca">Rentals.ca (Top Google Rank)</option>
+                <option value="liv_rent">Liv.rent (Digital Verification & Contracts)</option>
               </select>
             </div>
           </div>
@@ -670,144 +674,448 @@
     // Portfolio Data with Nested Media Database & Posting Records
     let portfolioData = [
       {
-        id: "unit_1",
-        name: "Unit 1 - 315 Kent Street",
-        address: { street: "315 Kent Street, Unit 1", city: "Whitby", region: "Durham Region", postal_code: "L1N 4Y5" },
-        type: "Apartment Suite",
-        specs: { bedrooms: 2, bathrooms: 1, sqft: 850, parking_spots: 1 },
-        financials: { target_rent: 2100, utilities_included: ["Heat", "Water"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "Immediate" },
-        amenities: ["Quiet 6-unit boutique building", "Bright rooms with generous closets", "On-site laundry", "Assigned parking space included", "5-min walk to Downtown Whitby shops & Whitby GO"],
-        cloud_media: {
-          youtube_video_url: "https://www.youtube.com/watch?v=TxRy1OvaRZo",
-          google_drive_photos_folder: "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-          cover_photo_url: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"
-        },
-        photos: [
-          { url: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600", caption: "Google Drive Photo Assets (Unit 1)", is_cover: true }
-        ],
-        postings: {
-          facebook: { status: "draft", last_posted: null },
-          kijiji: { status: "draft", last_posted: null },
-          zumper: { status: "draft", last_posted: null }
-        },
-        notes: "Downtown Whitby near public transit, shopping, and Highway 401."
+            "id": "unit_1",
+            "name": "Unit 1 - 315 Kent Street",
+            "address": {
+                  "street": "315 Kent Street, Unit 1",
+                  "city": "Whitby",
+                  "region": "Durham Region",
+                  "postal_code": "L1N 4Y5"
+            },
+            "type": "Apartment Suite",
+            "specs": {
+                  "bedrooms": 2,
+                  "bathrooms": 1,
+                  "sqft": 850,
+                  "parking_spots": 1
+            },
+            "financials": {
+                  "target_rent": 1695,
+                  "currency": "CAD",
+                  "utilities_included": [
+                        "Heat",
+                        "Water"
+                  ],
+                  "utilities_extra": [
+                        "Hydro"
+                  ],
+                  "lease_term_months": 12,
+                  "available_date": "Immediate"
+            },
+            "amenities": [
+                  "Kent St off Brock in downtown Whitby",
+                  "Lower Level Unit 1 is half above ground and half below with lots of light",
+                  "Second bedroom suitable for office, spare bedroom or den",
+                  "Includes heat, on-site coin laundry, water and one parking space",
+                  "Renovated & clean throughout",
+                  "Five minute walk to everything including 401 and GO Train",
+                  "Beautiful property yard with great neighbours in quiet 6-unit building"
+            ],
+            "cloud_media": {
+                  "youtube_video_url": "https://www.youtube.com/watch?v=TxRy1OvaRZo",
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
+                  "cover_photo_url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"
+            },
+            "photos": [
+                  {
+                        "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
+                        "caption": "Google Drive Photo Assets (Unit 1 - 315 Kent Street)",
+                        "is_cover": true
+                  }
+            ],
+            "postings": {
+                  "facebook": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "kijiji": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "zumper": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "rentals_ca": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "liv_rent": {
+                        "status": "draft",
+                        "last_posted": null
+                  }
+            },
+            "notes": "Lower Level Unit 1 is half above ground and half below. Lots of light. Second bedroom is smaller (ideal for office/den). Renovated.",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
       },
       {
-        id: "unit_2",
-        name: "Unit 2 - 315 Kent Street",
-        address: { street: "315 Kent Street, Unit 2", city: "Whitby", region: "Durham Region", postal_code: "L1N 4Y5" },
-        type: "Apartment Suite",
-        specs: { bedrooms: 2, bathrooms: 1, sqft: 820, parking_spots: 1 },
-        financials: { target_rent: 2075, utilities_included: ["Heat", "Water"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "Immediate" },
-        amenities: ["Quiet boutique 6-unit building", "Natural daylight & generous layout", "On-site laundry facilities", "1 dedicated parking space", "Minutes to Whitby GO & 401"],
-        cloud_media: {
-          youtube_video_url: "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-          google_drive_photos_folder: "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-          cover_photo_url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800"
-        },
-        photos: [
-          { url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600", caption: "Google Drive Photo Assets (Unit 2)", is_cover: true }
-        ],
-        postings: {
-          facebook: { status: "draft", last_posted: null },
-          kijiji: { status: "draft", last_posted: null },
-          zumper: { status: "draft", last_posted: null }
-        },
-        notes: "Downtown Whitby near public transit, shopping, and highway access."
+            "id": "unit_2",
+            "name": "Unit 2 - 315 Kent Street",
+            "address": {
+                  "street": "315 Kent Street, Unit 2",
+                  "city": "Whitby",
+                  "region": "Durham Region",
+                  "postal_code": "L1N 4Y5"
+            },
+            "type": "Apartment Suite",
+            "specs": {
+                  "bedrooms": 2,
+                  "bathrooms": 1,
+                  "sqft": 820,
+                  "parking_spots": 1
+            },
+            "financials": {
+                  "target_rent": 1695,
+                  "currency": "CAD",
+                  "utilities_included": [
+                        "Heat",
+                        "Water"
+                  ],
+                  "utilities_extra": [
+                        "Hydro"
+                  ],
+                  "lease_term_months": 12,
+                  "available_date": "Immediate"
+            },
+            "amenities": [
+                  "Kent St off Brock in central Whitby",
+                  "Lower Level Unit 2 is half above ground with generous natural light",
+                  "Comfortable 2-bedroom floor plan with renovated kitchen",
+                  "Includes heat, water, on-site coin laundry and 1 parking space",
+                  "Safe neighbourhood and quiet 6-unit apartment community",
+                  "Five minute walk to shopping, grocery stores, transit, 401 and GO Train"
+            ],
+            "cloud_media": {
+                  "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
+                  "cover_photo_url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800"
+            },
+            "photos": [
+                  {
+                        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
+                        "caption": "Google Drive Photo Assets (Unit 2 - 315 Kent Street)",
+                        "is_cover": true
+                  }
+            ],
+            "postings": {
+                  "facebook": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "kijiji": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "zumper": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "rentals_ca": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "liv_rent": {
+                        "status": "draft",
+                        "last_posted": null
+                  }
+            },
+            "notes": "Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
       },
       {
-        id: "unit_3",
-        name: "Unit 3 - 315 Kent Street",
-        address: { street: "315 Kent Street, Unit 3", city: "Whitby", region: "Durham Region", postal_code: "L1N 4Y5" },
-        type: "Apartment Suite",
-        specs: { bedrooms: 2, bathrooms: 1, sqft: 850, parking_spots: 1 },
-        financials: { target_rent: 2075, utilities_included: ["Heat", "Water"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "Immediate" },
-        amenities: ["2nd Floor unit with private balcony", "Generous closet and storage space", "Heat & water included", "On-site coin laundry", "Assigned parking space included", "5 min to Whitby GO"],
-        cloud_media: {
-          youtube_video_url: "https://www.youtube.com/watch?v=Y4_7Kd_KESA",
-          google_drive_photos_folder: "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-          cover_photo_url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
-        },
-        photos: [
-          { url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600", caption: "Google Drive Photo Assets (Unit 3)", is_cover: true }
-        ],
-        postings: {
-          facebook: { status: "draft", last_posted: null },
-          kijiji: { status: "draft", last_posted: null },
-          zumper: { status: "draft", last_posted: null }
-        },
-        notes: "2nd floor unit with balcony in boutique 6-plex."
+            "id": "unit_3",
+            "name": "Unit 3 - 315 Kent Street",
+            "address": {
+                  "street": "315 Kent Street, Unit 3",
+                  "city": "Whitby",
+                  "region": "Durham Region",
+                  "postal_code": "L1N 4Y5"
+            },
+            "type": "Apartment Suite",
+            "specs": {
+                  "bedrooms": 2,
+                  "bathrooms": 1,
+                  "sqft": 850,
+                  "parking_spots": 1
+            },
+            "financials": {
+                  "target_rent": 2075,
+                  "currency": "CAD",
+                  "utilities_included": [
+                        "Heat",
+                        "Water"
+                  ],
+                  "utilities_extra": [
+                        "Hydro"
+                  ],
+                  "lease_term_months": 12,
+                  "available_date": "Immediate"
+            },
+            "amenities": [
+                  "Upper Level 2nd Floor Unit with private walkout balcony",
+                  "Generous closet and storage space with abundant daylight",
+                  "Heat, water, and 1 parking space included (tenant pays hydro)",
+                  "On-site coin laundry and clean common areas",
+                  "5-minute walk to Downtown Whitby restaurants, shopping & GO Transit",
+                  "Rapid access to Highway 401 and Durham transit links"
+            ],
+            "cloud_media": {
+                  "youtube_video_url": "https://www.youtube.com/watch?v=Y4_7Kd_KESA",
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
+                  "cover_photo_url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
+            },
+            "photos": [
+                  {
+                        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+                        "caption": "Google Drive Photo Assets (Unit 3 - 315 Kent Street)",
+                        "is_cover": true
+                  }
+            ],
+            "postings": {
+                  "facebook": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "kijiji": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "zumper": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "rentals_ca": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "liv_rent": {
+                        "status": "draft",
+                        "last_posted": null
+                  }
+            },
+            "notes": "Upper Level Unit 3 features a private walkout balcony overlooking the property grounds. Full 2 bedroom layout.",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
       },
       {
-        id: "unit_4",
-        name: "Unit 4 - 315 Kent Street",
-        address: { street: "315 Kent Street, Unit 4", city: "Whitby", region: "Durham Region", postal_code: "L1N 4Y5" },
-        type: "Apartment Suite",
-        specs: { bedrooms: 2, bathrooms: 1, sqft: 800, parking_spots: 1 },
-        financials: { target_rent: 2050, utilities_included: ["Heat", "Water"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "Immediate" },
-        amenities: ["Clean, well-maintained apartment in quiet building", "On-site laundry facilities", "Assigned parking spot", "Steps to downtown Whitby amenities & 401 commute"],
-        cloud_media: {
-          youtube_video_url: "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-          google_drive_photos_folder: "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-          cover_photo_url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"
-        },
-        photos: [
-          { url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600", caption: "Google Drive Photo Assets (Unit 4)", is_cover: true }
-        ],
-        postings: {
-          facebook: { status: "draft", last_posted: null },
-          kijiji: { status: "draft", last_posted: null },
-          zumper: { status: "draft", last_posted: null }
-        },
-        notes: "Quiet 6-unit building in prime downtown Whitby."
+            "id": "unit_4",
+            "name": "Unit 4 - 315 Kent Street",
+            "address": {
+                  "street": "315 Kent Street, Unit 4",
+                  "city": "Whitby",
+                  "region": "Durham Region",
+                  "postal_code": "L1N 4Y5"
+            },
+            "type": "Apartment Suite",
+            "specs": {
+                  "bedrooms": 2,
+                  "bathrooms": 1,
+                  "sqft": 800,
+                  "parking_spots": 1
+            },
+            "financials": {
+                  "target_rent": 2050,
+                  "currency": "CAD",
+                  "utilities_included": [
+                        "Heat",
+                        "Water"
+                  ],
+                  "utilities_extra": [
+                        "Hydro"
+                  ],
+                  "lease_term_months": 12,
+                  "available_date": "Immediate"
+            },
+            "amenities": [
+                  "Clean, well-maintained apartment in quiet 6-unit building",
+                  "Modern laminate/hardwood style flooring throughout",
+                  "Heat, water, and dedicated parking space included",
+                  "On-site laundry facilities and lovely shared yard",
+                  "Steps to downtown Whitby amenities & quick 401/GO commute"
+            ],
+            "cloud_media": {
+                  "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
+                  "cover_photo_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"
+            },
+            "photos": [
+                  {
+                        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
+                        "caption": "Google Drive Photo Assets (Unit 4 - 315 Kent Street)",
+                        "is_cover": true
+                  }
+            ],
+            "postings": {
+                  "facebook": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "kijiji": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "zumper": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "rentals_ca": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "liv_rent": {
+                        "status": "draft",
+                        "last_posted": null
+                  }
+            },
+            "notes": "Unit 4 features clean modern laminate/hardwood style flooring in a quiet, peaceful building setting.",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
       },
       {
-        id: "unit_5",
-        name: "Unit 5 - 315 Kent Street",
-        address: { street: "315 Kent Street, Unit 5", city: "Whitby", region: "Durham Region", postal_code: "L1N 4Y5" },
-        type: "Apartment Suite",
-        specs: { bedrooms: 2, bathrooms: 1, sqft: 830, parking_spots: 1 },
-        financials: { target_rent: 2075, utilities_included: ["Heat", "Water"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "Immediate" },
-        amenities: ["Spacious living room with large windows", "Heat & water included", "Assigned parking space included", "On-site laundry", "5 minutes to Whitby GO station"],
-        cloud_media: {
-          youtube_video_url: "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-          google_drive_photos_folder: "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-          cover_photo_url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800"
-        },
-        photos: [
-          { url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600", caption: "Google Drive Photo Assets (Unit 5)", is_cover: true }
-        ],
-        postings: {
-          facebook: { status: "draft", last_posted: null },
-          kijiji: { status: "draft", last_posted: null },
-          zumper: { status: "draft", last_posted: null }
-        },
-        notes: "Ideal for commuters to Toronto or local Durham professionals."
+            "id": "unit_5",
+            "name": "Unit 5 - 315 Kent Street",
+            "address": {
+                  "street": "315 Kent Street, Unit 5",
+                  "city": "Whitby",
+                  "region": "Durham Region",
+                  "postal_code": "L1N 4Y5"
+            },
+            "type": "Apartment Suite",
+            "specs": {
+                  "bedrooms": 2,
+                  "bathrooms": 1,
+                  "sqft": 830,
+                  "parking_spots": 1
+            },
+            "financials": {
+                  "target_rent": 2075,
+                  "currency": "CAD",
+                  "utilities_included": [
+                        "Heat",
+                        "Water"
+                  ],
+                  "utilities_extra": [
+                        "Hydro"
+                  ],
+                  "lease_term_months": 12,
+                  "available_date": "Immediate"
+            },
+            "amenities": [
+                  "Spacious living room with large windows and elevated natural light",
+                  "Full kitchen with ample cabinet storage",
+                  "Heat and water included; 1 parking spot included",
+                  "On-site coin laundry facilities",
+                  "5 minutes walk to Whitby GO station, shopping, 401 & downtown"
+            ],
+            "cloud_media": {
+                  "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
+                  "cover_photo_url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800"
+            },
+            "photos": [
+                  {
+                        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800",
+                        "caption": "Google Drive Photo Assets (Unit 5 - 315 Kent Street)",
+                        "is_cover": true
+                  }
+            ],
+            "postings": {
+                  "facebook": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "kijiji": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "zumper": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "rentals_ca": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "liv_rent": {
+                        "status": "draft",
+                        "last_posted": null
+                  }
+            },
+            "notes": "Upper Level Unit 5 with expansive picture windows and elevated views. Full kitchen with ample cabinet storage.",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
       },
       {
-        id: "unit_6",
-        name: "Unit 6 - 315 Kent Street",
-        address: { street: "315 Kent Street, Unit 6", city: "Whitby", region: "Durham Region", postal_code: "L1N 4Y5" },
-        type: "Apartment Suite",
-        specs: { bedrooms: 2, bathrooms: 1, sqft: 840, parking_spots: 1 },
-        financials: { target_rent: 2075, utilities_included: ["Heat", "Water"], utilities_extra: ["Hydro"], lease_term_months: 12, available_date: "Immediate" },
-        amenities: ["Well-maintained 2-bedroom layout", "Heat and water included", "On-site laundry facilities", "1 parking spot included", "Close to Whitby GO & downtown shops"],
-        cloud_media: {
-          youtube_video_url: "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
-          google_drive_photos_folder: "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
-          cover_photo_url: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800"
-        },
-        photos: [
-          { url: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600", caption: "Google Drive Photo Assets (Unit 6)", is_cover: true }
-        ],
-        postings: {
-          facebook: { status: "draft", last_posted: null },
-          kijiji: { status: "draft", last_posted: null },
-          zumper: { status: "draft", last_posted: null }
-        },
-        notes: "Conveniently situated in central Whitby with rapid highway access."
+            "id": "unit_6",
+            "name": "Unit 6 - 315 Kent Street",
+            "address": {
+                  "street": "315 Kent Street, Unit 6",
+                  "city": "Whitby",
+                  "region": "Durham Region",
+                  "postal_code": "L1N 4Y5"
+            },
+            "type": "Apartment Suite",
+            "specs": {
+                  "bedrooms": 2,
+                  "bathrooms": 1,
+                  "sqft": 840,
+                  "parking_spots": 1
+            },
+            "financials": {
+                  "target_rent": 2075,
+                  "currency": "CAD",
+                  "utilities_included": [
+                        "Heat",
+                        "Water"
+                  ],
+                  "utilities_extra": [
+                        "Hydro"
+                  ],
+                  "lease_term_months": 12,
+                  "available_date": "Immediate"
+            },
+            "amenities": [
+                  "Quiet upper corner suite offering exceptional privacy",
+                  "Well-maintained 2-bedroom layout with generous closet space",
+                  "Heat and water included; 1 parking space included",
+                  "On-site laundry facilities in boutique 6-plex",
+                  "Close to schools, shopping, Whitby Marina, and GO Transit"
+            ],
+            "cloud_media": {
+                  "youtube_video_url": "https://www.youtube.com/playlist?list=PLLwTe84kfw7U",
+                  "google_drive_photos_folder": "https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing",
+                  "cover_photo_url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800"
+            },
+            "photos": [
+                  {
+                        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800",
+                        "caption": "Google Drive Photo Assets (Unit 6 - 315 Kent Street)",
+                        "is_cover": true
+                  }
+            ],
+            "postings": {
+                  "facebook": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "kijiji": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "zumper": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "rentals_ca": {
+                        "status": "draft",
+                        "last_posted": null
+                  },
+                  "liv_rent": {
+                        "status": "draft",
+                        "last_posted": null
+                  }
+            },
+            "notes": "Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.",
+            "intake_form_url": "https://forms.gle/UZSrP8PUSh9GsdLX8"
       }
-    ];
+];
 
     // Durham Comps Database
     const compsDatabase = [
@@ -858,6 +1166,14 @@
         desc: "Ranks #1 organically on Google in Canada for rental queries in Oshawa, Ajax, and Pickering.",
         videoTip: "Supports virtual tour and video walkthrough links.",
         url: "https://rentals.ca/landlord"
+      },
+      {
+        name: "Liv.rent",
+        cost: "Free Standard Landlord Tier",
+        badge: "Tenant Verification & Digital Leases",
+        desc: "Leading Canadian rental platform with built-in Trust Score tenant verification, digital applications, and credit check.",
+        videoTip: "Supports direct video tour links and virtual walk-throughs.",
+        url: "https://liv.rent/landlords"
       }
     ];
 
@@ -1270,65 +1586,85 @@
       let platformName = "";
       let rulesHtml = "";
 
+      const videoUrl = (unit.cloud_media && unit.cloud_media.youtube_video_url) || (unit.media && unit.media.video_walkthrough_url) || "https://www.youtube.com/playlist?list=PLLwTe84kfw7U";
+      const formUrl = unit.intake_form_url || "https://forms.gle/UZSrP8PUSh9GsdLX8";
+
+      // Unit specific bullet replication from sample Google Doc
+      let unitSpecificBullet = "";
+      if (unit.id === "unit_1") {
+        unitSpecificBullet = "* Lower Level Unit 1 is half above ground and half below. Lots of light\n* The second bedroom is smaller so it would be suitable for an office, spare bedroom, small bedroom or den.";
+      } else if (unit.id === "unit_2") {
+        unitSpecificBullet = "* Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.";
+      } else if (unit.id === "unit_3") {
+        unitSpecificBullet = "* Upper Level Unit 3 features a private walkout balcony overlooking the property grounds.\n* Full 2 bedroom layout with spacious living room.";
+      } else if (unit.id === "unit_4") {
+        unitSpecificBullet = "* Unit 4 features clean modern laminate/hardwood style flooring in a quiet, peaceful building setting.";
+      } else if (unit.id === "unit_5") {
+        unitSpecificBullet = "* Upper Level Unit 5 with expansive picture windows and elevated views.\n* Full kitchen with ample cabinet storage.";
+      } else if (unit.id === "unit_6") {
+        unitSpecificBullet = "* Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.";
+      } else {
+        unitSpecificBullet = `* ${unit.notes || 'Well-maintained boutique apartment suite.'}`;
+      }
+
+      const standardReplicatedDesc = `Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - ${unit.name}
+
+FILL OUT FORM TO SET SHOWING DATE/TIME
+${formUrl}
+
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+
+Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
+
+🎥 YouTube Walkthrough Tour:
+${videoUrl}
+
+KEY HIGHLIGHTS:
+* Kent St off Brock, Whitby
+${unitSpecificBullet}
+* Includes heat, on-site coin laundry, water and one parking space
+* Renovated & very clean
+* Five minute walk to everything including 401 and GO Train
+* $${unit.financials.target_rent.toLocaleString()} per month includes heat and water. Tenant pays hydro
+* No Marijuana Growing / No Smoking of any kind in unit
+* No Pets
+* Suitable for Professional, retired or mature student
+* Owners have many past references from previous tenants providing quality service to tenants
+* Available Immediately
+
+FILL OUT FORM TO SET SHOWING DATE/TIME
+${formUrl}
+
+We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.`;
+
       if (platform === "facebook") {
-        platformName = "Facebook Marketplace";
-        title = `${unit.specs.bedrooms} Bed ${unit.specs.bathrooms} Bath - ${unit.type} in ${unit.address.city}`;
+        platformName = "Facebook Marketplace & Groups";
+        title = `${unit.specs.bedrooms} Bed ${unit.specs.bathrooms} Bath - ${unit.name} | Whitby Central`;
         postUrl = "https://www.facebook.com/marketplace/create/rental";
         rulesHtml = `
-          <strong>Facebook 1-Click Posting:</strong>
+          <strong>Facebook Marketplace & Groups:</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1">
-            <li>Attaches photos from media database automatically.</li>
-            <li>Links video walkthrough in the first 3 lines of copy.</li>
+            <li>Replicated directly from your Google Doc format.</li>
+            <li>Applicant intake form is positioned at top & bottom of description.</li>
+            <li>After publishing, use "List in more places" to cross-post to up to 20 joined Durham groups in 1 click!</li>
           </ul>
         `;
-        description = `✨ BEAUTIFULLY MAINTAINED ${unit.specs.bedrooms} BEDROOM RENTAL IN ${unit.address.city.toUpperCase()}, ON ✨\n\n` +
-          `📍 LOCATION: ${unit.address.street}, ${unit.address.city} (${unit.address.region})\n` +
-          `💰 RENT: $${unit.financials.target_rent.toLocaleString()}/month\n` +
-          `📅 MOVE-IN DATE: ${unit.financials.available_date}\n\n` +
-          `🎥 FULL VIDEO WALKTHROUGH TOUR:\n${unit.media.video_walkthrough_url}\n\n` +
-          `🏢 UNIT SPECS:\n` +
-          `• Bedrooms: ${unit.specs.bedrooms}\n` +
-          `• Bathrooms: ${unit.specs.bathrooms}\n` +
-          `• Size: ~${unit.specs.sqft} sq. ft.\n` +
-          `• Parking: ${unit.specs.parking_spots} dedicated parking spot(s)\n` +
-          `• Type: ${unit.type}\n\n` +
-          `🌟 FEATURES & AMENITIES:\n` +
-          unit.amenities.map(a => `• ${a}`).join('\n') + `\n\n` +
-          `💡 UTILITIES & LEASE:\n` +
-          `• Utilities Included: ${utilInc}\n` +
-          `• Utilities Extra: ${utilExt}\n` +
-          `• Lease: 1-Year Ontario Standard Tenancy Agreement\n\n` +
-          `🚇 COMMUTE & TRANSIT:\n${unit.notes}\n\n` +
-          `📋 REQUIREMENTS: Proof of income (paystubs), Equifax credit report, and references.\n` +
-          `📩 Message to book a private showing.`;
+        description = standardReplicatedDesc;
       } else if (platform === "kijiji") {
         platformName = "Kijiji Ontario";
-        title = `${unit.specs.bedrooms} Bed ${unit.type} for Rent in ${unit.address.city} - Video Tour`;
+        title = `Whitby Central Renovated 2-Bed Apt (${unit.name}) - Most Utilities`;
         postUrl = "https://www.kijiji.ca/p-post-ad.html?categoryId=37";
         rulesHtml = `
           <strong>Kijiji 1-Click Posting:</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1">
             <li>Embeds YouTube walkthrough URL in Kijiji's dedicated video badge field.</li>
-            <li>Attaches photo gallery from SQLite database.</li>
+            <li>Intake Form CTA prominently displayed in description.</li>
           </ul>
         `;
-        description = `FOR RENT: Spacious & Clean ${unit.specs.bedrooms} Bed / ${unit.specs.bathrooms} Bath in ${unit.address.city}\n\n` +
-          `Watch the walkthrough video tour:\n${unit.media.video_walkthrough_url}\n\n` +
-          `PROPERTY DETAILS:\n` +
-          `- Address: ${unit.address.street}, ${unit.address.city}, ON\n` +
-          `- Rent: $${unit.financials.target_rent.toLocaleString()}/month\n` +
-          `- Bedrooms: ${unit.specs.bedrooms} | Bathrooms: ${unit.specs.bathrooms}\n` +
-          `- Approximate Size: ${unit.specs.sqft} sqft\n` +
-          `- Move-In Date: ${unit.financials.available_date}\n\n` +
-          `HIGHLIGHTS:\n` +
-          unit.amenities.map(a => `- ${a}`).join('\n') + `\n\n` +
-          `UTILITY BREAKDOWN:\n` +
-          `- Utilities Included: ${utilInc}\n` +
-          `- Utilities Extra: ${utilExt}\n\n` +
-          `Ontario Standard Lease. Reply with your intended move-in date and a short introduction.`;
+        description = standardReplicatedDesc;
       } else if (platform === "zumper") {
         platformName = "Zumper / PadMapper";
-        title = `${unit.address.street} - ${unit.specs.bedrooms} Bed / ${unit.specs.bathrooms} Bath`;
+        title = `${unit.address.street} - 2 Bed / 1 Bath Boutique Suite | Whitby`;
         postUrl = "https://www.zumper.com/manage";
         rulesHtml = `
           <strong>Zumper 1-Click Posting:</strong>
@@ -1337,30 +1673,31 @@
             <li>Syndicates to PadMapper & Walk Score automatically.</li>
           </ul>
         `;
-        description = `Welcome to this renovated ${unit.specs.bedrooms}-bedroom, ${unit.specs.bathrooms}-bathroom rental in ${unit.address.city}, Durham Region.\n\n` +
-          `Unit Features:\n` +
-          `- Living Area: ~${unit.specs.sqft} sq ft\n` +
-          `- Parking: ${unit.specs.parking_spots} spot(s)\n` +
-          `- Available Date: ${unit.financials.available_date}\n\n` +
-          `Amenities:\n` +
-          unit.amenities.map(a => `• ${a}`).join('\n') + `\n\n` +
-          `Virtual Tour Link:\n${unit.media.video_walkthrough_url}\n\n` +
-          `Ontario Standard Tenancy Agreement. Full application, credit check, and proof of income required.`;
-      } else {
+        description = standardReplicatedDesc;
+      } else if (platform === "rentals_ca") {
         platformName = "Rentals.ca";
-        title = `${unit.specs.bedrooms} Bedroom Rental at ${unit.address.street}, ${unit.address.city}`;
+        title = `Whitby Central - Renovated 2-Bed Apartment (${unit.name})`;
         postUrl = "https://rentals.ca/landlord";
         rulesHtml = `
           <strong>Rentals.ca Tips:</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1">
             <li>Free for up to 3 individual property listings.</li>
+            <li>Ranks #1 organically on Google in Canada for rental queries in Durham Region.</li>
           </ul>
         `;
-        description = `Spacious ${unit.specs.bedrooms}-bedroom rental in ${unit.address.city}.\n\n` +
-          `Monthly Rent: $${unit.financials.target_rent.toLocaleString()}\n` +
-          `Available: ${unit.financials.available_date}\n` +
-          `Video Tour: ${unit.media.video_walkthrough_url}\n\n` +
-          unit.amenities.map(a => `- ${a}`).join('\n');
+        description = standardReplicatedDesc;
+      } else if (platform === "liv_rent") {
+        platformName = "Liv.rent";
+        title = `Whitby Central 2-Bedroom Suite - ${unit.name}`;
+        postUrl = "https://liv.rent/landlords";
+        rulesHtml = `
+          <strong>Liv.rent Features:</strong>
+          <ul class="list-disc ml-4 mt-1 space-y-1">
+            <li>Free Standard Landlord Tier.</li>
+            <li>Built-in Trust Score tenant verification, digital applications, and Equifax credit evaluation.</li>
+          </ul>
+        `;
+        description = standardReplicatedDesc;
       }
 
       const customKey = `custom_desc_${unitId}_${platform}`;

@@ -1,7 +1,7 @@
 """
 Posting Automation & Assistant Engine
 Coordinates browser automation (via Playwright) and structured listing dispatch
-for Facebook Marketplace, Kijiji, and Zumper.
+for Facebook Marketplace, Kijiji, Zumper, Rentals.ca, and Liv.rent.
 """
 
 import os
@@ -22,7 +22,7 @@ class PostingEngine:
     def _load_units(self) -> Dict[str, Any]:
         if not self.units_file.exists():
             raise FileNotFoundError(f"Cannot find units file at {self.units_file}")
-        with open(self.units_file, "r") as f:
+        with open(self.units_file, "r", encoding="utf-8") as f:
             data = json.load(f)
             return {u["id"]: u for u in data.get("properties", [])}
 
@@ -32,7 +32,7 @@ class PostingEngine:
     def export_unit_listing_dossier(self, unit_id: str, output_dir: str = "reports/dossiers") -> str:
         """
         Exports a complete ready-to-copy posting packet with all platform listings,
-        media checklist, and video links formatted for copy-paste or quick submission.
+        media checklist, video walkthrough, and Google Form intake link.
         """
         unit = self.get_unit(unit_id)
         if not unit:
@@ -46,10 +46,12 @@ class PostingEngine:
         media = unit.get("cloud_media") or unit.get("media") or {}
         video_url = media.get("youtube_video_url") or media.get("video_walkthrough_url", "N/A")
         photos_folder = media.get("google_drive_photos_folder") or media.get("photos_dir", "N/A")
+        intake_form = unit.get("intake_form_url") or "https://forms.gle/UZSrP8PUSh9GsdLX8"
 
         content = f"""# Rental Listing Packet: {unit['name']}
 **Property Address**: {unit['address']['street']}, {unit['address']['city']}, {unit['address']['region']}
-**Target Rent**: ${unit['financials']['target_rent']} CAD/mo | **Move-in**: {unit['financials']['available_date']}
+**Target Rent**: ${unit['financials']['target_rent']:,} CAD/mo | **Move-in**: {unit['financials']['available_date']}
+**Applicant Intake Form**: {intake_form}
 **YouTube Walkthrough Video**: {video_url}
 **Google Drive Photos Folder**: `{photos_folder}`
 
@@ -94,39 +96,42 @@ class PostingEngine:
 ```text
 {packages['zumper']['description']}
 ```
+
+---
+
+## 4. Rentals.ca
+- **Direct Link to Post**: https://rentals.ca/landlord
+- **Title**: `{packages['rentals_ca']['title']}`
+- **Price**: `${packages['rentals_ca']['price']}`
+- **Virtual Tour Link**: `{packages['rentals_ca']['virtual_tour_url']}`
+- **Bedrooms**: {packages['rentals_ca']['bedrooms']} | **Bathrooms**: {packages['rentals_ca']['bathrooms']}
+
+### Description:
+```text
+{packages['rentals_ca']['description']}
+```
+
+---
+
+## 5. Liv.rent
+- **Direct Link to Post**: https://liv.rent/landlords
+- **Title**: `{packages['liv_rent']['title']}`
+- **Price**: `${packages['liv_rent']['price']}`
+- **Virtual Tour Link**: `{packages['liv_rent']['virtual_tour_url']}`
+- **Bedrooms**: {packages['liv_rent']['bedrooms']} | **Bathrooms**: {packages['liv_rent']['bathrooms']}
+
+### Description:
+```text
+{packages['liv_rent']['description']}
+```
 """
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(content)
 
         return str(file_path)
 
-    def launch_assisted_browser_session(self, unit_id: str, platform: str):
-        """
-        Launches an interactive Playwright session with a persistent user browser profile.
-        Allows the agent to load the platform, authenticate securely, and prefill
-        the fields without triggering automated bot flags or CAPTCHA blocks.
-        """
-        unit = self.get_unit(unit_id)
-        if not unit:
-            raise ValueError(f"Unit {unit_id} not found.")
-
-        packages = package_all_listings_for_unit(unit)
-
-        print(f"\n[Posting Assistant] Initializing browser profile at {USER_DATA_DIR}...")
-        print(f"[Posting Assistant] Preparing unit {unit_id} ({unit['name']}) for {platform}...")
-
-        target_url = "https://www.facebook.com/marketplace/create/rental"
-        payload = packages['facebook_marketplace']
-
-        if platform.lower() == "kijiji":
-            target_url = "https://www.kijiji.ca/p-post-ad.html?categoryId=37"
-            payload = packages['kijiji']
-        elif platform.lower() == "zumper":
-            target_url = "https://www.zumper.com/manage"
-            payload = packages['zumper']
-
-        print(f"[Target URL]: {target_url}")
-        print(f"[Listing Title]: {payload['title']}")
-        print(f"[Listing Price]: ${payload['price']}")
-        print("\nReady! Use the interactive browser agent to complete submission.")
-        return payload
+    def export_all_dossiers(self) -> Dict[str, str]:
+        results = {}
+        for unit_id in self.units.keys():
+            results[unit_id] = self.export_unit_listing_dossier(unit_id)
+        return results
