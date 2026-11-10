@@ -346,10 +346,13 @@
               <span>1-Click Auto Post Now</span>
             </button>
             <button onclick="copyListingText()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 shadow-sm transition">
-              <i class="fa-solid fa-copy"></i> Copy Text
+              <i class="fa-solid fa-copy"></i> Copy Listing Text
+            </button>
+            <button onclick="copyLeadReplySnippet()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 shadow-sm transition" title="Copies ready message with form link to send to incoming leads in Zumper / FB chat">
+              <i class="fa-solid fa-reply text-purple-600"></i> Copy Lead Reply
             </button>
             <a id="platformDirectPostBtn" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-blue-700 bg-white border border-blue-300 rounded-xl hover:bg-blue-50 shadow-sm transition">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Form
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Portal
             </a>
           </div>
         </div>
@@ -2073,11 +2076,11 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
         title = `${unit.address.street} - 2 Bed / 1 Bath Boutique Suite | Whitby`;
         postUrl = "https://www.zumper.com/manage";
         rulesHtml = `
-          <strong class="text-amber-900 font-bold"><i class="fa-solid fa-shield-halved text-amber-600 mr-1"></i> Zumper Link Filter Workarounds:</strong>
+          <strong class="text-amber-900 font-bold"><i class="fa-solid fa-shield-halved text-amber-600 mr-1"></i> Zumper Link Filter Active (Method 1 Applied):</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1 text-[11px] text-amber-900">
-            <li><strong>Auto-Reply (Recommended):</strong> Set an instant auto-responder in your Zumper Inbox with your form link. Outbound links are NOT blocked in chat messages!</li>
-            <li><strong>Bypass in Description:</strong> Uses spaced URL format (<code>forms . gle / UZSrP8PUSh9GsdLX8</code>) so Zumper's automated bot parser won't strip it.</li>
-            <li><strong>YouTube Link:</strong> Directs renters to the video description where your Google Form link is live and clickable.</li>
+            <li><strong>Method 1 Bypass Active:</strong> The description below is pre-formatted with spaced syntax (<code>forms . gle / UZSrP8PUSh9GsdLX8</code>) so Zumper's bot scanner cannot strip or block your intake link!</li>
+            <li><strong>Replying to Leads in Renter Dashboard:</strong> Use the "Copy Lead Reply" button above to send your direct clickable link to leads in Zumper chat (links in chat replies are never blocked).</li>
+            <li><strong>Virtual Tour Field:</strong> Paste your YouTube walkthrough link in Zumper's dedicated Virtual Tour field.</li>
           </ul>
         `;
         const zumperSafeForm = "forms . gle / UZSrP8PUSh9GsdLX8 (copy into browser, remove spaces)";
@@ -2300,6 +2303,15 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
       const desc = document.getElementById('listingDescription').value;
       navigator.clipboard.writeText(desc);
       showToast("Listing description copied!");
+    }
+
+    function copyLeadReplySnippet() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId) || portfolioData[0];
+      const formUrl = unit.intake_form_url || "https://forms.gle/UZSrP8PUSh9GsdLX8";
+      const snippet = `Hi! Thank you for your interest in ${unit.name || '315 Kent Street'}. To arrange a private showing date & time, please fill out our quick pre-screening form here: ${formUrl} — We review these daily and will reach out directly to qualified candidates to schedule a viewing time.`;
+      navigator.clipboard.writeText(snippet);
+      showToast("Lead reply message with form link copied!");
     }
 
     function copyInput(elemId) {
