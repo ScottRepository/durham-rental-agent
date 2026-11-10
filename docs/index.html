@@ -391,13 +391,33 @@
             </div>
           </div>
 
-          <!-- Description Box -->
-          <div class="lg:col-span-2">
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-sm font-bold text-slate-800">Generated Platform Copy</label>
-              <span id="charCount" class="text-xs text-slate-500 font-mono">0 characters</span>
+          <!-- Description Box with In-Browser Content Management -->
+          <div class="lg:col-span-2 flex flex-col justify-between">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <div class="flex items-center gap-2">
+                  <label class="text-sm font-bold text-slate-800">Listing Description Editor</label>
+                  <span id="customSavedBadge" class="hidden text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full">Custom Saved</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span id="charCount" class="text-xs text-slate-500 font-mono">0 characters</span>
+                  <button onclick="saveCustomDescription()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Description
+                  </button>
+                  <button onclick="resetDefaultDescription()" class="px-2.5 py-1 bg-white border border-slate-300 hover:bg-slate-100 text-slate-600 rounded-lg text-xs font-medium transition" title="Reset to auto-generated template">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                  </button>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-500 mb-2">You can type and edit your exact custom listing copy directly here. Saved edits persist and are used by the 1-Click Auto Poster.</p>
+              <textarea id="listingDescription" oninput="onDescriptionEdited()" rows="18" class="w-full p-4 font-mono text-xs bg-slate-900 text-slate-100 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"></textarea>
             </div>
-            <textarea id="listingDescription" rows="18" class="w-full p-4 font-mono text-xs bg-slate-900 text-slate-100 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"></textarea>
+            <div class="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100 mt-2">
+              <span><i class="fa-solid fa-check text-emerald-500 mr-1"></i> Formatted for clean pasting (no Word formatting errors)</span>
+              <button onclick="exportAllCustomDescriptions()" class="text-blue-600 hover:text-blue-800 font-semibold">
+                <i class="fa-solid fa-file-arrow-down mr-1"></i> Export Descriptions Backup
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1248,13 +1268,23 @@
           unit.amenities.map(a => `- ${a}`).join('\n');
       }
 
+      const customKey = `custom_desc_${unitId}_${platform}`;
+      const savedCustom = localStorage.getItem(customKey);
+      const customBadge = document.getElementById('customSavedBadge');
+      if (savedCustom) {
+        description = savedCustom;
+        if (customBadge) customBadge.classList.remove('hidden');
+      } else {
+        if (customBadge) customBadge.classList.add('hidden');
+      }
+
       document.getElementById('platformBadge').innerText = platformName;
       document.getElementById('platformDirectPostBtn').href = postUrl;
       document.getElementById('listingTitle').value = title;
       document.getElementById('listingPrice').value = `$${unit.financials.target_rent}`;
       document.getElementById('listingBeds').value = `${unit.specs.bedrooms} Bed`;
-      document.getElementById('listingVideo').value = unit.media.video_walkthrough_url;
-      document.getElementById('listingPhotosPath').innerText = unit.media.photos_dir;
+      document.getElementById('listingVideo').value = (unit.cloud_media && unit.cloud_media.youtube_video_url) || (unit.media && unit.media.video_walkthrough_url) || '';
+      document.getElementById('listingPhotosPath').innerText = (unit.cloud_media && unit.cloud_media.google_drive_photos_folder) || 'Google Drive Master Folder';
       document.getElementById('listingDescription').value = description;
       document.getElementById('charCount').innerText = `${description.length} characters`;
       document.getElementById('platformRulesBox').innerHTML = rulesHtml;
@@ -1268,6 +1298,49 @@
         pill.className = "px-2.5 py-0.5 bg-slate-200 text-slate-700 text-xs font-semibold rounded-full";
         pill.innerText = "Draft";
       }
+    }
+
+    function saveCustomDescription() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const platform = document.getElementById('postingPlatformSelect').value;
+      const desc = document.getElementById('listingDescription').value;
+      localStorage.setItem(`custom_desc_${unitId}_${platform}`, desc);
+      const customBadge = document.getElementById('customSavedBadge');
+      if (customBadge) customBadge.classList.remove('hidden');
+      showToast("Custom description saved for this unit & platform!");
+    }
+
+    function resetDefaultDescription() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const platform = document.getElementById('postingPlatformSelect').value;
+      localStorage.removeItem(`custom_desc_${unitId}_${platform}`);
+      renderPlatformListing();
+      showToast("Reset to auto-generated default template!");
+    }
+
+    function onDescriptionEdited() {
+      const desc = document.getElementById('listingDescription').value;
+      document.getElementById('charCount').innerText = `${desc.length} characters`;
+    }
+
+    function exportAllCustomDescriptions() {
+      const exportObj = {};
+      portfolioData.forEach(u => {
+        exportObj[u.id] = {
+          name: u.name,
+          facebook: localStorage.getItem(`custom_desc_${u.id}_facebook`) || "Default template",
+          kijiji: localStorage.getItem(`custom_desc_${u.id}_kijiji`) || "Default template",
+          zumper: localStorage.getItem(`custom_desc_${u.id}_zumper`) || "Default template"
+        };
+      });
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "315_kent_custom_descriptions.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast("Exported all descriptions to JSON backup!");
     }
 
     function renderPlatformsDirectory() {
