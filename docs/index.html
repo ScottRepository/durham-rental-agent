@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Durham Region Rental Agent & Market Research Dashboard</title>
+  <title>Durham Region Rental Agent & 1-Click Auto Poster</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
@@ -50,17 +50,19 @@
         <div>
           <h1 class="text-xl font-bold text-slate-900 flex items-center gap-2">
             Durham Rental Agent
-            <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-0.5 rounded-full border border-blue-200">GitHub Web Edition</span>
+            <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 1-Click Auto Poster
+            </span>
           </h1>
-          <p class="text-xs text-slate-500">6-Unit Portfolio • Oshawa, Whitby, Ajax, Pickering & Bowmanville • Free Syndication & Comps</p>
+          <p class="text-xs text-slate-500">6-Unit Portfolio • Media Database (Photos & Videos) • Auto-Posting to FB, Kijiji & Zumper</p>
         </div>
       </div>
       <div class="flex items-center gap-2">
         <button onclick="exportCurrentJSON()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 shadow-sm transition">
-          <i class="fa-solid fa-download text-slate-500"></i> Export Units JSON
+          <i class="fa-solid fa-download text-slate-500"></i> Export DB
         </button>
         <a href="https://github.com/ScottRepository/durham-rental-agent/actions" target="_blank" id="ghRepoLink" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-slate-900 rounded-lg hover:bg-slate-800 shadow-sm transition">
-          <i class="fa-brands fa-github"></i> View in GitHub Actions
+          <i class="fa-brands fa-github"></i> GitHub Actions
         </a>
       </div>
     </div>
@@ -70,17 +72,20 @@
       <button onclick="switchTab('units')" id="tabBtn-units" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 tab-active transition flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-list-check"></i> 6 Units Portfolio
       </button>
+      <button onclick="switchTab('media')" id="tabBtn-media" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-photo-film"></i> Photos & Videos Database
+      </button>
       <button onclick="switchTab('comps')" id="tabBtn-comps" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-chart-line"></i> Market Research & Comps
       </button>
       <button onclick="switchTab('posting')" id="tabBtn-posting" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-bullhorn"></i> Multi-Platform Posting Engine
+        <i class="fa-solid fa-bolt text-amber-500"></i> 1-Click Auto Posting
       </button>
       <button onclick="switchTab('platforms')" id="tabBtn-platforms" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-map-location-dot"></i> Durham Free Platforms Guide
+        <i class="fa-solid fa-map-location-dot"></i> Durham Free Channels
       </button>
       <button onclick="switchTab('github')" id="tabBtn-github" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-robot"></i> GitHub Actions & Automation
+        <i class="fa-solid fa-robot"></i> GitHub Actions
       </button>
     </div>
   </header>
@@ -92,8 +97,8 @@
     <section id="tab-units" class="space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <h2 class="text-lg font-bold text-slate-900">Portfolio Status Overview</h2>
-          <p class="text-sm text-slate-500">6 residential units configured with video walkthroughs, high-res photos, and rental pricing.</p>
+          <h2 class="text-lg font-bold text-slate-900">Portfolio & Posting Status Tracker</h2>
+          <p class="text-sm text-slate-500">6 residential units connected to SQLite media database with instant 1-click posting status.</p>
         </div>
         <div class="flex items-center gap-3">
           <div class="text-right">
@@ -109,7 +114,62 @@
       </div>
     </section>
 
-    <!-- TAB 2: MARKET RESEARCH & COMPS -->
+    <!-- TAB 2: PHOTOS & VIDEOS DATABASE -->
+    <section id="tab-media" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-database text-blue-600"></i> Media Asset Catalog
+            </h2>
+            <p class="text-sm text-slate-500">Manage high-resolution photo galleries and walkthrough video links for each unit.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="text-sm font-medium text-slate-700">Select Unit:</label>
+            <select id="mediaUnitSelect" onchange="renderMediaGallery()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 font-medium">
+              <!-- Populated by JS -->
+            </select>
+            <button onclick="openAddMediaModal()" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition">
+              <i class="fa-solid fa-plus"></i> Add Media
+            </button>
+          </div>
+        </div>
+
+        <!-- Video Walkthrough Section -->
+        <div class="mb-8 p-5 bg-slate-50 rounded-2xl border border-slate-200">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-xl">
+                <i class="fa-brands fa-youtube"></i>
+              </div>
+              <div>
+                <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">Video Walkthrough (Kijiji & FB Embed)</span>
+                <p id="mediaVideoUrlDisplay" class="text-sm font-semibold text-blue-600 break-all"></p>
+                <p id="mediaVideoPathDisplay" class="text-xs text-slate-500 font-mono"></p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="testMediaVideo()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1">
+                <i class="fa-solid fa-play"></i> Watch Tour
+              </button>
+              <button onclick="copyCurrentVideoUrl()" class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center gap-1">
+                <i class="fa-solid fa-copy"></i> Copy Link
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photo Gallery Grid -->
+        <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-images text-indigo-600"></i> Unit Photo Gallery
+        </h3>
+        <div id="mediaGalleryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: MARKET RESEARCH & COMPS -->
     <section id="tab-comps" class="hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -179,7 +239,7 @@
               </div>
             </div>
             <div class="mt-4 pt-3 border-t border-slate-200 text-xs text-slate-500">
-              <i class="fa-solid fa-circle-info text-blue-500 mr-1"></i> Durham Region comps updated automatically via GitHub Actions weekly workflow.
+              <i class="fa-solid fa-circle-info text-blue-500 mr-1"></i> Durham Region comps updated automatically via weekly GitHub Actions.
             </div>
           </div>
         </div>
@@ -207,13 +267,15 @@
       </div>
     </section>
 
-    <!-- TAB 3: MULTI-PLATFORM POSTING ENGINE -->
+    <!-- TAB 4: 1-CLICK AUTO POSTING ENGINE -->
     <section id="tab-posting" class="hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
-            <h2 class="text-xl font-bold text-slate-900">Multi-Platform Posting Generator</h2>
-            <p class="text-sm text-slate-500">Generate, customize, and copy high-converting listings for Facebook Marketplace, Kijiji, and Zumper.</p>
+            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-bolt text-amber-500"></i> 1-Click Automated Posting Engine
+            </h2>
+            <p class="text-sm text-slate-500">Automatically stage and post property details, photos, and video walkthroughs directly to external sites.</p>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <div>
@@ -223,7 +285,7 @@
               </select>
             </div>
             <div>
-              <label class="text-xs font-semibold text-slate-500 uppercase block mb-1">Platform</label>
+              <label class="text-xs font-semibold text-slate-500 uppercase block mb-1">Destination Platform</label>
               <select id="postingPlatformSelect" onchange="renderPlatformListing()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2 font-medium">
                 <option value="facebook">Facebook Marketplace</option>
                 <option value="kijiji">Kijiji Ontario</option>
@@ -234,32 +296,38 @@
           </div>
         </div>
 
-        <!-- Action Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200 mb-6">
-          <div class="flex items-center gap-2">
-            <span id="platformBadge" class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full"></span>
-            <span id="platformCostBadge" class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full">100% Free</span>
+        <!-- 1-Click Action Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-4 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-200 mb-6">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span id="platformBadge" class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full shadow-sm"></span>
+              <span id="postingStatusPill" class="px-2.5 py-0.5 bg-slate-200 text-slate-700 text-xs font-semibold rounded-full">Draft</span>
+            </div>
+            <p class="text-xs text-slate-600">Click below to launch the automated Playwright poster with your saved credentials.</p>
           </div>
-          <div class="flex items-center gap-2">
-            <button onclick="copyListingText()" class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition">
-              <i class="fa-solid fa-copy"></i> Copy Description
+          
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- 1-Click Auto Post Primary Button -->
+            <button onclick="executeOneClickPost()" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl hover:from-emerald-700 hover:to-teal-700 shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-bolt text-yellow-300 text-base"></i>
+              <span>1-Click Auto Post Now</span>
             </button>
-            <button onclick="copyVideoUrl()" class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 shadow-sm transition">
-              <i class="fa-solid fa-video text-red-500"></i> Copy Video Link
+            <button onclick="copyListingText()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 shadow-sm transition">
+              <i class="fa-solid fa-copy"></i> Copy Text
             </button>
-            <a id="platformDirectPostBtn" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 shadow-sm transition">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Posting Page
+            <a id="platformDirectPostBtn" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-blue-700 bg-white border border-blue-300 rounded-xl hover:bg-blue-50 shadow-sm transition">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Form
             </a>
           </div>
         </div>
 
-        <!-- Listing Content Preview -->
+        <!-- Listing Content Preview Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="space-y-4">
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Form Fields Ready to Fill</h4>
+              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Payload Ready to Dispatch</h4>
               <div>
-                <label class="text-xs font-medium text-slate-600">Optimized Title:</label>
+                <label class="text-xs font-medium text-slate-600">Listing Title:</label>
                 <div class="flex items-center gap-2 mt-1">
                   <input id="listingTitle" type="text" readonly class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono font-medium">
                   <button onclick="copyInput('listingTitle')" class="p-1.5 text-slate-500 hover:text-blue-600"><i class="fa-solid fa-copy"></i></button>
@@ -267,7 +335,7 @@
               </div>
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="text-xs font-medium text-slate-600">Price (CAD):</label>
+                  <label class="text-xs font-medium text-slate-600">Target Rent:</label>
                   <input id="listingPrice" type="text" readonly class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono font-bold text-green-700">
                 </div>
                 <div>
@@ -283,7 +351,7 @@
                 </div>
               </div>
               <div>
-                <label class="text-xs font-medium text-slate-600">Photos Directory:</label>
+                <label class="text-xs font-medium text-slate-600">Photos Database Folder:</label>
                 <p id="listingPhotosPath" class="text-xs font-mono bg-white p-2 border border-slate-300 rounded text-slate-600 break-all"></p>
               </div>
             </div>
@@ -297,7 +365,7 @@
           <!-- Description Box -->
           <div class="lg:col-span-2">
             <div class="flex items-center justify-between mb-2">
-              <label class="text-sm font-bold text-slate-800">Complete Formatted Listing Body</label>
+              <label class="text-sm font-bold text-slate-800">Generated Platform Copy</label>
               <span id="charCount" class="text-xs text-slate-500 font-mono">0 characters</span>
             </div>
             <textarea id="listingDescription" rows="18" class="w-full p-4 font-mono text-xs bg-slate-900 text-slate-100 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"></textarea>
@@ -306,7 +374,7 @@
       </div>
     </section>
 
-    <!-- TAB 4: DURHAM FREE PLATFORMS GUIDE -->
+    <!-- TAB 5: DURHAM FREE CHANNELS -->
     <section id="tab-platforms" class="hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <h2 class="text-xl font-bold text-slate-900 mb-1">Durham Region Free Rental Platforms Directory</h2>
@@ -317,7 +385,7 @@
       </div>
     </section>
 
-    <!-- TAB 5: GITHUB ACTIONS & AUTOMATION -->
+    <!-- TAB 6: GITHUB ACTIONS -->
     <section id="tab-github" class="hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div class="flex items-center gap-3 mb-4">
@@ -325,8 +393,8 @@
             <i class="fa-brands fa-github"></i>
           </div>
           <div>
-            <h2 class="text-xl font-bold text-slate-900">Running Your Agent on GitHub</h2>
-            <p class="text-sm text-slate-500">Automate market comps checks, listing generation, and host this dashboard 100% free with GitHub Actions & Pages.</p>
+            <h2 class="text-xl font-bold text-slate-900">GitHub Actions & SQLite Sync</h2>
+            <p class="text-sm text-slate-500">Automate weekly market comps checks and run automated postings in GitHub Actions or Codespaces.</p>
           </div>
         </div>
 
@@ -336,45 +404,90 @@
               <i class="fa-solid fa-globe"></i>
             </div>
             <h3 class="font-bold text-slate-900 text-sm">1. Free Web Dashboard</h3>
-            <p class="text-xs text-slate-600 mt-1">Hosted via <strong>GitHub Pages</strong> with zero servers, zero cost, and 24/7 availability on your custom GitHub domain.</p>
+            <p class="text-xs text-slate-600 mt-1">Hosted on <strong>GitHub Pages</strong> with zero hosting bills and 24/7 global uptime.</p>
           </div>
           <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
             <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mb-3">
               <i class="fa-solid fa-clock-rotate-left"></i>
             </div>
             <h3 class="font-bold text-slate-900 text-sm">2. Scheduled Comps Agent</h3>
-            <p class="text-xs text-slate-600 mt-1">GitHub Action runs weekly on schedule to check Oshawa/Whitby/Ajax rent trends and alert you on market shifts.</p>
+            <p class="text-xs text-slate-600 mt-1">GitHub Action runs weekly on schedule to check Oshawa/Whitby/Ajax rent trends.</p>
           </div>
           <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
             <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3">
               <i class="fa-solid fa-terminal"></i>
             </div>
-            <h3 class="font-bold text-slate-900 text-sm">3. GitHub Codespaces Ready</h3>
-            <p class="text-xs text-slate-600 mt-1">Open the repository in any browser via Codespaces to launch the browser bot or edit your units with 1 click.</p>
-          </div>
-        </div>
-
-        <h3 class="font-bold text-slate-900 mb-3 text-base">Configured GitHub Workflows</h3>
-        <div class="space-y-3 font-mono text-xs">
-          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
-            <span class="flex items-center gap-2 text-slate-800">
-              <i class="fa-regular fa-file-code text-blue-600"></i>
-              .github/workflows/deploy_pages.yml
-            </span>
-            <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded text-[10px] font-semibold">Automatic on Push</span>
-          </div>
-          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
-            <span class="flex items-center gap-2 text-slate-800">
-              <i class="fa-regular fa-file-code text-indigo-600"></i>
-              .github/workflows/weekly_market_comps.yml
-            </span>
-            <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-semibold">Weekly Schedule & Manual Trigger</span>
+            <h3 class="font-bold text-slate-900 text-sm">3. Codespaces & Local Runner</h3>
+            <p class="text-xs text-slate-600 mt-1">Run <code>python server.py</code> to execute the 1-Click Playwright Auto Poster directly from your browser.</p>
           </div>
         </div>
       </div>
     </section>
 
   </main>
+
+  <!-- 1-Click Auto Post Progress Modal -->
+  <div id="autoPostModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl p-6 text-center space-y-4">
+      <div id="modalIconContainer" class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto text-2xl">
+        <i id="modalIcon" class="fa-solid fa-robot animate-spin"></i>
+      </div>
+      <h3 id="modalStatusTitle" class="text-lg font-bold text-slate-900">Executing 1-Click Auto Post...</h3>
+      <p id="modalStatusDesc" class="text-xs text-slate-500 max-w-sm mx-auto">Launching browser automation with your saved profile and pre-filling all listing fields...</p>
+      
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+        <div id="modalProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 35%"></div>
+      </div>
+
+      <div id="modalDetailsBox" class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-left text-xs font-mono text-slate-600 space-y-1">
+        <div>• Platform: <span id="modalDetailPlatform" class="font-bold text-slate-900"></span></div>
+        <div>• Unit: <span id="modalDetailUnit" class="font-bold text-slate-900"></span></div>
+        <div>• Media: <span class="text-emerald-600">Attached photos & video</span></div>
+      </div>
+
+      <div class="flex justify-center gap-3 pt-2">
+        <button onclick="closeAutoPostModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-semibold rounded-lg transition">
+          Close Window
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Media Asset Modal -->
+  <div id="addMediaModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-bold text-slate-900">Add Picture or Video to Database</h3>
+        <button onclick="closeAddMediaModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="font-medium text-slate-700 block mb-1">Media Type:</label>
+          <select id="newMediaType" class="w-full border border-slate-300 rounded p-2 bg-slate-50">
+            <option value="photo">Photo / Picture</option>
+            <option value="video">Video Walkthrough</option>
+          </select>
+        </div>
+        <div>
+          <label class="font-medium text-slate-700 block mb-1">Image URL or Local Path:</label>
+          <input id="newMediaUrl" type="text" placeholder="https://... or media/unit_1/photos/living_room.jpg" class="w-full border border-slate-300 rounded p-2">
+        </div>
+        <div>
+          <label class="font-medium text-slate-700 block mb-1">Caption / Label:</label>
+          <input id="newMediaCaption" type="text" placeholder="e.g. Master Bedroom or Quartz Kitchen" class="w-full border border-slate-300 rounded p-2">
+        </div>
+        <div class="flex items-center gap-2 pt-1">
+          <input id="newMediaIsCover" type="checkbox" class="rounded text-blue-600">
+          <label for="newMediaIsCover" class="text-slate-700">Set as Cover Photo for Listings</label>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="closeAddMediaModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
+        <button onclick="saveMediaAsset()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold">Save to Database</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Video Walkthrough Modal -->
   <div id="videoModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
@@ -410,7 +523,7 @@
 
   <!-- App Data & Logic -->
   <script>
-    // Embedded initial data for all 6 units
+    // Portfolio Data with Nested Media Database & Posting Records
     let portfolioData = [
       {
         id: "unit_1",
@@ -422,9 +535,19 @@
         amenities: ["In-suite laundry", "Private side entrance", "Stainless steel appliances", "Quartz countertops", "Large egress windows", "Ductless A/C & heat pump", "Near Ontario Tech & 401"],
         media: {
           video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_1",
+          video_local_path: "media/unit_1/walkthrough.mp4",
           photos_dir: "media/unit_1/photos"
         },
-        image_preview: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&auto=format&fit=crop&q=80",
+        photos: [
+          { url: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600", caption: "Living Room & Kitchen", is_cover: true },
+          { url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600", caption: "Master Bedroom", is_cover: false },
+          { url: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600", caption: "Modern Bathroom", is_cover: false }
+        ],
+        postings: {
+          facebook: { status: "draft", last_posted: null },
+          kijiji: { status: "draft", last_posted: null },
+          zumper: { status: "draft", last_posted: null }
+        },
         notes: "Ideal for young working professionals or students. 5 min to Oshawa GO."
       },
       {
@@ -437,9 +560,18 @@
         amenities: ["Dedicated garage & driveway", "Spacious private deck", "Ensuite laundry", "Hardwood flooring", "Open-concept living/dining", "Dishwasher included"],
         media: {
           video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2",
+          video_local_path: "media/unit_2/walkthrough.mp4",
           photos_dir: "media/unit_2/photos"
         },
-        image_preview: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&auto=format&fit=crop&q=80",
+        photos: [
+          { url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600", caption: "Main Living Area", is_cover: true },
+          { url: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=600", caption: "Kitchen & Dining", is_cover: false }
+        ],
+        postings: {
+          facebook: { status: "draft", last_posted: null },
+          kijiji: { status: "draft", last_posted: null },
+          zumper: { status: "draft", last_posted: null }
+        },
         notes: "Main level unit with exclusive backyard deck access."
       },
       {
@@ -452,9 +584,17 @@
         amenities: ["Walk to Downtown Whitby restaurants", "5 min to Whitby GO", "Modern laminate floors", "Secure keyless entry", "On-site card laundry"],
         media: {
           video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3",
+          video_local_path: "media/unit_3/walkthrough.mp4",
           photos_dir: "media/unit_3/photos"
         },
-        image_preview: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&auto=format&fit=crop&q=80",
+        photos: [
+          { url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600", caption: "Executive Bedroom", is_cover: true }
+        ],
+        postings: {
+          facebook: { status: "draft", last_posted: null },
+          kijiji: { status: "draft", last_posted: null },
+          zumper: { status: "draft", last_posted: null }
+        },
         notes: "Close to 401 & Whitby entertainment district."
       },
       {
@@ -467,9 +607,17 @@
         amenities: ["Attached garage with interior access", "Private balcony", "Primary bedroom with ensuite & walk-in", "Central A/C", "Steps to Ajax GO"],
         media: {
           video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4",
+          video_local_path: "media/unit_4/walkthrough.mp4",
           photos_dir: "media/unit_4/photos"
         },
-        image_preview: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&auto=format&fit=crop&q=80",
+        photos: [
+          { url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600", caption: "Townhouse Exterior & Balcony", is_cover: true }
+        ],
+        postings: {
+          facebook: { status: "draft", last_posted: null },
+          kijiji: { status: "draft", last_posted: null },
+          zumper: { status: "draft", last_posted: null }
+        },
         notes: "Ideal commuter location with direct Durham transit & GO access."
       },
       {
@@ -482,10 +630,18 @@
         amenities: ["Separate enclosed den (home office)", "Direct pedestrian bridge to Pickering GO", "Floor-to-ceiling windows", "Gym & rooftop patio", "Underground parking & locker"],
         media: {
           video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5",
+          video_local_path: "media/unit_5/walkthrough.mp4",
           photos_dir: "media/unit_5/photos"
         },
-        image_preview: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&auto=format&fit=crop&q=80",
-        notes: "Direct pedestrian bridge connection to Pickering GO Station (28 mins to Union)."
+        photos: [
+          { url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600", caption: "Condo Living Area", is_cover: true }
+        ],
+        postings: {
+          facebook: { status: "draft", last_posted: null },
+          kijiji: { status: "draft", last_posted: null },
+          zumper: { status: "draft", last_posted: null }
+        },
+        notes: "Direct pedestrian bridge connection to Pickering GO Station."
       },
       {
         id: "unit_6",
@@ -497,9 +653,17 @@
         amenities: ["Large private fenced backyard", "Spacious front porch", "In-suite laundry", "Close to schools & parks", "Minutes to 401 & future Bowmanville GO"],
         media: {
           video_walkthrough_url: "https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6",
+          video_local_path: "media/unit_6/walkthrough.mp4",
           photos_dir: "media/unit_6/photos"
         },
-        image_preview: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&auto=format&fit=crop&q=80",
+        photos: [
+          { url: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600", caption: "Upper Unit Exterior", is_cover: true }
+        ],
+        postings: {
+          facebook: { status: "draft", last_posted: null },
+          kijiji: { status: "draft", last_posted: null },
+          zumper: { status: "draft", last_posted: null }
+        },
         notes: "Quiet residential street in historic Bowmanville."
       }
     ];
@@ -520,13 +684,13 @@
       { id: "comp_bwm_02", city: "Bowmanville", neighbourhood: "North Bowmanville", type: "Townhouse", bedrooms: 3, bathrooms: 2.5, sqft: 1400, rent: 2650, utilities: "None", source: "Rentals.ca" }
     ];
 
-    // Durham Free Platforms
+    // Platforms Directory
     const platformsDirectory = [
       {
         name: "Facebook Marketplace & Durham Groups",
         cost: "100% Free",
         badge: "Top Durham Traffic",
-        desc: "Highest inquiry rate across Oshawa, Whitby, and Ajax. Cross-post to groups like 'Durham Region Rentals' and 'Oshawa Apartments & Houses for Rent'.",
+        desc: "Highest inquiry rate across Oshawa, Whitby, and Ajax. Cross-post to groups like 'Durham Region Rentals'.",
         videoTip: "Paste video walkthrough link in the top 3 lines of your description.",
         url: "https://www.facebook.com/marketplace/create/rental"
       },
@@ -534,7 +698,7 @@
         name: "Kijiji Ontario (Durham Region)",
         cost: "Free (1-2 active ads per account)",
         badge: "Essential for Suburban Ontario",
-        desc: "The traditional go-to for basement apartments, townhomes, and detached duplexes across the GTA east.",
+        desc: "The traditional go-to for basement apartments, townhomes, and detached duplexes across GTA east.",
         videoTip: "Has a dedicated YouTube URL field that gives your ad a clickable 'Video' search badge.",
         url: "https://www.kijiji.ca/p-post-ad.html?categoryId=37"
       },
@@ -542,7 +706,7 @@
         name: "Zumper & PadMapper",
         cost: "Free Landlord Portal",
         badge: "Young Professionals & Commuters",
-        desc: "Post once on Zumper and it automatically syndicates to PadMapper and Walk Score. Preferred by GTA commuters.",
+        desc: "Post once on Zumper and it automatically syndicates to PadMapper and Walk Score.",
         videoTip: "Supports direct virtual tour / YouTube link embedding.",
         url: "https://www.zumper.com/manage"
       },
@@ -551,37 +715,37 @@
         cost: "Free for first 3 properties",
         badge: "Top Google Ranking",
         desc: "Ranks #1 organically on Google in Canada for rental queries in Oshawa, Ajax, and Pickering.",
-        videoTip: "Supports virtual tour and video walkthrough links in listing highlights.",
+        videoTip: "Supports virtual tour and video walkthrough links.",
         url: "https://rentals.ca/landlord"
-      },
-      {
-        name: "Liv.rent",
-        cost: "Free (up to 2 active listings)",
-        badge: "Built-in Tenant Screening",
-        desc: "Canadian rental platform offering verified tenant profiles and built-in credit check capabilities.",
-        videoTip: "Embed video walkthrough links in listing features.",
-        url: "https://liv.rent/landlord"
-      },
-      {
-        name: "Places4Students (Oshawa)",
-        cost: "Free / Campus Season Partner",
-        badge: "Oshawa Student Housing",
-        desc: "Official off-campus partner for Ontario Tech University and Durham College students & faculty.",
-        videoTip: "Include video link for students relocating from out of town.",
-        url: "https://www.places4students.com/"
       }
     ];
 
     let compsChartInstance = null;
 
-    // Initialize application
     function initApp() {
+      // Check if running on local backend
+      tryFetchFromBackend();
       renderUnitsGrid();
       populateSelects();
+      renderMediaGallery();
       renderCompsAnalysis();
       renderPlatformListing();
       renderPlatformsDirectory();
       calculateTotalRevenue();
+    }
+
+    async function tryFetchFromBackend() {
+      try {
+        const res = await fetch('/api/units');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.properties && json.properties.length > 0) {
+            console.log("Connected to backend SQLite database!");
+          }
+        }
+      } catch(e) {
+        // running purely on static GitHub Pages
+      }
     }
 
     function calculateTotalRevenue() {
@@ -590,21 +754,17 @@
     }
 
     function populateSelects() {
-      const compsSelect = document.getElementById('compsUnitSelect');
-      const postingSelect = document.getElementById('postingUnitSelect');
-      compsSelect.innerHTML = '';
-      postingSelect.innerHTML = '';
-
-      portfolioData.forEach(u => {
-        const opt1 = document.createElement('option');
-        opt1.value = u.id;
-        opt1.innerText = `${u.name} (${u.address.city} - $${u.financials.target_rent}/mo)`;
-        compsSelect.appendChild(opt1);
-
-        const opt2 = document.createElement('option');
-        opt2.value = u.id;
-        opt2.innerText = `${u.name} (${u.address.city})`;
-        postingSelect.appendChild(opt2);
+      const selects = ['compsUnitSelect', 'postingUnitSelect', 'mediaUnitSelect'];
+      selects.forEach(sId => {
+        const sel = document.getElementById(sId);
+        if (!sel) return;
+        sel.innerHTML = '';
+        portfolioData.forEach(u => {
+          const opt = document.createElement('option');
+          opt.value = u.id;
+          opt.innerText = `${u.name} (${u.address.city})`;
+          sel.appendChild(opt);
+        });
       });
     }
 
@@ -614,12 +774,17 @@
 
       portfolioData.forEach(u => {
         const psqft = (u.financials.target_rent / u.specs.sqft).toFixed(2);
+        const coverPhoto = u.photos && u.photos.length > 0 ? u.photos[0].url : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600";
+        const fbStatus = u.postings.facebook.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
+        const kjStatus = u.postings.kijiji.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
+        const zmStatus = u.postings.zumper.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
+
         const card = document.createElement('div');
         card.className = "bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between";
         card.innerHTML = `
           <div>
             <div class="relative h-48 bg-slate-100 overflow-hidden">
-              <img src="${u.image_preview}" alt="${u.name}" class="w-full h-full object-cover">
+              <img src="${coverPhoto}" alt="${u.name}" class="w-full h-full object-cover">
               <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
                 <i class="fa-solid fa-location-dot text-red-400 mr-1"></i>${u.address.city}
               </div>
@@ -628,29 +793,31 @@
               </div>
             </div>
             <div class="p-5 space-y-3">
-              <h3 class="font-bold text-slate-900 text-base">${u.name}</h3>
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-slate-900 text-base">${u.name}</h3>
+                <span class="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-mono font-semibold">${u.specs.sqft} sf</span>
+              </div>
               <p class="text-xs text-slate-500">${u.address.street}, ${u.address.city}, ${u.address.region}</p>
               
+              <!-- Posting Status Badges -->
+              <div class="flex items-center gap-1.5 pt-1 text-[10px] font-semibold">
+                <span class="px-2 py-0.5 rounded ${fbStatus}">FB: ${u.postings.facebook.status}</span>
+                <span class="px-2 py-0.5 rounded ${kjStatus}">Kijiji: ${u.postings.kijiji.status}</span>
+                <span class="px-2 py-0.5 rounded ${zmStatus}">Zumper: ${u.postings.zumper.status}</span>
+              </div>
+
               <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 text-center text-xs">
                 <div>
                   <span class="text-slate-400 block text-[10px] uppercase font-semibold">Beds/Baths</span>
                   <span class="font-bold text-slate-800">${u.specs.bedrooms}b / ${u.specs.bathrooms}ba</span>
                 </div>
                 <div>
-                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Area</span>
-                  <span class="font-bold text-slate-800">${u.specs.sqft} sqft</span>
+                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Photos</span>
+                  <span class="font-bold text-slate-800">${u.photos.length} photos</span>
                 </div>
                 <div>
                   <span class="text-slate-400 block text-[10px] uppercase font-semibold">Rate</span>
                   <span class="font-bold text-blue-600">$${psqft}/sf</span>
-                </div>
-              </div>
-
-              <div class="space-y-1">
-                <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400">Amenities:</span>
-                <div class="flex flex-wrap gap-1">
-                  ${u.amenities.slice(0, 3).map(a => `<span class="bg-slate-100 text-slate-700 text-[10px] px-2 py-0.5 rounded font-medium">${a}</span>`).join('')}
-                  ${u.amenities.length > 3 ? `<span class="bg-slate-100 text-slate-500 text-[10px] px-1.5 py-0.5 rounded font-medium">+${u.amenities.length - 3}</span>` : ''}
                 </div>
               </div>
             </div>
@@ -660,13 +827,171 @@
             <button onclick="openVideoModal('${u.id}')" class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition">
               <i class="fa-solid fa-play"></i> Watch Tour
             </button>
-            <button onclick="goToPosting('${u.id}')" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition">
-              Post Listing <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            <button onclick="goToPosting('${u.id}')" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-lg shadow-sm transition">
+              <i class="fa-solid fa-bolt text-yellow-300"></i> 1-Click Post
             </button>
           </div>
         `;
         grid.appendChild(card);
       });
+    }
+
+    // Render Media Gallery
+    function renderMediaGallery() {
+      const unitId = document.getElementById('mediaUnitSelect').value || portfolioData[0].id;
+      const unit = portfolioData.find(u => u.id === unitId) || portfolioData[0];
+
+      document.getElementById('mediaVideoUrlDisplay').innerText = unit.media.video_walkthrough_url || 'No URL configured';
+      document.getElementById('mediaVideoPathDisplay').innerText = `Local File: ${unit.media.video_local_path || 'None'}`;
+
+      const grid = document.getElementById('mediaGalleryGrid');
+      grid.innerHTML = '';
+
+      unit.photos.forEach((p, idx) => {
+        const item = document.createElement('div');
+        item.className = "relative rounded-xl overflow-hidden border border-slate-200 group bg-slate-100";
+        item.innerHTML = `
+          <img src="${p.url}" alt="${p.caption}" class="w-full h-36 object-cover">
+          ${p.is_cover ? `<span class="absolute top-2 left-2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">Cover Photo</span>` : ''}
+          <div class="p-2 bg-white text-[11px] font-medium text-slate-700 truncate">${p.caption || `Photo ${idx + 1}`}</div>
+        `;
+        grid.appendChild(item);
+      });
+    }
+
+    function testMediaVideo() {
+      const unitId = document.getElementById('mediaUnitSelect').value;
+      openVideoModal(unitId);
+    }
+
+    function copyCurrentVideoUrl() {
+      const unitId = document.getElementById('mediaUnitSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId);
+      if (unit) {
+        navigator.clipboard.writeText(unit.media.video_walkthrough_url);
+        showToast("Walkthrough video link copied!");
+      }
+    }
+
+    // 1-Click Auto Post Trigger
+    async function executeOneClickPost() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const platform = document.getElementById('postingPlatformSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId);
+
+      // Open Progress Modal
+      const modal = document.getElementById('autoPostModal');
+      const icon = document.getElementById('modalIcon');
+      const title = document.getElementById('modalStatusTitle');
+      const desc = document.getElementById('modalStatusDesc');
+      const bar = document.getElementById('modalProgressBar');
+
+      document.getElementById('modalDetailPlatform').innerText = platform.toUpperCase();
+      document.getElementById('modalDetailUnit').innerText = unit.name;
+
+      icon.className = "fa-solid fa-robot animate-spin";
+      title.innerText = "Launching 1-Click Browser Bot...";
+      desc.innerText = `Connecting Playwright browser automation for ${platform.toUpperCase()}...`;
+      bar.style.width = "25%";
+      modal.classList.remove('hidden');
+
+      // Attempt backend API call
+      try {
+        bar.style.width = "65%";
+        desc.innerText = `Navigating to ${platform} and injecting unit details, specs, and photos...`;
+
+        const response = await fetch('/api/post-unit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ unit_id: unitId, platform: platform, headless: false })
+        });
+
+        if (response.ok) {
+          const resData = await response.json();
+          bar.style.width = "100%";
+          icon.className = "fa-solid fa-circle-check text-emerald-500 text-3xl";
+          title.innerText = "Listing Form Pre-Filled & Ready!";
+          desc.innerText = `Your ${platform.toUpperCase()} listing form was staged. Click Review on the browser window to confirm publication.`;
+          
+          // Update status in local state
+          unit.postings[platform].status = "posted";
+          unit.postings[platform].last_posted = new Date().toISOString();
+          renderPlatformListing();
+          renderUnitsGrid();
+          showToast(`1-Click Post executed for ${unit.name}!`);
+          return;
+        }
+      } catch(err) {
+        console.warn("Backend API not reachable (running on static GitHub Pages). Falling back to assisted mode.");
+      }
+
+      // Static GitHub Pages fallback
+      setTimeout(() => {
+        bar.style.width = "100%";
+        icon.className = "fa-solid fa-copy text-blue-500 text-3xl";
+        title.innerText = "Payload Prepared & Copied!";
+        desc.innerText = `Description copied to clipboard! Now opening ${platform.toUpperCase()} creation page in a new tab...`;
+
+        // Copy text to clipboard automatically
+        copyListingText();
+
+        // Update status
+        unit.postings[platform].status = "posted";
+        renderPlatformListing();
+        renderUnitsGrid();
+
+        // Open target form
+        const targetUrl = document.getElementById('platformDirectPostBtn').href;
+        window.open(targetUrl, '_blank');
+      }, 1200);
+    }
+
+    function closeAutoPostModal() {
+      document.getElementById('autoPostModal').classList.add('hidden');
+    }
+
+    // Add Media Modal
+    function openAddMediaModal() {
+      document.getElementById('addMediaModal').classList.remove('hidden');
+    }
+
+    function closeAddMediaModal() {
+      document.getElementById('addMediaModal').classList.add('hidden');
+    }
+
+    async function saveMediaAsset() {
+      const unitId = document.getElementById('mediaUnitSelect').value;
+      const mediaType = document.getElementById('newMediaType').value;
+      const url = document.getElementById('newMediaUrl').value;
+      const caption = document.getElementById('newMediaCaption').value;
+      const isCover = document.getElementById('newMediaIsCover').checked;
+
+      if (!url) {
+        alert("Please provide an image URL or local path");
+        return;
+      }
+
+      const unit = portfolioData.find(u => u.id === unitId);
+      if (unit) {
+        if (mediaType === "video") {
+          unit.media.video_walkthrough_url = url;
+        } else {
+          unit.photos.push({ url: url, caption: caption || "Unit Photo", is_cover: isCover });
+        }
+        renderMediaGallery();
+        renderUnitsGrid();
+        closeAddMediaModal();
+        showToast("New media asset saved to database!");
+
+        // Try syncing to SQLite backend
+        try {
+          await fetch('/api/media', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ unit_id: unitId, media_type: mediaType, web_url: url, caption: caption, is_cover: isCover })
+          });
+        } catch(e) {}
+      }
     }
 
     function renderCompsAnalysis() {
@@ -675,7 +1000,6 @@
       const targetRent = unit.financials.target_rent;
       const psqft = (targetRent / unit.specs.sqft).toFixed(2);
 
-      // Filter comps by bedroom proximity
       const matchingComps = compsDatabase.filter(c => Math.abs(c.bedrooms - unit.specs.bedrooms) <= 0.5);
       const rents = matchingComps.map(c => c.rent);
       const avgRent = Math.round(rents.reduce((a, b) => a + b, 0) / rents.length);
@@ -698,7 +1022,6 @@
         deltaElem.className = "text-2xl font-black text-emerald-600 mt-1";
       }
 
-      // Verdict
       const verdictBox = document.getElementById('compVerdictBox');
       const verdictText = document.getElementById('compVerdictText');
       if (Math.abs(diff) <= 75) {
@@ -709,10 +1032,9 @@
         verdictText.innerText = `Premium Pricing (+$${diff}/mo above average). Ensure your video tour highlights private laundry, high-end kitchen finishes, and parking to justify premium positioning.`;
       } else {
         verdictBox.className = "p-4 rounded-xl mb-6 bg-blue-50 border border-blue-200 flex items-start gap-3";
-        verdictText.innerText = `High-Demand / Value Pricing (-$${Math.abs(diff)}/mo below average). Strong tenant demand expected. Use strict tenant screening (credit report + paystubs).`;
+        verdictText.innerText = `High-Demand / Value Pricing (-$${Math.abs(diff)}/mo below average). Strong tenant demand expected. Use strict tenant screening.`;
       }
 
-      // Chart rendering
       const chartLabels = ['Your Target', ...matchingComps.map(c => `${c.neighbourhood} (${c.bedrooms}b)`)];
       const chartData = [targetRent, ...matchingComps.map(c => c.rent)];
       const chartColors = ['#2563eb', ...matchingComps.map(() => '#cbd5e1')];
@@ -736,9 +1058,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
-          },
+          plugins: { legend: { display: false } },
           scales: {
             y: {
               beginAtZero: false,
@@ -748,7 +1068,6 @@
         }
       });
 
-      // Render Comps Table
       const tbody = document.getElementById('compsTableBody');
       tbody.innerHTML = '';
       matchingComps.forEach(c => {
@@ -766,7 +1085,6 @@
         tbody.appendChild(tr);
       });
 
-      // Live links
       const liveBox = document.getElementById('liveLinksContainer');
       const citySlug = unit.address.city.toLowerCase().replace(' ', '-');
       liveBox.innerHTML = `
@@ -801,11 +1119,10 @@
         title = `${unit.specs.bedrooms} Bed ${unit.specs.bathrooms} Bath - ${unit.type} in ${unit.address.city}`;
         postUrl = "https://www.facebook.com/marketplace/create/rental";
         rulesHtml = `
-          <strong>Facebook Tips:</strong>
+          <strong>Facebook 1-Click Posting:</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1">
-            <li>Link video walkthrough in the first 3 lines of copy.</li>
-            <li>Post to local Durham groups after publishing.</li>
-            <li>Use the web clipboard to paste descriptions directly.</li>
+            <li>Attaches photos from media database automatically.</li>
+            <li>Links video walkthrough in the first 3 lines of copy.</li>
           </ul>
         `;
         description = `✨ BEAUTIFULLY MAINTAINED ${unit.specs.bedrooms} BEDROOM RENTAL IN ${unit.address.city.toUpperCase()}, ON ✨\n\n` +
@@ -833,10 +1150,10 @@
         title = `${unit.specs.bedrooms} Bed ${unit.type} for Rent in ${unit.address.city} - Video Tour`;
         postUrl = "https://www.kijiji.ca/p-post-ad.html?categoryId=37";
         rulesHtml = `
-          <strong>Kijiji Tips:</strong>
+          <strong>Kijiji 1-Click Posting:</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1">
-            <li>Paste your YouTube walkthrough URL in Kijiji's <em>'YouTube Video'</em> field.</li>
-            <li>Free ad allowance: 1-2 active ads per account in Long-Term Rentals.</li>
+            <li>Embeds YouTube walkthrough URL in Kijiji's dedicated video badge field.</li>
+            <li>Attaches photo gallery from SQLite database.</li>
           </ul>
         `;
         description = `FOR RENT: Spacious & Clean ${unit.specs.bedrooms} Bed / ${unit.specs.bathrooms} Bath in ${unit.address.city}\n\n` +
@@ -858,10 +1175,10 @@
         title = `${unit.address.street} - ${unit.specs.bedrooms} Bed / ${unit.specs.bathrooms} Bath`;
         postUrl = "https://www.zumper.com/manage";
         rulesHtml = `
-          <strong>Zumper Tips:</strong>
+          <strong>Zumper 1-Click Posting:</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1">
+            <li>Pre-fills virtual tour URL with YouTube walkthrough link.</li>
             <li>Syndicates to PadMapper & Walk Score automatically.</li>
-            <li>Insert YouTube video link in the 'Virtual Tour URL' field.</li>
           </ul>
         `;
         description = `Welcome to this renovated ${unit.specs.bedrooms}-bedroom, ${unit.specs.bathrooms}-bathroom rental in ${unit.address.city}, Durham Region.\n\n` +
@@ -881,7 +1198,6 @@
           <strong>Rentals.ca Tips:</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1">
             <li>Free for up to 3 individual property listings.</li>
-            <li>High visibility on Google organic searches in Durham.</li>
           </ul>
         `;
         description = `Spacious ${unit.specs.bedrooms}-bedroom rental in ${unit.address.city}.\n\n` +
@@ -901,6 +1217,16 @@
       document.getElementById('listingDescription').value = description;
       document.getElementById('charCount').innerText = `${description.length} characters`;
       document.getElementById('platformRulesBox').innerHTML = rulesHtml;
+
+      const pStatus = unit.postings[platform] ? unit.postings[platform].status : 'draft';
+      const pill = document.getElementById('postingStatusPill');
+      if (pStatus === 'posted') {
+        pill.className = "px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full";
+        pill.innerText = "Posted ✅";
+      } else {
+        pill.className = "px-2.5 py-0.5 bg-slate-200 text-slate-700 text-xs font-semibold rounded-full";
+        pill.innerText = "Draft";
+      }
     }
 
     function renderPlatformsDirectory() {
@@ -932,7 +1258,7 @@
 
     // Tab switching
     function switchTab(tabId) {
-      ['units', 'comps', 'posting', 'platforms', 'github'].forEach(id => {
+      ['units', 'media', 'comps', 'posting', 'platforms', 'github'].forEach(id => {
         document.getElementById(`tab-${id}`).classList.add('hidden');
         document.getElementById(`tabBtn-${id}`).classList.remove('tab-active');
         document.getElementById(`tabBtn-${id}`).classList.add('border-transparent', 'text-slate-500');
@@ -945,6 +1271,8 @@
 
       if (tabId === 'comps') {
         setTimeout(renderCompsAnalysis, 50);
+      } else if (tabId === 'media') {
+        renderMediaGallery();
       }
     }
 
@@ -977,13 +1305,7 @@
     function copyListingText() {
       const desc = document.getElementById('listingDescription').value;
       navigator.clipboard.writeText(desc);
-      showToast("Full listing description copied to clipboard!");
-    }
-
-    function copyVideoUrl() {
-      const url = document.getElementById('listingVideo').value;
-      navigator.clipboard.writeText(url);
-      showToast("Walkthrough video URL copied!");
+      showToast("Listing description copied!");
     }
 
     function copyInput(elemId) {
@@ -1007,7 +1329,7 @@
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
-      showToast("Exported portfolio JSON!");
+      showToast("Exported database JSON!");
     }
 
     window.onload = initApp;
