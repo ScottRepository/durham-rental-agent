@@ -106,7 +106,7 @@
         <div class="flex items-center gap-3">
           <div class="text-right">
             <span class="text-xs text-slate-500 uppercase tracking-wider block">Total Projected Revenue</span>
-            <span id="totalMonthlyRent" class="text-xl font-extrabold text-blue-600">$13,800 CAD/mo</span>
+            <span id="totalMonthlyRent" class="text-xl font-extrabold text-blue-600">$11,665 CAD/mo</span>
           </div>
         </div>
       </div>
@@ -1625,6 +1625,9 @@
         const fbStatus = u.postings.facebook.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
         const kjStatus = u.postings.kijiji.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
         const zmStatus = u.postings.zumper.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
+        const rcStatus = (u.postings.rentals_ca && u.postings.rentals_ca.status === "posted") ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
+        const lrStatus = (u.postings.liv_rent && u.postings.liv_rent.status === "posted") ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
+        const availBadge = u.financials.available_date || "Immediate";
 
         const card = document.createElement('div');
         card.className = "bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between";
@@ -1633,7 +1636,7 @@
             <div class="relative h-48 bg-slate-100 overflow-hidden">
               <img src="${coverPhoto}" alt="${u.name}" class="w-full h-full object-cover">
               <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
-                <i class="fa-solid fa-location-dot text-red-400 mr-1"></i>${u.address.city}
+                <i class="fa-solid fa-location-dot text-red-400 mr-1"></i>${u.address.city} • Avail: ${availBadge}
               </div>
               <div class="absolute top-3 right-3 bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full shadow">
                 $${u.financials.target_rent.toLocaleString()}/mo
@@ -1647,10 +1650,12 @@
               <p class="text-xs text-slate-500">${u.address.street}, ${u.address.city}, ${u.address.region}</p>
               
               <!-- Posting Status Badges -->
-              <div class="flex items-center gap-1.5 pt-1 text-[10px] font-semibold">
+              <div class="flex flex-wrap items-center gap-1 pt-1 text-[10px] font-semibold">
                 <span class="px-2 py-0.5 rounded ${fbStatus}">FB: ${u.postings.facebook.status}</span>
                 <span class="px-2 py-0.5 rounded ${kjStatus}">Kijiji: ${u.postings.kijiji.status}</span>
                 <span class="px-2 py-0.5 rounded ${zmStatus}">Zumper: ${u.postings.zumper.status}</span>
+                <span class="px-2 py-0.5 rounded ${rcStatus}">Rentals.ca: ${u.postings.rentals_ca ? u.postings.rentals_ca.status : 'draft'}</span>
+                <span class="px-2 py-0.5 rounded ${lrStatus}">Liv.rent: ${u.postings.liv_rent ? u.postings.liv_rent.status : 'draft'}</span>
               </div>
 
               <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 text-center text-xs">
@@ -1836,7 +1841,8 @@
       const unit = portfolioData.find(u => u.id === unitId);
       if (unit) {
         if (mediaType === "video") {
-          unit.media.video_walkthrough_url = url;
+          if (!unit.cloud_media) unit.cloud_media = {};
+          unit.cloud_media.youtube_video_url = url;
         } else {
           unit.photos.push({ url: url, caption: caption || "Unit Photo", is_cover: isCover });
         }
@@ -1905,30 +1911,32 @@
         compsChartInstance.destroy();
       }
 
-      const ctx = document.getElementById('compsChart').getContext('2d');
-      compsChartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: chartLabels,
-          datasets: [{
-            label: 'Monthly Rent (CAD)',
-            data: chartData,
-            backgroundColor: chartColors,
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: {
-              beginAtZero: false,
-              min: Math.floor(minRent * 0.85)
+      if (typeof Chart !== 'undefined') {
+        const ctx = document.getElementById('compsChart').getContext('2d');
+        compsChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: chartLabels,
+            datasets: [{
+              label: 'Monthly Rent (CAD)',
+              data: chartData,
+              backgroundColor: chartColors,
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                beginAtZero: false,
+                min: Math.floor(minRent * 0.85)
+              }
             }
           }
-        }
-      });
+        });
+      }
 
       const tbody = document.getElementById('compsTableBody');
       tbody.innerHTML = '';
@@ -1957,7 +1965,7 @@
       const liveBox = document.getElementById('liveLinksContainer');
       const citySlug = unit.address.city.toLowerCase().replace(' ', '-');
       liveBox.innerHTML = `
-        <a href="https://www.viewit.ca/city/${citySlug}-apartments-for-rent" target="_blank" class="block p-2 bg-white rounded-lg border border-purple-200 hover:border-purple-500 hover:text-purple-600 transition text-xs font-semibold shadow-sm">
+        <a href="https://www.viewit.ca/rentals/${citySlug}" target="_blank" class="block p-2 bg-white rounded-lg border border-purple-200 hover:border-purple-500 hover:text-purple-600 transition text-xs font-semibold shadow-sm">
           <i class="fa-solid fa-building text-purple-600 mr-1.5"></i> Viewit.ca ${unit.address.city} Apartment Buildings
         </a>
         <a href="https://www.realtor.ca/on/${citySlug}/rentals" target="_blank" class="block p-2 bg-white rounded-lg border border-red-200 hover:border-red-500 hover:text-red-600 transition text-xs font-semibold shadow-sm">
@@ -2351,7 +2359,7 @@
       if (unit.id === "unit_1") {
         unitSpecificBullet = "* Lower Level Unit 1 is half above ground and half below. Lots of light\n* The second bedroom is smaller so it would be suitable for an office, spare bedroom, small bedroom or den.";
       } else if (unit.id === "unit_2") {
-        unitSpecificBullet = "* Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.";
+        unitSpecificBullet = "* Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.\n* Video walkthrough of sister lower-level suite available to preview layout/finishes while Unit 2 video is filmed this Friday.";
       } else if (unit.id === "unit_3") {
         unitSpecificBullet = "* Upper Level Unit 3 features a private walkout balcony overlooking the property grounds.\n* Full 2 bedroom layout with spacious living room.";
       } else if (unit.id === "unit_4") {
@@ -2364,17 +2372,22 @@
         unitSpecificBullet = `* ${unit.notes || 'Well-maintained boutique apartment suite.'}`;
       }
 
+      const rawAvail = unit.financials.available_date || "Immediate";
+      const availIntro = rawAvail.toLowerCase() === "immediate" ? "immediately" : `for ${rawAvail}`;
+      const videoHeading = unit.id === "unit_2"
+        ? `🎥 YouTube Walkthrough Tour (Model Suite / Similar Finishes):\n${videoUrl}\n*(Unit 2 specific walkthrough video being filmed this Friday!)*`
+        : `🎥 YouTube Walkthrough Tour:\n${videoUrl}`;
+
       const standardReplicatedDesc = `Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - ${unit.name}
 
 FILL OUT FORM TO SET SHOWING DATE/TIME
 ${formUrl}
 
-Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent ${availIntro}. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
 
 Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
 
-🎥 YouTube Walkthrough Tour:
-${videoUrl}
+${videoHeading}
 
 KEY HIGHLIGHTS:
 * Kent St off Brock, Whitby
@@ -2387,7 +2400,7 @@ ${unitSpecificBullet}
 * No Pets
 * Suitable for Professional, retired or mature student
 * Owners have many past references from previous tenants providing quality service to tenants
-* Available Immediately
+* Available ${rawAvail}
 
 FILL OUT FORM TO SET SHOWING DATE/TIME
 ${formUrl}
@@ -2561,7 +2574,9 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
           name: u.name,
           facebook: localStorage.getItem(`custom_desc_${u.id}_facebook`) || "Default template",
           kijiji: localStorage.getItem(`custom_desc_${u.id}_kijiji`) || "Default template",
-          zumper: localStorage.getItem(`custom_desc_${u.id}_zumper`) || "Default template"
+          zumper: localStorage.getItem(`custom_desc_${u.id}_zumper`) || "Default template",
+          rentals_ca: localStorage.getItem(`custom_desc_${u.id}_rentals_ca`) || "Default template",
+          liv_rent: localStorage.getItem(`custom_desc_${u.id}_liv_rent`) || "Default template"
         };
       });
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
@@ -2631,9 +2646,10 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
     function openVideoModal(unitId) {
       const unit = portfolioData.find(u => u.id === unitId);
       if (!unit) return;
+      const videoUrl = (unit.cloud_media && unit.cloud_media.youtube_video_url) || (unit.media && unit.media.video_walkthrough_url) || "https://www.youtube.com/playlist?list=PLLwTe84kfw7U";
       document.getElementById('videoUnitHeader').innerText = unit.name;
-      document.getElementById('videoModalUrl').innerText = unit.media.video_walkthrough_url;
-      document.getElementById('videoModalOpenLink').href = unit.media.video_walkthrough_url;
+      document.getElementById('videoModalUrl').innerText = videoUrl;
+      document.getElementById('videoModalOpenLink').href = videoUrl;
       document.getElementById('videoModal').classList.remove('hidden');
     }
 
@@ -2686,7 +2702,7 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
       showToast("Exported database JSON!");
     }
 
-    window.onload = initApp;
+    document.addEventListener('DOMContentLoaded', initApp);
   
     // ==========================================
     // POST ALL VERIFICATION QUEUE CONTROLLER
@@ -2796,6 +2812,8 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
       if (queueUnitData.postings && queueUnitData.postings[pInfo.id]) {
         queueUnitData.postings[pInfo.id].status = "posted";
       }
+      renderUnitsGrid();
+      renderPlatformListing();
 
       // Open destination platform
       window.open(pInfo.url, '_blank');

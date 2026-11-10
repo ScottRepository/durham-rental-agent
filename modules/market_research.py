@@ -303,7 +303,7 @@ def get_live_market_search_urls(city: str, beds: int) -> Dict[str, str]:
     """Generates direct URL links for real-time market comps lookup in Durham Region."""
     city_slug = city.strip().lower().replace(" ", "-")
     return {
-        "Viewit.ca (Apartments)": f"https://www.viewit.ca/city/{city_slug}-apartments-for-rent",
+        "Viewit.ca (Apartments)": f"https://www.viewit.ca/rentals/{city_slug}",
         "Realtor.ca (Whitby Apartments)": f"https://www.realtor.ca/on/{city_slug}/rentals",
         "Rentals.ca": f"https://rentals.ca/{city_slug}/{beds}-bedrooms",
         "Zumper": f"https://www.zumper.com/apartments-for-rent/{city_slug}-on/{beds}-beds",
