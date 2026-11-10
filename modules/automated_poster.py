@@ -101,6 +101,12 @@ class AutomatedPoster:
                 print(f"[Facebook Auto-Fill Note] {fill_err}")
 
             page.screenshot(path=str(screenshot_path))
+            if not self.headless:
+                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                try:
+                    page.wait_for_timeout(60000)
+                except Exception:
+                    pass
             context.close()
 
         return {
@@ -144,6 +150,12 @@ class AutomatedPoster:
                 print(f"[Kijiji Auto-Fill Note] {fill_err}")
 
             page.screenshot(path=str(screenshot_path))
+            if not self.headless:
+                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                try:
+                    page.wait_for_timeout(60000)
+                except Exception:
+                    pass
             context.close()
 
         return {
@@ -173,6 +185,12 @@ class AutomatedPoster:
             time.sleep(3)
 
             page.screenshot(path=str(screenshot_path))
+            if not self.headless:
+                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                try:
+                    page.wait_for_timeout(60000)
+                except Exception:
+                    pass
             context.close()
 
         return {
@@ -201,6 +219,12 @@ class AutomatedPoster:
             time.sleep(3)
 
             page.screenshot(path=str(screenshot_path))
+            if not self.headless:
+                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                try:
+                    page.wait_for_timeout(60000)
+                except Exception:
+                    pass
             context.close()
 
         return {
@@ -229,6 +253,12 @@ class AutomatedPoster:
             time.sleep(3)
 
             page.screenshot(path=str(screenshot_path))
+            if not self.headless:
+                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                try:
+                    page.wait_for_timeout(60000)
+                except Exception:
+                    pass
             context.close()
 
         return {

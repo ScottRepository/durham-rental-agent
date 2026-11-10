@@ -191,6 +191,18 @@ def cmd_toggle(args):
     color = "green" if is_active else "yellow"
     console.print(f"[bold {color}]✔ {res['message']}[/bold {color}]")
 
+def cmd_post(args):
+    from modules.automated_poster import AutomatedPoster
+    console.print(f"[bold blue]Launching Playwright automated poster for {args.unit} on {args.platform}...[/bold blue]")
+    poster = AutomatedPoster(unit_id=args.unit, platform=args.platform, headless=args.headless)
+    res = poster.run()
+    if res.get("success"):
+        console.print(f"[bold green]✔ Successfully staged {args.platform} listing for {args.unit}![/bold green]")
+        if res.get("details", {}).get("screenshot"):
+            console.print(f"Screenshot captured: [dim]{res['details']['screenshot']}[/dim]")
+    else:
+        console.print(f"[bold red]❌ Posting failed: {res.get('error')}[/bold red]")
+
 def main():
     parser = argparse.ArgumentParser(description="Durham Region Property Management Posting & Market Comps Agent")
     subparsers = parser.add_subparsers(dest="command", help="Agent Commands")
@@ -221,6 +233,12 @@ def main():
     tog_p.add_argument("--unit", type=str, required=True, help="Unit ID (e.g. unit_3)")
     tog_p.add_argument("--state", type=str, required=True, choices=["active", "inactive", "true", "false", "on", "off"], help="New status")
 
+    # post
+    post_p = subparsers.add_parser("post", help="Launch Playwright browser bot to auto-fill listing on Facebook, Kijiji, etc.")
+    post_p.add_argument("--unit", type=str, required=True, help="Unit ID (e.g. unit_1)")
+    post_p.add_argument("--platform", type=str, default="facebook", choices=["facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"], help="Target platform")
+    post_p.add_argument("--headless", action="store_true", help="Run browser in background")
+
     args = parser.parse_args()
     if not args.command:
         parser.print_help()
@@ -240,6 +258,8 @@ def main():
         cmd_refresh(args)
     elif args.command == "toggle":
         cmd_toggle(args)
+    elif args.command == "post":
+        cmd_post(args)
 
 if __name__ == "__main__":
     main()
