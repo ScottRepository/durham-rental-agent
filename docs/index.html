@@ -99,6 +99,17 @@
     </div>
   </header>
 
+  <!-- Bot Server Connection Banner -->
+  <div id="botConnectionBanner" class="bg-slate-900 text-white px-4 sm:px-6 py-2.5 text-xs flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 shadow-inner">
+    <div class="flex items-center gap-2.5">
+      <span id="botStatusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span id="botStatusText" class="font-medium text-slate-200">Connecting to Local Bot Engine...</span>
+    </div>
+    <div id="botStatusAction" class="flex items-center gap-2">
+      <!-- Populated by checkBotServerStatus() -->
+    </div>
+  </div>
+
   <!-- Main Content Container -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
@@ -1320,13 +1331,17 @@
         <button onclick="closePostAllModal()" class="px-4 py-2 border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-semibold rounded-lg transition">
           Exit Queue
         </button>
-        <div class="flex items-center gap-2">
-          <button onclick="skipQueuePlatform()" class="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1">
-            <span>Skip Platform</span> <i class="fa-solid fa-arrow-right text-slate-400"></i>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="skipQueuePlatform()" class="px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1" title="Skip this platform for now">
+            <span>Skip</span> <i class="fa-solid fa-arrow-right text-slate-400"></i>
           </button>
-          <button onclick="approveAndDispatchCurrentQueueItem()" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold rounded-lg shadow-md transition flex items-center gap-2">
-            <i class="fa-solid fa-check-circle text-sm"></i>
-            <span id="queueApproveBtnText">Approve & Post</span>
+          <button onclick="approveAndDispatchCurrentQueueItem('manual')" class="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1.5" title="Copy ad text to clipboard and open listing site in a new tab">
+            <i class="fa-solid fa-copy text-slate-500"></i>
+            <span>Copy & Open Form</span>
+          </button>
+          <button id="queueBotBtn" onclick="approveAndDispatchCurrentQueueItem('bot')" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white text-xs font-bold rounded-lg shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-robot text-sm"></i>
+            <span id="queueApproveBtnText">Approve & Auto-Post (Bot)</span>
           </button>
         </div>
       </div>
@@ -2272,6 +2287,7 @@
     function initApp() {
       // Check if running on local backend
       tryFetchFromBackend();
+      checkBotServerStatus();
       populateSelects();
       // Default Ad Studio to Unit 3 (Available Immediately) or Unit 2
       const postSel = document.getElementById('postingUnitSelect');
@@ -2283,6 +2299,31 @@
       renderPlatformsDirectory();
       calculateTotalRevenue();
       initScreeningModule();
+    }
+
+    async function checkBotServerStatus() {
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const dot = document.getElementById('botStatusDot');
+      const text = document.getElementById('botStatusText');
+      const action = document.getElementById('botStatusAction');
+      if (!dot || !text || !action) return;
+
+      if (isLocal) {
+        try {
+          const res = await fetch('/api/units');
+          if (res.ok) {
+            dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+            text.innerHTML = `<strong>Local Bot Server Connected (Port 8000)</strong> — Playwright Browser Bot & Google Drive Photo Auto-Upload Ready!`;
+            action.innerHTML = `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-600/50 px-2.5 py-0.5 rounded text-[11px] font-semibold flex items-center gap-1.5"><i class="fa-solid fa-robot"></i> 1-Click Bot Active</span>`;
+            return;
+          }
+        } catch(e) {}
+      }
+
+      // Cloud preview fallback
+      dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400";
+      text.innerHTML = `<strong>Cloud Preview Mode (${window.location.hostname})</strong> — Web security restricts automated browser control from cloud URLs.`;
+      action.innerHTML = `<a href="http://localhost:8000" target="_blank" class="px-2.5 py-1 bg-amber-400 text-slate-950 font-bold rounded text-[11px] hover:bg-amber-300 transition flex items-center gap-1 shadow-sm"><i class="fa-solid fa-bolt"></i> Switch to Local Bot (localhost:8000)</a>`;
     }
 
     async function tryFetchFromBackend() {
@@ -3948,30 +3989,86 @@ function renderPlatformsDirectory() {
       document.getElementById('queueVerifyDesc').value = descVal;
       document.getElementById('queueCharCount').innerText = `${descVal.length} characters`;
 
-      document.getElementById('queueApproveBtnText').innerText = `Approve & Post to ${pInfo.name}`;
+      document.getElementById('queueApproveBtnText').innerText = `Approve & Auto-Post to ${pInfo.name}`;
     }
 
-    function approveAndDispatchCurrentQueueItem() {
+    async function approveAndDispatchCurrentQueueItem(mode = 'bot') {
       const pInfo = queuePlatformsList[currentQueueIdx];
       const verifiedDesc = document.getElementById('queueVerifyDesc').value;
-      
-      // Copy verified copy to clipboard
-      navigator.clipboard.writeText(verifiedDesc);
+      const verifiedTitle = document.getElementById('queueVerifyTitle').value;
+      const verifiedRent = document.getElementById('queueVerifyRent').value;
 
-      // Mark status as posted
+      // Always copy ad text to clipboard for user convenience
+      try {
+        await navigator.clipboard.writeText(verifiedDesc);
+      } catch(e) {}
+
+      if (mode === 'manual') {
+        queueApprovedStatuses[pInfo.id] = true;
+        if (queueUnitData.postings && queueUnitData.postings[pInfo.id]) {
+          queueUnitData.postings[pInfo.id].status = "posted";
+          queueUnitData.postings[pInfo.id].last_posted = new Date().toISOString();
+        }
+        renderUnitsGrid();
+        renderPlatformListing();
+        window.open(pInfo.url, '_blank');
+        showToast(`✔ Approved for ${pInfo.name}! Text copied to clipboard.`);
+        currentQueueIdx++;
+        setTimeout(() => {
+          renderQueueCurrentStep();
+        }, 600);
+        return;
+      }
+
+      // Mode is 'bot' (Playwright browser bot execution)
+      const botBtn = document.getElementById('queueBotBtn');
+      const origHtml = botBtn ? botBtn.innerHTML : '';
+      if (botBtn) {
+        botBtn.disabled = true;
+        botBtn.innerHTML = `<i class="fa-solid fa-robot animate-spin mr-1"></i> Running Bot...`;
+      }
+
+      try {
+        showToast(`🤖 Launching Playwright bot for ${pInfo.name}...`);
+        const response = await fetch('/api/post-unit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ unit_id: queueUnitData.id, platform: pInfo.id, headless: false })
+        });
+
+        if (response.ok) {
+          queueApprovedStatuses[pInfo.id] = true;
+          if (queueUnitData.postings && queueUnitData.postings[pInfo.id]) {
+            queueUnitData.postings[pInfo.id].status = "posted";
+            queueUnitData.postings[pInfo.id].last_posted = new Date().toISOString();
+          }
+          renderUnitsGrid();
+          renderPlatformListing();
+          showToast(`🤖 ${pInfo.name} listing staged with photos! Browser open for review.`);
+          currentQueueIdx++;
+          setTimeout(() => {
+            renderQueueCurrentStep();
+          }, 800);
+          return;
+        }
+      } catch(err) {
+        console.warn("Backend API not reachable (running on static GitHub Pages). Falling back to browser tab.", err);
+      } finally {
+        if (botBtn) {
+          botBtn.disabled = false;
+          botBtn.innerHTML = origHtml;
+        }
+      }
+
+      // Fallback for static GitHub Pages or unreachable backend
+      alert(`Local bot server is not reachable directly from ${window.location.hostname}.\n\nOpening ${pInfo.name} in a new tab. Ad text has been copied to your clipboard!\n\nTo use the 1-Click Automated Browser Bot with auto-photo uploads, run the dashboard at http://localhost:8000.`);
       queueApprovedStatuses[pInfo.id] = true;
       if (queueUnitData.postings && queueUnitData.postings[pInfo.id]) {
         queueUnitData.postings[pInfo.id].status = "posted";
       }
       renderUnitsGrid();
       renderPlatformListing();
-
-      // Open destination platform
       window.open(pInfo.url, '_blank');
-
-      showToast(`✔ Approved for ${pInfo.name}! Text copied to clipboard.`);
-
-      // Advance to next platform
       currentQueueIdx++;
       setTimeout(() => {
         renderQueueCurrentStep();

@@ -34,6 +34,72 @@ class AutomatedPoster:
         if not self.unit:
             raise ValueError(f"Unit ID '{unit_id}' not found in database.")
 
+    def _get_or_download_unit_photos(self) -> list:
+        """
+        Downloads and caches high-resolution suite photos and building exterior photo
+        from Google Drive directly onto disk so Playwright can attach them into the
+        platform's file uploader with zero manual downloading or uploading.
+        """
+        import urllib.request
+        import re
+
+        cache_dir = Path(__file__).parent.parent / "data" / "media_cache" / self.unit_id
+        cache_dir.mkdir(parents=True, exist_ok=True)
+
+        existing = sorted([str(p.resolve()) for p in cache_dir.glob("*.*") if p.suffix.lower() in ('.jpg', '.jpeg', '.png')])
+        if len(existing) >= 4:
+            return existing
+
+        # 1. Download Exterior Building Photo
+        ext_path = cache_dir / "00_building_exterior.png"
+        if not ext_path.exists():
+            try:
+                ext_url = "https://drive.google.com/uc?id=185EGZHPUiw_bkYOQPyqds8ZvSH6qJ6JZ&export=download"
+                req = urllib.request.Request(ext_url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req) as resp, open(ext_path, "wb") as f:
+                    f.write(resp.read())
+                print(f"[Photo Sync] Downloaded building exterior photo to {ext_path.name}")
+            except Exception as e:
+                print(f"[Photo Sync] Note on building exterior: {e}")
+
+        # 2. Extract photos from unit Google Drive folder
+        cloud_media = self.unit.get("cloud_media") or {}
+        folder_url = cloud_media.get("google_drive_photos_folder") or ""
+        fid = folder_url.split("/")[-1].split("?")[0] if folder_url else ""
+        if fid:
+            try:
+                req = urllib.request.Request(f"https://drive.google.com/drive/folders/{fid}", headers={"User-Agent": "Mozilla/5.0"})
+                html = urllib.request.urlopen(req).read().decode("utf-8", errors="ignore")
+                files = set(re.findall(r"\"([^\"]+\.(?:png|jpg|jpeg|JPG|PNG))\"", html))
+
+                idx = 1
+                for fn in sorted(files):
+                    if any(ign in fn for ign in ["drive_2026", "favicon", "broken_image", "al-icon", "Screenshot"]):
+                        continue
+                    pos = html.find(fn)
+                    snippet = html[max(0, pos-200):min(len(html), pos+300)]
+                    ids = [i for i in re.findall(r"[-\w]{25,}", snippet) if not i.startswith("data-")]
+                    if not ids:
+                        continue
+                    clean_id = re.sub(r"-\d+-\d+$", "", ids[0])
+                    out_file = cache_dir / f"{idx:02d}_{fn}"
+                    if not out_file.exists():
+                        try:
+                            dl_req = urllib.request.Request(f"https://drive.google.com/uc?id={clean_id}&export=download", headers={"User-Agent": "Mozilla/5.0"})
+                            with urllib.request.urlopen(dl_req) as resp, open(out_file, "wb") as out:
+                                out.write(resp.read())
+                            print(f"[Photo Sync] Cached suite photo: {fn}")
+                        except Exception:
+                            continue
+                    idx += 1
+                    if idx > 10:
+                        break
+            except Exception as e:
+                print(f"[Photo Sync] Note on unit folder: {e}")
+
+        all_photos = sorted([str(p.resolve()) for p in cache_dir.glob("*.*") if p.suffix.lower() in ('.jpg', '.jpeg', '.png')])
+        return all_photos
+
     def run(self) -> Dict[str, Any]:
         """Executes the one-click posting workflow."""
         update_posting_status(self.unit_id, self.platform, "in_progress", log="Automation bot launched")
@@ -85,24 +151,40 @@ class AutomatedPoster:
             page.goto("https://www.facebook.com/marketplace/create/rental", wait_until="domcontentloaded")
             time.sleep(3)
 
-            # Attempt to pre-fill standard Facebook Marketplace rental inputs if visible
+            # 1. Automatically attach suite photos and exterior photo
+            photos = self._get_or_download_unit_photos()
+            if photos:
+                try:
+                    file_inputs = page.locator('input[type="file"]')
+                    if file_inputs.count() > 0:
+                        print(f"[Facebook Poster] Automatically uploading {len(photos)} photos from Google Drive cache...")
+                        file_inputs.first.set_input_files(photos)
+                        time.sleep(3)
+                except Exception as photo_err:
+                    print(f"[Facebook Photo Upload Note] {photo_err}")
+
+            # 2. Attempt to pre-fill standard Facebook Marketplace rental inputs if visible
             try:
+                clean_price = str(payload["price"]).replace(".0", "")
                 for label_text, val in [
-                    ("Price", str(payload["price"])),
+                    ("Price", clean_price),
                     ("Number of bedrooms", str(payload["bedrooms"])),
                     ("Number of bathrooms", str(payload["bathrooms"])),
                     ("Property address", "315 Kent Street, Whitby, ON"),
                     ("Rental description", payload["description"])
                 ]:
-                    loc = page.get_by_label(label_text, exact=False).first
-                    if loc.count() > 0 and loc.is_visible():
-                        loc.fill(val)
+                    try:
+                        loc = page.get_by_label(label_text, exact=False).first
+                        if loc.count() > 0:
+                            loc.fill(val, timeout=2500)
+                    except Exception:
+                        pass
             except Exception as fill_err:
                 print(f"[Facebook Auto-Fill Note] {fill_err}")
 
             page.screenshot(path=str(screenshot_path))
             if not self.headless:
-                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -135,7 +217,19 @@ class AutomatedPoster:
             page.goto("https://www.kijiji.ca/p-post-ad.html?categoryId=37", wait_until="domcontentloaded")
             time.sleep(3)
 
-            # Attempt to pre-fill standard Kijiji ad title, description, price, and YouTube link if visible
+            # 1. Automatically attach suite photos and exterior photo
+            photos = self._get_or_download_unit_photos()
+            if photos:
+                try:
+                    file_inputs = page.locator('input[type="file"]')
+                    if file_inputs.count() > 0:
+                        print(f"[Kijiji Poster] Automatically uploading {len(photos)} photos from Google Drive cache...")
+                        file_inputs.first.set_input_files(photos)
+                        time.sleep(3)
+                except Exception as photo_err:
+                    print(f"[Kijiji Photo Upload Note] {photo_err}")
+
+            # 2. Attempt to pre-fill standard Kijiji ad title, description, price, and YouTube link if visible
             try:
                 for sel, val in [
                     ("input[name*='postAdForm.title'], #AdTitleForm", payload["title"]),
@@ -151,7 +245,7 @@ class AutomatedPoster:
 
             page.screenshot(path=str(screenshot_path))
             if not self.headless:
-                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -186,7 +280,7 @@ class AutomatedPoster:
 
             page.screenshot(path=str(screenshot_path))
             if not self.headless:
-                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -220,7 +314,7 @@ class AutomatedPoster:
 
             page.screenshot(path=str(screenshot_path))
             if not self.headless:
-                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -254,7 +348,7 @@ class AutomatedPoster:
 
             page.screenshot(path=str(screenshot_path))
             if not self.headless:
-                print("\n[Facebook Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:

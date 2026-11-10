@@ -13,6 +13,11 @@ __pycache__/
 .browser_profile/
 .property_agent_browser_profile/
 
-# OS files
+# Media cache
+data/media_cache/
+media/*.png
+media/*.jpg
+media/*.jpeg
+
 .DS_Store
 Thumbs.db
