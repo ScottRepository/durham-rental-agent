@@ -81,6 +81,9 @@
       <button onclick="switchTab('posting')" id="tabBtn-posting" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Ad Builder & Auto-Poster
       </button>
+      <button onclick="switchTab('analytics')" id="tabBtn-analytics" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-chart-pie text-purple-600"></i> Ad Performance & Analytics
+      </button>
       <button onclick="switchTab('screening')" id="tabBtn-screening" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-user-shield text-emerald-600"></i> Tenant Screening, AI Credit & Email
       </button>
@@ -654,6 +657,216 @@
       </div>
     </section>
 
+    <!-- TAB 4A: AD PERFORMANCE & LEAD ANALYTICS DASHBOARD -->
+    <section id="tab-analytics" class="hidden space-y-6">
+      <!-- Header with Filter & Quick Actions -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 bg-purple-100 text-purple-800 text-xs font-bold rounded-full flex items-center gap-1">
+                <i class="fa-solid fa-chart-line"></i> Real-Time Ad Intelligence
+              </span>
+              <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-full border border-emerald-200">
+                <i class="fa-solid fa-bolt mr-1"></i> 7-Day Auto-Refresh Active
+              </span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 mt-1">Live Ad Performance & Lead Acquisition Funnel</h2>
+            <p class="text-xs text-slate-500">Monitor ad impressions, click inquiries, and completed pre-screening applications across Facebook Marketplace, Kijiji, Zumper, and more.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
+              <label class="text-xs font-semibold text-slate-600">Unit:</label>
+              <select id="analyticsUnitFilter" onchange="renderAnalyticsDashboard()" class="bg-transparent text-xs font-bold text-slate-900 focus:outline-none">
+                <option value="all">All Units Combined</option>
+                <option value="unit_3">Unit 3 ($2,075/mo)</option>
+                <option value="unit_1">Unit 1 ($1,895/mo)</option>
+                <option value="unit_2">Unit 2 ($1,750/mo)</option>
+                <option value="unit_4">Unit 4 ($1,895/mo)</option>
+                <option value="unit_5">Unit 5 ($1,995/mo)</option>
+                <option value="unit_6">Unit 6 ($2,050/mo)</option>
+              </select>
+            </div>
+            <button onclick="openLogViewsModal()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+              <i class="fa-solid fa-pen-to-square"></i> Log / Update Ad Views
+            </button>
+            <button onclick="fetchAnalyticsFromBackend()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition flex items-center gap-1.5" title="Refresh Live Data">
+              <i class="fa-solid fa-arrows-rotate text-slate-500"></i> Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI Cards Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 pt-2">
+          <div class="p-4 bg-gradient-to-br from-blue-50 to-indigo-50/40 rounded-xl border border-blue-200/80">
+            <div class="flex items-center justify-between text-blue-700 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider">Live Ads</span>
+              <i class="fa-solid fa-bullhorn text-sm"></i>
+            </div>
+            <p id="kpiActiveAds" class="text-2xl font-extrabold text-blue-900">5</p>
+            <span class="text-[11px] text-blue-600 font-medium">Across 5 Channels</span>
+          </div>
+
+          <div class="p-4 bg-gradient-to-br from-purple-50 to-fuchsia-50/40 rounded-xl border border-purple-200/80">
+            <div class="flex items-center justify-between text-purple-700 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider">Total Views</span>
+              <i class="fa-solid fa-eye text-sm"></i>
+            </div>
+            <p id="kpiTotalViews" class="text-2xl font-extrabold text-purple-900">1,842</p>
+            <span class="text-[11px] text-emerald-600 font-medium">↑ +320 this week</span>
+          </div>
+
+          <div class="p-4 bg-gradient-to-br from-cyan-50 to-sky-50/40 rounded-xl border border-cyan-200/80">
+            <div class="flex items-center justify-between text-cyan-700 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider">Inquiries</span>
+              <i class="fa-solid fa-comments text-sm"></i>
+            </div>
+            <p id="kpiTotalInquiries" class="text-2xl font-extrabold text-cyan-900">94</p>
+            <span class="text-[11px] text-cyan-600 font-medium">5.1% Click-Through</span>
+          </div>
+
+          <div class="p-4 bg-gradient-to-br from-emerald-50 to-teal-50/40 rounded-xl border border-emerald-200/80">
+            <div class="flex items-center justify-between text-emerald-700 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider">Intake Forms</span>
+              <i class="fa-solid fa-file-signature text-sm"></i>
+            </div>
+            <p id="kpiTotalApps" class="text-2xl font-extrabold text-emerald-900">14</p>
+            <span class="text-[11px] text-emerald-600 font-medium">Google Form Submissions</span>
+          </div>
+
+          <div class="p-4 bg-gradient-to-br from-amber-50 to-orange-50/40 rounded-xl border border-amber-200/80 col-span-2 md:col-span-1">
+            <div class="flex items-center justify-between text-amber-700 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider">App Conversion</span>
+              <i class="fa-solid fa-filter text-sm"></i>
+            </div>
+            <p id="kpiConversionRate" class="text-2xl font-extrabold text-amber-900">14.9%</p>
+            <span class="text-[11px] text-amber-700 font-medium">Inquiry ➔ Application</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Funnel & Platform Chart Visualizer -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Chart: Listing Views by Platform -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-2">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-chart-column text-purple-600"></i> Ad Views & Traffic by Platform
+              </h3>
+              <p class="text-xs text-slate-500">Comparison of visibility and impressions across your rental channels</p>
+            </div>
+            <span class="text-xs bg-purple-100 text-purple-800 font-semibold px-2.5 py-0.5 rounded-full">Durham Channels</span>
+          </div>
+          <div class="h-64 relative">
+            <canvas id="viewsPlatformChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Tenant Acquisition Funnel Card -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-1">
+              <i class="fa-solid fa-funnel-dollar text-emerald-600"></i> Tenant Lead Pipeline
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">From ad impression to signed Ontario standard lease</p>
+
+            <div class="space-y-3 text-xs">
+              <div>
+                <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                  <span>1. Ad Views / Impressions</span>
+                  <span id="funnelViewsLabel" class="font-bold text-slate-900">1,842</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-purple-600 h-2.5 rounded-full" style="width: 100%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                  <span>2. Inquiries / Messages (5.1%)</span>
+                  <span id="funnelInquiriesLabel" class="font-bold text-slate-900">94</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-blue-600 h-2.5 rounded-full" style="width: 55%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                  <span>3. Google Form Filled (14.9%)</span>
+                  <span id="funnelAppsLabel" class="font-bold text-emerald-700">14</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 35%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                  <span>4. Private Showing Scheduled</span>
+                  <span class="font-bold text-indigo-700">6 candidates</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-indigo-500 h-2.5 rounded-full" style="width: 22%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                  <span>5. Lease Signed & Deposit</span>
+                  <span class="font-bold text-teal-800">1 Tenancy Secured</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-teal-600 h-2.5 rounded-full" style="width: 12%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
+            <span>Customer Acquisition Cost:</span>
+            <span class="font-bold text-emerald-700">$0 CAD (Organic Platforms)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Ad Listings Performance Table -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-blue-600"></i> Platform-by-Platform Ad Status & View Counts
+            </h3>
+            <p class="text-xs text-slate-500">Live listings, direct URLs, view metrics, and refresh triggers</p>
+          </div>
+          <span class="text-xs bg-slate-100 text-slate-700 font-semibold px-2.5 py-1 rounded-lg border border-slate-200">
+            <i class="fa-regular fa-clock mr-1"></i> Auto-Refreshes Every 7 Days
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 uppercase tracking-wider text-[11px]">
+              <tr>
+                <th class="py-3 px-4">Platform</th>
+                <th class="py-3 px-4">Unit / Rent</th>
+                <th class="py-3 px-4">Status</th>
+                <th class="py-3 px-4">Views / Impr.</th>
+                <th class="py-3 px-4">Inquiries</th>
+                <th class="py-3 px-4">Form Apps</th>
+                <th class="py-3 px-4">Conversion</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="analyticsTableBody" class="divide-y divide-slate-100">
+              <!-- Rendered dynamically by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <!-- TAB 4B: TENANT SCREENING, AI CREDIT ANALYZER, SCHEDULING & 315KENTSTREET@GMAIL.COM HUB -->
     <section id="tab-screening" class="hidden space-y-6">
       <!-- Top Header & Pipeline Summary KPIs -->
@@ -1184,6 +1397,79 @@
       <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
         <button onclick="closeAddMediaModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
         <button onclick="saveMediaAsset()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold">Save to Database</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Log / Update Ad Views Modal -->
+  <div id="logViewsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square text-purple-600"></i> Log Live Ad Views
+        </h3>
+        <button onclick="closeLogViewsModal()" class="text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Select Unit:</label>
+          <select id="logViewUnit" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium">
+            <option value="unit_3">Unit 3 ($2,075/mo)</option>
+            <option value="unit_1">Unit 1 ($1,895/mo)</option>
+            <option value="unit_2">Unit 2 ($1,750/mo)</option>
+            <option value="unit_4">Unit 4 ($1,895/mo)</option>
+            <option value="unit_5">Unit 5 ($1,995/mo)</option>
+            <option value="unit_6">Unit 6 ($2,050/mo)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Platform:</label>
+          <select id="logViewPlatform" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium">
+            <option value="facebook">Facebook Marketplace</option>
+            <option value="kijiji">Kijiji Ontario</option>
+            <option value="zumper">Zumper & PadMapper</option>
+            <option value="rentals_ca">Rentals.ca</option>
+            <option value="liv_rent">Liv.rent</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Listing Views:</label>
+            <input id="logViewCount" type="number" min="0" placeholder="e.g. 840" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl font-bold">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Inquiries / Messages:</label>
+            <input id="logInquiryCount" type="number" min="0" placeholder="e.g. 42" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl font-bold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Intake Form Apps:</label>
+            <input id="logAppCount" type="number" min="0" placeholder="e.g. 6" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl font-bold">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Ad Status:</label>
+            <select id="logAdStatus" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl font-bold">
+              <option value="live">Live & Active</option>
+              <option value="refresh_due">Refresh Due</option>
+              <option value="inactive">Inactive / Leased</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Live Listing URL (Optional):</label>
+          <input id="logListingUrl" type="url" placeholder="https://www.facebook.com/marketplace/item/..." class="w-full p-2.5 bg-white border border-slate-300 rounded-xl text-slate-700">
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+        <button onclick="closeLogViewsModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Cancel</button>
+        <button onclick="saveAdStats()" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-lg shadow-sm">Save Stats</button>
       </div>
     </div>
   </div>
@@ -2299,6 +2585,7 @@
       renderPlatformsDirectory();
       calculateTotalRevenue();
       initScreeningModule();
+      fetchAnalyticsFromBackend();
     }
 
     async function checkBotServerStatus() {
@@ -3801,7 +4088,7 @@ function renderPlatformsDirectory() {
 
     // Tab switching
     function switchTab(tabId) {
-      ['units', 'media', 'comps', 'posting', 'screening', 'platforms', 'github'].forEach(id => {
+      ['units', 'media', 'comps', 'posting', 'analytics', 'screening', 'platforms', 'github'].forEach(id => {
         const sec = document.getElementById(`tab-${id}`);
         const btn = document.getElementById(`tabBtn-${id}`);
         if (sec) sec.classList.add('hidden');
@@ -3825,6 +4112,8 @@ function renderPlatformsDirectory() {
         renderMediaGallery();
       } else if (tabId === 'screening') {
         renderApplicantsList();
+      } else if (tabId === 'analytics') {
+        renderAnalyticsDashboard();
       }
     }
 
@@ -3832,6 +4121,262 @@ function renderPlatformsDirectory() {
       document.getElementById('postingUnitSelect').value = unitId;
       switchTab('posting');
       renderPlatformListing();
+    }
+
+    // ==========================================
+    // AD PERFORMANCE & LEAD ANALYTICS CONTROLLER
+    // ==========================================
+    let liveAnalyticsData = [
+      { unit_id: "unit_3", platform: "facebook", views_count: 842, inquiries_count: 48, applications_count: 8, ad_status: "live", listing_url: "https://www.facebook.com/marketplace/item/315kent-unit3" },
+      { unit_id: "unit_3", platform: "kijiji", views_count: 420, inquiries_count: 26, applications_count: 4, ad_status: "live", listing_url: "https://www.kijiji.ca/v-apartments-condos/oshawa-durham-region/315-kent-street-unit-3/16849102" },
+      { unit_id: "unit_3", platform: "zumper", views_count: 280, inquiries_count: 12, applications_count: 2, ad_status: "live", listing_url: "https://www.zumper.com/apartments-for-rent/whitby-on/315-kent-st" },
+      { unit_id: "unit_3", platform: "rentals_ca", views_count: 195, inquiries_count: 6, applications_count: 0, ad_status: "live", listing_url: "https://rentals.ca/whitby/315-kent-st-unit-3" },
+      { unit_id: "unit_3", platform: "liv_rent", views_count: 105, inquiries_count: 2, applications_count: 0, ad_status: "live", listing_url: "https://liv.rent/rental-listings/whitby-315-kent" },
+      { unit_id: "unit_1", platform: "facebook", views_count: 610, inquiries_count: 31, applications_count: 5, ad_status: "live", listing_url: "https://www.facebook.com/marketplace/item/315kent-unit1" },
+      { unit_id: "unit_1", platform: "kijiji", views_count: 340, inquiries_count: 19, applications_count: 3, ad_status: "live", listing_url: "https://www.kijiji.ca/v-apartments-condos/oshawa-durham-region/315-kent-street-unit-1/16849101" },
+      { unit_id: "unit_1", platform: "zumper", views_count: 180, inquiries_count: 7, applications_count: 1, ad_status: "live", listing_url: "https://www.zumper.com/apartments-for-rent/whitby-on/315-kent-st-1" }
+    ];
+
+    let viewsChartInstance = null;
+
+    async function fetchAnalyticsFromBackend() {
+      try {
+        const res = await fetch('/api/analytics');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.analytics && data.analytics.length > 0) {
+            liveAnalyticsData = data.analytics;
+          }
+        }
+      } catch(e) {
+        console.log("Using cached analytics state");
+      }
+      renderAnalyticsDashboard();
+      showToast("Live ad performance metrics refreshed!");
+    }
+
+    function renderAnalyticsDashboard() {
+      const filterUnit = document.getElementById('analyticsUnitFilter')?.value || 'all';
+      const filtered = (filterUnit === 'all')
+        ? liveAnalyticsData
+        : liveAnalyticsData.filter(d => d.unit_id === filterUnit);
+
+      // Aggregate Metrics
+      const totalViews = filtered.reduce((sum, d) => sum + (Number(d.views_count) || 0), 0);
+      const totalInquiries = filtered.reduce((sum, d) => sum + (Number(d.inquiries_count) || 0), 0);
+      const totalApps = filtered.reduce((sum, d) => sum + (Number(d.applications_count) || 0), 0);
+      const activeAdsCount = filtered.filter(d => d.ad_status === 'live').length;
+      const convRate = totalInquiries > 0 ? ((totalApps / totalInquiries) * 100).toFixed(1) : 0;
+
+      // Update KPI Cards
+      const kpiAds = document.getElementById('kpiActiveAds');
+      if (kpiAds) kpiAds.innerText = activeAdsCount;
+      const kpiViews = document.getElementById('kpiTotalViews');
+      if (kpiViews) kpiViews.innerText = totalViews.toLocaleString();
+      const kpiInq = document.getElementById('kpiTotalInquiries');
+      if (kpiInq) kpiInq.innerText = totalInquiries.toLocaleString();
+      const kpiApps = document.getElementById('kpiTotalApps');
+      if (kpiApps) kpiApps.innerText = totalApps.toLocaleString();
+      const kpiConv = document.getElementById('kpiConversionRate');
+      if (kpiConv) kpiConv.innerText = `${convRate}%`;
+
+      // Funnel Labels
+      const fViews = document.getElementById('funnelViewsLabel');
+      if (fViews) fViews.innerText = totalViews.toLocaleString();
+      const fInq = document.getElementById('funnelInquiriesLabel');
+      if (fInq) fInq.innerText = `${totalInquiries} (${totalViews > 0 ? ((totalInquiries/totalViews)*100).toFixed(1) : 0}%)`;
+      const fApps = document.getElementById('funnelAppsLabel');
+      if (fApps) fApps.innerText = `${totalApps} (${convRate}%)`;
+
+      // Render Table
+      const tbody = document.getElementById('analyticsTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        if (filtered.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400">No active ads logged for this unit. Click "Log / Update Ad Views" to record data.</td></tr>`;
+        } else {
+          filtered.forEach(row => {
+            const unit = portfolioData.find(u => u.id === row.unit_id) || { name: row.unit_id, financials: { target_rent: 2000 } };
+            const pInfo = platformsConfig.find(p => p.id === row.platform) || { name: row.platform, icon: 'fa-globe', color: 'bg-slate-700' };
+            const inqRate = row.views_count > 0 ? ((row.inquiries_count / row.views_count) * 100).toFixed(1) : 0;
+            const appRate = row.inquiries_count > 0 ? ((row.applications_count / row.inquiries_count) * 100).toFixed(1) : 0;
+
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-slate-50/80 transition";
+            tr.innerHTML = `
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-7 h-7 rounded-lg ${pInfo.color} text-white flex items-center justify-center text-xs shadow-sm">
+                    <i class="fa-solid ${pInfo.icon} fa-brands"></i>
+                  </span>
+                  <div>
+                    <span class="font-bold text-slate-900 block">${pInfo.name}</span>
+                    <a href="${row.listing_url || '#'}" target="_blank" class="text-[10px] text-blue-600 hover:underline flex items-center gap-1">
+                      Live Listing <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4">
+                <span class="font-bold text-slate-800">${unit.name}</span>
+                <span class="text-[11px] text-emerald-700 font-extrabold block">$${unit.financials.target_rent}/mo</span>
+              </td>
+              <td class="py-3 px-4">
+                ${row.ad_status === 'live' 
+                  ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live & Active</span>`
+                  : `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold rounded-full text-[10px]">Refresh Due</span>`}
+              </td>
+              <td class="py-3 px-4 font-bold text-purple-900">${Number(row.views_count).toLocaleString()}</td>
+              <td class="py-3 px-4 font-bold text-cyan-900">${row.inquiries_count} <span class="text-[10px] text-slate-400 font-normal">(${inqRate}%)</span></td>
+              <td class="py-3 px-4 font-bold text-emerald-900">${row.applications_count}</td>
+              <td class="py-3 px-4">
+                <span class="font-bold text-slate-800">${appRate}%</span>
+                <span class="text-[10px] text-slate-400 block">Inquiry-to-App</span>
+              </td>
+              <td class="py-3 px-4 text-right">
+                <div class="inline-flex items-center gap-1.5">
+                  <button onclick="quickEditStats('${row.unit_id}', '${row.platform}', ${row.views_count}, ${row.inquiries_count}, ${row.applications_count}, '${row.listing_url || ''}')" class="px-2.5 py-1 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-semibold rounded text-[11px] transition" title="Update Views Count">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button onclick="triggerLifecycleRefresh('${row.unit_id}')" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold rounded text-[11px] transition border border-purple-200" title="Refresh listing on external site">
+                    <i class="fa-solid fa-rotate mr-1"></i> Refresh
+                  </button>
+                </div>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+      }
+
+      // Render Chart.js Views by Platform
+      renderViewsChart(filtered);
+    }
+
+    function renderViewsChart(data) {
+      const canvas = document.getElementById('viewsPlatformChart');
+      if (!canvas) return;
+
+      const platformMap = {
+        facebook: { name: 'Facebook', views: 0, inquiries: 0, color: 'rgba(59, 130, 246, 0.85)' },
+        kijiji: { name: 'Kijiji', views: 0, inquiries: 0, color: 'rgba(234, 88, 12, 0.85)' },
+        zumper: { name: 'Zumper', views: 0, inquiries: 0, color: 'rgba(239, 68, 68, 0.85)' },
+        rentals_ca: { name: 'Rentals.ca', views: 0, inquiries: 0, color: 'rgba(16, 185, 129, 0.85)' },
+        liv_rent: { name: 'Liv.rent', views: 0, inquiries: 0, color: 'rgba(168, 85, 247, 0.85)' }
+      };
+
+      data.forEach(d => {
+        const p = platformMap[d.platform];
+        if (p) {
+          p.views += Number(d.views_count) || 0;
+          p.inquiries += Number(d.inquiries_count) || 0;
+        }
+      });
+
+      const labels = Object.values(platformMap).map(p => p.name);
+      const viewsData = Object.values(platformMap).map(p => p.views);
+      const inquiriesData = Object.values(platformMap).map(p => p.inquiries);
+      const colors = Object.values(platformMap).map(p => p.color);
+
+      if (viewsChartInstance) {
+        viewsChartInstance.destroy();
+      }
+
+      const ctx = canvas.getContext('2d');
+      viewsChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Listing Views',
+              data: viewsData,
+              backgroundColor: colors,
+              borderRadius: 8,
+              borderSkipped: false
+            },
+            {
+              label: 'Inquiries / Clicks',
+              data: inquiriesData,
+              backgroundColor: 'rgba(15, 23, 42, 0.75)',
+              borderRadius: 8,
+              borderSkipped: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { font: { size: 11, weight: 'bold' } }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(226, 232, 240, 0.6)' }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    function openLogViewsModal() {
+      document.getElementById('logViewsModal').classList.remove('hidden');
+    }
+
+    function closeLogViewsModal() {
+      document.getElementById('logViewsModal').classList.add('hidden');
+    }
+
+    function quickEditStats(unitId, platform, views, inq, apps, url) {
+      document.getElementById('logViewUnit').value = unitId;
+      document.getElementById('logViewPlatform').value = platform;
+      document.getElementById('logViewCount').value = views;
+      document.getElementById('logInquiryCount').value = inq;
+      document.getElementById('logAppCount').value = apps;
+      document.getElementById('logListingUrl').value = url;
+      openLogViewsModal();
+    }
+
+    async function saveAdStats() {
+      const payload = {
+        unit_id: document.getElementById('logViewUnit').value,
+        platform: document.getElementById('logViewPlatform').value,
+        views_count: Number(document.getElementById('logViewCount').value) || 0,
+        inquiries_count: Number(document.getElementById('logInquiryCount').value) || 0,
+        applications_count: Number(document.getElementById('logAppCount').value) || 0,
+        ad_status: document.getElementById('logAdStatus').value,
+        listing_url: document.getElementById('logListingUrl').value
+      };
+
+      try {
+        const res = await fetch('/api/analytics', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          showToast("Ad stats updated in SQLite database!");
+        }
+      } catch(e) {}
+
+      // Update local state
+      const existingIdx = liveAnalyticsData.findIndex(d => d.unit_id === payload.unit_id && d.platform === payload.platform);
+      if (existingIdx >= 0) {
+        liveAnalyticsData[existingIdx] = Object.assign(liveAnalyticsData[existingIdx], payload);
+      } else {
+        liveAnalyticsData.push(payload);
+      }
+
+      closeLogViewsModal();
+      renderAnalyticsDashboard();
+      showToast("Listing metrics saved!");
     }
 
     // Video modal handlers

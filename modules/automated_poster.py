@@ -26,10 +26,11 @@ SCREENSHOTS_DIR = Path(__file__).parent.parent / "reports" / "screenshots"
 SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
 
 class AutomatedPoster:
-    def __init__(self, unit_id: str, platform: str, headless: bool = False):
+    def __init__(self, unit_id: str, platform: str, headless: bool = False, auto_publish: bool = False):
         self.unit_id = unit_id
         self.platform = platform.lower()
         self.headless = headless
+        self.auto_publish = auto_publish
         self.unit = get_unit_by_id(unit_id)
         if not self.unit:
             raise ValueError(f"Unit ID '{unit_id}' not found in database.")
@@ -183,8 +184,26 @@ class AutomatedPoster:
                 print(f"[Facebook Auto-Fill Note] {fill_err}")
 
             page.screenshot(path=str(screenshot_path))
-            if not self.headless:
-                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+
+            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            if self.auto_publish:
+                try:
+                    print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
+                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
+                    if next_btns.count() > 0 and next_btns.first.is_visible():
+                        next_btns.first.click()
+                        time.sleep(3)
+                        print("[Facebook Poster] Searching for 'Publish' button...")
+                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
+                        if pub_btns.count() > 0 and pub_btns.first.is_visible():
+                            pub_btns.first.click()
+                            time.sleep(4)
+                            print("[Facebook Poster] ✔ Final Publish button clicked!")
+                except Exception as pub_err:
+                    print(f"[Facebook Auto-Publish Note] {pub_err}")
+
+            if not self.headless and not self.auto_publish:
+                print("\n[Facebook Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -244,8 +263,26 @@ class AutomatedPoster:
                 print(f"[Kijiji Auto-Fill Note] {fill_err}")
 
             page.screenshot(path=str(screenshot_path))
-            if not self.headless:
-                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+
+            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            if self.auto_publish:
+                try:
+                    print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
+                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
+                    if next_btns.count() > 0 and next_btns.first.is_visible():
+                        next_btns.first.click()
+                        time.sleep(3)
+                        print("[Facebook Poster] Searching for 'Publish' button...")
+                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
+                        if pub_btns.count() > 0 and pub_btns.first.is_visible():
+                            pub_btns.first.click()
+                            time.sleep(4)
+                            print("[Facebook Poster] ✔ Final Publish button clicked!")
+                except Exception as pub_err:
+                    print(f"[Facebook Auto-Publish Note] {pub_err}")
+
+            if not self.headless and not self.auto_publish:
+                print("\n[Facebook Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -279,8 +316,26 @@ class AutomatedPoster:
             time.sleep(3)
 
             page.screenshot(path=str(screenshot_path))
-            if not self.headless:
-                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+
+            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            if self.auto_publish:
+                try:
+                    print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
+                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
+                    if next_btns.count() > 0 and next_btns.first.is_visible():
+                        next_btns.first.click()
+                        time.sleep(3)
+                        print("[Facebook Poster] Searching for 'Publish' button...")
+                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
+                        if pub_btns.count() > 0 and pub_btns.first.is_visible():
+                            pub_btns.first.click()
+                            time.sleep(4)
+                            print("[Facebook Poster] ✔ Final Publish button clicked!")
+                except Exception as pub_err:
+                    print(f"[Facebook Auto-Publish Note] {pub_err}")
+
+            if not self.headless and not self.auto_publish:
+                print("\n[Facebook Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -313,8 +368,26 @@ class AutomatedPoster:
             time.sleep(3)
 
             page.screenshot(path=str(screenshot_path))
-            if not self.headless:
-                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+
+            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            if self.auto_publish:
+                try:
+                    print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
+                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
+                    if next_btns.count() > 0 and next_btns.first.is_visible():
+                        next_btns.first.click()
+                        time.sleep(3)
+                        print("[Facebook Poster] Searching for 'Publish' button...")
+                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
+                        if pub_btns.count() > 0 and pub_btns.first.is_visible():
+                            pub_btns.first.click()
+                            time.sleep(4)
+                            print("[Facebook Poster] ✔ Final Publish button clicked!")
+                except Exception as pub_err:
+                    print(f"[Facebook Auto-Publish Note] {pub_err}")
+
+            if not self.headless and not self.auto_publish:
+                print("\n[Facebook Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -347,8 +420,26 @@ class AutomatedPoster:
             time.sleep(3)
 
             page.screenshot(path=str(screenshot_path))
-            if not self.headless:
-                print("\n[Zumper Poster] Form filled! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+
+            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            if self.auto_publish:
+                try:
+                    print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
+                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
+                    if next_btns.count() > 0 and next_btns.first.is_visible():
+                        next_btns.first.click()
+                        time.sleep(3)
+                        print("[Facebook Poster] Searching for 'Publish' button...")
+                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
+                        if pub_btns.count() > 0 and pub_btns.first.is_visible():
+                            pub_btns.first.click()
+                            time.sleep(4)
+                            print("[Facebook Poster] ✔ Final Publish button clicked!")
+                except Exception as pub_err:
+                    print(f"[Facebook Auto-Publish Note] {pub_err}")
+
+            if not self.headless and not self.auto_publish:
+                print("\n[Facebook Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:

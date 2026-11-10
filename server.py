@@ -22,7 +22,9 @@ from data.database import (
     init_db,
     seed_from_sample_if_empty,
     get_all_applicants,
-    upsert_applicant
+    upsert_applicant,
+    get_ad_analytics,
+    upsert_ad_analytics
 )
 from modules.automated_poster import AutomatedPoster
 from modules.content_generator import package_all_listings_for_unit
@@ -84,6 +86,15 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps({"success": True, "lifecycle": overview}).encode("utf-8"))
             return
 
+        elif path == "/api/analytics":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            analytics = get_ad_analytics()
+            self.wfile.write(json.dumps({"success": True, "analytics": analytics}).encode("utf-8"))
+            return
+
         elif path.startswith("/api/units/") and path.endswith("/package"):
             # e.g. /api/units/unit_1/package
             unit_id = path.split("/")[3]
@@ -126,6 +137,7 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             unit_id = data.get("unit_id")
             platform = data.get("platform")
             headless = data.get("headless", False)
+            auto_publish = data.get("auto_publish", False)
 
             if not unit_id or not platform:
                 self.send_response(400)
@@ -135,8 +147,8 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"success": False, "error": "unit_id and platform required"}).encode("utf-8"))
                 return
 
-            print(f"\n[API 1-Click Trigger] Running automated poster for {unit_id} -> {platform}...")
-            poster = AutomatedPoster(unit_id=unit_id, platform=platform, headless=headless)
+            print(f"\n[API 1-Click Trigger] Running automated poster for {unit_id} -> {platform} (auto_publish={auto_publish})...")
+            poster = AutomatedPoster(unit_id=unit_id, platform=platform, headless=headless, auto_publish=auto_publish)
             result = poster.run()
 
             self.send_response(200)
@@ -252,6 +264,16 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             self._set_cors_headers()
             self.end_headers()
             self.wfile.write(json.dumps({"success": True, "message": f"Master ad content synchronized for {unit_id}"}).encode("utf-8"))
+            return
+
+        # Ad Analytics Logging: Update views, inquiries, applications
+        elif path == "/api/analytics":
+            updated = upsert_ad_analytics(data)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "analytics": updated}).encode("utf-8"))
             return
 
         self.send_error(404, "Endpoint not found")

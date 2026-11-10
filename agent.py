@@ -194,7 +194,7 @@ def cmd_toggle(args):
 def cmd_post(args):
     from modules.automated_poster import AutomatedPoster
     console.print(f"[bold blue]Launching Playwright automated poster for {args.unit} on {args.platform}...[/bold blue]")
-    poster = AutomatedPoster(unit_id=args.unit, platform=args.platform, headless=args.headless)
+    poster = AutomatedPoster(unit_id=args.unit, platform=args.platform, headless=args.headless, auto_publish=args.auto_publish)
     res = poster.run()
     if res.get("success"):
         console.print(f"[bold green]✔ Successfully staged {args.platform} listing for {args.unit}![/bold green]")
@@ -238,6 +238,7 @@ def main():
     post_p.add_argument("--unit", type=str, required=True, help="Unit ID (e.g. unit_1)")
     post_p.add_argument("--platform", type=str, default="facebook", choices=["facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"], help="Target platform")
     post_p.add_argument("--headless", action="store_true", help="Run browser in background")
+    post_p.add_argument("--auto-publish", action="store_true", help="Automatically click 'Publish' / 'Post Your Ad' on target platform")
 
     args = parser.parse_args()
     if not args.command:

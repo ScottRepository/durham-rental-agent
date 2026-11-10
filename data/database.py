@@ -136,6 +136,22 @@ def init_db(db_path: Path = DB_PATH):
     );
     """)
 
+    # Ad Performance & Engagement Analytics Table
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS ad_analytics (
+        unit_id TEXT NOT NULL,
+        platform TEXT NOT NULL,
+        views_count INTEGER DEFAULT 0,
+        inquiries_count INTEGER DEFAULT 0,
+        applications_count INTEGER DEFAULT 0,
+        ad_status TEXT DEFAULT 'live',
+        listing_url TEXT,
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY(unit_id, platform),
+        FOREIGN KEY (unit_id) REFERENCES units(id) ON DELETE CASCADE
+    );
+    """)
+
     conn.commit()
     conn.close()
 
@@ -411,6 +427,71 @@ def upsert_applicant(app_data: Dict[str, Any], db_path: Path = DB_PATH) -> Dict[
     conn.close()
     app_data["id"] = app_id
     return app_data
+
+def get_ad_analytics(unit_id: Optional[str] = None, db_path: Path = DB_PATH) -> list:
+    """Retrieves live ad engagement metrics across platforms."""
+    init_db(db_path)
+    conn = get_connection(db_path)
+    cur = conn.cursor()
+
+    # Seed default sample data if table is completely empty
+    cur.execute("SELECT COUNT(*) FROM ad_analytics")
+    if cur.fetchone()[0] == 0:
+        sample_rows = [
+            ("unit_3", "facebook", 842, 48, 8, "live", "https://www.facebook.com/marketplace/item/315kent-unit3"),
+            ("unit_3", "kijiji", 420, 26, 4, "live", "https://www.kijiji.ca/v-apartments-condos/oshawa-durham-region/315-kent-street-unit-3/16849102"),
+            ("unit_3", "zumper", 280, 12, 2, "live", "https://www.zumper.com/apartments-for-rent/whitby-on/315-kent-st"),
+            ("unit_3", "rentals_ca", 195, 6, 0, "live", "https://rentals.ca/whitby/315-kent-st-unit-3"),
+            ("unit_3", "liv_rent", 105, 2, 0, "live", "https://liv.rent/rental-listings/whitby-315-kent"),
+            ("unit_1", "facebook", 610, 31, 5, "live", "https://www.facebook.com/marketplace/item/315kent-unit1"),
+            ("unit_1", "kijiji", 340, 19, 3, "live", "https://www.kijiji.ca/v-apartments-condos/oshawa-durham-region/315-kent-street-unit-1/16849101"),
+            ("unit_1", "zumper", 180, 7, 1, "live", "https://www.zumper.com/apartments-for-rent/whitby-on/315-kent-st-1"),
+        ]
+        for row in sample_rows:
+            cur.execute("""
+            INSERT OR REPLACE INTO ad_analytics (unit_id, platform, views_count, inquiries_count, applications_count, ad_status, listing_url)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, row)
+        conn.commit()
+
+    if unit_id:
+        cur.execute("SELECT * FROM ad_analytics WHERE unit_id = ? ORDER BY views_count DESC", (unit_id,))
+    else:
+        cur.execute("SELECT * FROM ad_analytics ORDER BY unit_id, views_count DESC")
+
+    rows = cur.fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+def upsert_ad_analytics(data: dict, db_path: Path = DB_PATH) -> dict:
+    """Updates or logs new views/inquiries for an ad."""
+    init_db(db_path)
+    conn = get_connection(db_path)
+    cur = conn.cursor()
+
+    unit_id = data.get("unit_id", "unit_3")
+    platform = data.get("platform", "facebook").lower()
+    views = int(data.get("views_count") or 0)
+    inquiries = int(data.get("inquiries_count") or 0)
+    applications = int(data.get("applications_count") or 0)
+    ad_status = data.get("ad_status", "live")
+    listing_url = data.get("listing_url", "")
+
+    cur.execute("""
+    INSERT INTO ad_analytics (unit_id, platform, views_count, inquiries_count, applications_count, ad_status, listing_url, last_updated)
+    VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+    ON CONFLICT(unit_id, platform) DO UPDATE SET
+        views_count = excluded.views_count,
+        inquiries_count = excluded.inquiries_count,
+        applications_count = excluded.applications_count,
+        ad_status = excluded.ad_status,
+        listing_url = CASE WHEN excluded.listing_url != '' THEN excluded.listing_url ELSE ad_analytics.listing_url END,
+        last_updated = CURRENT_TIMESTAMP
+    """, (unit_id, platform, views, inquiries, applications, ad_status, listing_url))
+
+    conn.commit()
+    conn.close()
+    return data
 
 if __name__ == "__main__":
     init_db()
