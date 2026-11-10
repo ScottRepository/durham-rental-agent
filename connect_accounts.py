@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Account Connection Wizard for Kijiji Ontario and Zumper Landlord Portal
+Account Connection Wizard for Facebook Marketplace, Kijiji, and Zumper
 Connects your accounts by saving login cookies in your persistent browser profile.
 Your passwords are never stored in plain text or pushed to GitHub.
 """
 
 import sys
+import argparse
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
@@ -18,8 +19,8 @@ def connect_platform(platform_name: str, target_url: str):
     print(f" Profile Directory: {USER_DATA_DIR}")
     print("="*60)
     print(f"1. A browser window will now open to {platform_name}.")
-    print(f"2. Log in with your email/password (and 2FA code if prompted).")
-    print(f"3. Once you see your active dashboard or home page, come back here.")
+    print(f"2. Log in with your new dedicated account credentials.")
+    print(f"3. Once you see your feed or home page, come back here.")
     print("="*60 + "\n")
 
     with sync_playwright() as p:
@@ -38,37 +39,53 @@ def connect_platform(platform_name: str, target_url: str):
         browser.close()
 
 def main():
+    parser = argparse.ArgumentParser(description="Account Connection Wizard")
+    parser.add_argument("--facebook", action="store_true", help="Connect Facebook directly")
+    parser.add_argument("--kijiji", action="store_true", help="Connect Kijiji directly")
+    parser.add_argument("--zumper", action="store_true", help="Connect Zumper directly")
+    args = parser.parse_args()
+
+    if args.facebook:
+        connect_platform("Facebook Marketplace", "https://www.facebook.com/login")
+        return
+    elif args.kijiji:
+        connect_platform("Kijiji Ontario", "https://www.kijiji.ca/t-login.html")
+        return
+    elif args.zumper:
+        connect_platform("Zumper Landlord Portal", "https://www.zumper.com/manage")
+        return
+
     print("""
 ╔══════════════════════════════════════════════════════════╗
-║        Connect Kijiji & Zumper Accounts Wizard           ║
+║    Durham Rental Agent - Account Connection Wizard       ║
 ╚══════════════════════════════════════════════════════════╝
 This saves your active login session in your local profile.
-Zero passwords are saved in code.
+Zero passwords are saved in code or sent over the internet.
 """)
     print("Choose an option:")
-    print(" 1) Connect Kijiji & Zumper together (Recommended)")
-    print(" 2) Connect Kijiji Ontario only")
-    print(" 3) Connect Zumper Landlord Portal only")
-    print(" 4) Connect Facebook Marketplace")
+    print(" 1) Connect Facebook Marketplace (New Account)")
+    print(" 2) Connect Kijiji Ontario")
+    print(" 3) Connect Zumper Landlord Portal")
+    print(" 4) Connect All Accounts")
     print(" 5) Exit")
 
     choice = input("\nEnter choice [1-5]: ").strip()
 
     if choice == "1":
-        connect_platform("Kijiji Ontario", "https://www.kijiji.ca/t-login.html")
-        connect_platform("Zumper Landlord Portal", "https://www.zumper.com/manage")
+        connect_platform("Facebook Marketplace", "https://www.facebook.com/login")
     elif choice == "2":
         connect_platform("Kijiji Ontario", "https://www.kijiji.ca/t-login.html")
     elif choice == "3":
         connect_platform("Zumper Landlord Portal", "https://www.zumper.com/manage")
     elif choice == "4":
         connect_platform("Facebook Marketplace", "https://www.facebook.com/login")
+        connect_platform("Kijiji Ontario", "https://www.kijiji.ca/t-login.html")
+        connect_platform("Zumper Landlord Portal", "https://www.zumper.com/manage")
     else:
         print("Exiting wizard.")
         sys.exit(0)
 
-    print("\n🎉 Setup complete! Kijiji & Zumper are now connected.")
-    print("You can now trigger 1-click postings from your web dashboard or CLI.\n")
+    print("\n🎉 Setup complete! All selected accounts are now connected.")
 
 if __name__ == "__main__":
     main()
