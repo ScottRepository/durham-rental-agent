@@ -80,6 +80,38 @@ def init_db(db_path: Path = DB_PATH):
     );
     """)
 
+    # Applicants & Tenant Screening Table
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS applicants (
+        id TEXT PRIMARY KEY,
+        unit_id TEXT NOT NULL,
+        full_name TEXT NOT NULL,
+        email TEXT,
+        phone TEXT,
+        source_platform TEXT DEFAULT 'Google Form',
+        stage TEXT DEFAULT 'New Inquiry',
+        desired_move_in TEXT,
+        occupants INTEGER DEFAULT 1,
+        monthly_income REAL DEFAULT 0,
+        employment_status TEXT DEFAULT 'Full-Time Permanent',
+        employment_months INTEGER DEFAULT 12,
+        employer_name TEXT,
+        credit_score INTEGER DEFAULT 0,
+        credit_utilization REAL DEFAULT 25,
+        late_payments INTEGER DEFAULT 0,
+        collections_or_insolvency INTEGER DEFAULT 0,
+        has_pets INTEGER DEFAULT 0,
+        smokes INTEGER DEFAULT 0,
+        landlord_ref_verified INTEGER DEFAULT 0,
+        showing_slot TEXT,
+        ai_score INTEGER DEFAULT 0,
+        ai_verdict TEXT,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (unit_id) REFERENCES units(id) ON DELETE CASCADE
+    );
+    """)
+
     conn.commit()
     conn.close()
 
@@ -242,6 +274,61 @@ def add_media_asset(unit_id: str, media_type: str, file_path: str = None, web_ur
     """, (unit_id, media_type, file_path, web_url, caption, 1 if is_cover else 0, unit_id))
     conn.commit()
     conn.close()
+
+
+def get_all_applicants(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
+    init_db(db_path)
+    conn = get_connection(db_path)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM applicants ORDER BY created_at DESC")
+    rows = cur.fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def upsert_applicant(app_data: Dict[str, Any], db_path: Path = DB_PATH) -> Dict[str, Any]:
+    init_db(db_path)
+    conn = get_connection(db_path)
+    cur = conn.cursor()
+    app_id = app_data.get("id") or f"app_{int(datetime.now().timestamp())}"
+    cur.execute("""
+    INSERT OR REPLACE INTO applicants (
+        id, unit_id, full_name, email, phone, source_platform, stage,
+        desired_move_in, occupants, monthly_income, employment_status,
+        employment_months, employer_name, credit_score, credit_utilization,
+        late_payments, collections_or_insolvency, has_pets, smokes,
+        landlord_ref_verified, showing_slot, ai_score, ai_verdict, notes
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        app_id,
+        app_data.get("unit_id", "unit_3"),
+        app_data.get("full_name", "New Applicant"),
+        app_data.get("email", ""),
+        app_data.get("phone", ""),
+        app_data.get("source_platform", "Google Form"),
+        app_data.get("stage", "New Inquiry"),
+        app_data.get("desired_move_in", "Immediate"),
+        int(app_data.get("occupants") or 1),
+        float(app_data.get("monthly_income") or 0),
+        app_data.get("employment_status", "Full-Time Permanent"),
+        int(app_data.get("employment_months") or 12),
+        app_data.get("employer_name", ""),
+        int(app_data.get("credit_score") or 0),
+        float(app_data.get("credit_utilization") or 25),
+        int(app_data.get("late_payments") or 0),
+        1 if app_data.get("collections_or_insolvency") else 0,
+        1 if app_data.get("has_pets") else 0,
+        1 if app_data.get("smokes") else 0,
+        1 if app_data.get("landlord_ref_verified") else 0,
+        app_data.get("showing_slot", ""),
+        int(app_data.get("ai_score") or 0),
+        app_data.get("ai_verdict", ""),
+        app_data.get("notes", "")
+    ))
+    conn.commit()
+    conn.close()
+    app_data["id"] = app_id
+    return app_data
 
 if __name__ == "__main__":
     init_db()

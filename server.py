@@ -19,10 +19,13 @@ from data.database import (
     add_media_asset,
     update_posting_status,
     init_db,
-    seed_from_sample_if_empty
+    seed_from_sample_if_empty,
+    get_all_applicants,
+    upsert_applicant
 )
 from modules.automated_poster import AutomatedPoster
 from modules.content_generator import package_all_listings_for_unit
+from modules.tenant_screening import analyze_tenant_application, generate_gmail_compose_url
 
 PORT = int(os.environ.get("PORT", 8000))
 DOCS_DIR = Path(__file__).parent / "docs"
@@ -54,6 +57,15 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             units = get_all_units()
             self.wfile.write(json.dumps({"success": True, "properties": units}).encode("utf-8"))
+            return
+
+        elif path == "/api/applicants":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            applicants = get_all_applicants()
+            self.wfile.write(json.dumps({"success": True, "applicants": applicants}).encode("utf-8"))
             return
 
         elif path.startswith("/api/units/") and path.endswith("/package"):
@@ -141,6 +153,28 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             self._set_cors_headers()
             self.end_headers()
             self.wfile.write(json.dumps({"success": True, "message": "Media asset added to database"}).encode("utf-8"))
+            return
+
+        # Save or Update Applicant Endpoint
+        elif path == "/api/applicants":
+            saved = upsert_applicant(data)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "applicant": saved}).encode("utf-8"))
+            return
+
+        # AI Credit & Income Analysis Endpoint
+        elif path == "/api/analyze-credit":
+            unit_id = data.get("unit_id", "unit_3")
+            unit = get_unit_by_id(unit_id) or {"name": "315 Kent St", "financials": {"target_rent": 2075}}
+            analysis = analyze_tenant_application(data, unit)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "analysis": analysis}).encode("utf-8"))
             return
 
         self.send_error(404, "Endpoint not found")

@@ -57,7 +57,10 @@
           <p class="text-xs text-slate-500">6-Unit Portfolio • Media Database (Photos & Videos) • Auto-Posting to FB, Kijiji & Zumper</p>
         </div>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="switchTab('screening')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 shadow-sm transition" title="Manage Tenant Emails & Screening via 315kentstreet@gmail.com">
+          <i class="fa-solid fa-envelope-circle-check text-emerald-600"></i> 315kentstreet@gmail.com
+        </button>
         <a href="https://forms.gle/UZSrP8PUSh9GsdLX8" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 shadow-sm transition">
           <i class="fa-solid fa-clipboard-question text-purple-600"></i> Tenant Intake Form
         </a>
@@ -71,24 +74,27 @@
     </div>
 
     <!-- Navigation Tabs -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-4 border-t border-slate-100 pt-1 overflow-x-auto">
-      <button onclick="switchTab('units')" id="tabBtn-units" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 tab-active transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-list-check"></i> 6 Units Portfolio
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-3 border-t border-slate-100 pt-1 overflow-x-auto">
+      <button onclick="switchTab('units')" id="tabBtn-units" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 tab-active transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-building"></i> 6 Units Portfolio
       </button>
-      <button onclick="switchTab('media')" id="tabBtn-media" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-photo-film"></i> Photos & Videos Database
+      <button onclick="switchTab('posting')" id="tabBtn-posting" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Ad Builder & Auto-Poster
       </button>
-      <button onclick="switchTab('comps')" id="tabBtn-comps" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-chart-line"></i> Market Research & Comps
+      <button onclick="switchTab('screening')" id="tabBtn-screening" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-user-shield text-emerald-600"></i> Tenant Screening, AI Credit & Email
       </button>
-      <button onclick="switchTab('posting')" id="tabBtn-posting" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-bolt text-amber-500"></i> 1-Click Auto Posting
+      <button onclick="switchTab('comps')" id="tabBtn-comps" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-chart-line"></i> Market Comps
       </button>
-      <button onclick="switchTab('platforms')" id="tabBtn-platforms" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-map-location-dot"></i> Durham Free Channels
+      <button onclick="switchTab('media')" id="tabBtn-media" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-photo-film"></i> Photos & Videos
       </button>
-      <button onclick="switchTab('github')" id="tabBtn-github" class="tab-btn px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-robot"></i> GitHub Actions
+      <button onclick="switchTab('platforms')" id="tabBtn-platforms" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-map-location-dot"></i> Durham Channels
+      </button>
+      <button onclick="switchTab('github')" id="tabBtn-github" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-robot"></i> Automation
       </button>
     </div>
   </header>
@@ -98,13 +104,19 @@
 
     <!-- TAB 1: 6 UNITS PORTFOLIO -->
     <section id="tab-units" class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <h2 class="text-lg font-bold text-slate-900">Portfolio & Posting Status Tracker</h2>
-          <p class="text-sm text-slate-500">6 residential units connected to SQLite media database with instant 1-click posting status.</p>
+          <h2 class="text-lg font-bold text-slate-900">315 Kent Street — 6-Unit Portfolio & Vacancy Tracker</h2>
+          <p class="text-sm text-slate-500">Toggle units between <strong>Available to Rent</strong> and <strong>Occupied</strong>, preview ads, or jump directly to tenant screening.</p>
         </div>
-        <div class="flex items-center gap-3">
-          <div class="text-right">
+        <div class="flex flex-wrap items-center gap-4">
+          <!-- Vacancy Filter Pills -->
+          <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+            <button onclick="setUnitFilter('all')" id="unitFilter-all" class="px-3 py-1.5 rounded-lg bg-white text-blue-600 shadow-sm transition">All 6 Units</button>
+            <button onclick="setUnitFilter('vacant')" id="unitFilter-vacant" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">Available to Rent (<span id="vacantCountLabel">2</span>)</button>
+            <button onclick="setUnitFilter('occupied')" id="unitFilter-occupied" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">Occupied (<span id="occupiedCountLabel">4</span>)</button>
+          </div>
+          <div class="text-right pl-2 border-l border-slate-200">
             <span class="text-xs text-slate-500 uppercase tracking-wider block">Total Projected Revenue</span>
             <span id="totalMonthlyRent" class="text-xl font-extrabold text-blue-600">$11,665 CAD/mo</span>
           </div>
@@ -300,179 +312,234 @@
       </div>
     </section>
 
-    <!-- TAB 4: 1-CLICK AUTO POSTING ENGINE -->
+    <!-- TAB 4: USER-FRIENDLY AD BUILDER & 1-CLICK AUTO POSTING STUDIO -->
     <section id="tab-posting" class="hidden space-y-6">
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <!-- Top Studio Header & 1-Click Publish Bar -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <i class="fa-solid fa-bolt text-amber-500"></i> 1-Click Automated Posting Engine
-            </h2>
-            <p class="text-sm text-slate-500">Automatically stage and post property details, photos, and video walkthroughs directly to external sites.</p>
-          </div>
-          <div class="flex flex-wrap items-center gap-3">
-            <div>
-              <label class="text-xs font-semibold text-slate-500 uppercase block mb-1">Unit</label>
-              <select id="postingUnitSelect" onchange="renderPlatformListing()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2 font-medium">
-                <!-- Populated by JS -->
-              </select>
-            </div>
-            <div>
-              <label class="text-xs font-semibold text-slate-500 uppercase block mb-1">Destination Platform</label>
-              <select id="postingPlatformSelect" onchange="renderPlatformListing()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2 font-medium">
-                <option value="facebook">Facebook Marketplace & Groups</option>
-                <option value="kijiji">Kijiji Ontario (YouTube Embed Badge)</option>
-                <option value="zumper">Zumper & PadMapper (Virtual Tour Link)</option>
-                <option value="rentals_ca">Rentals.ca (Top Google Rank)</option>
-                <option value="liv_rent">Liv.rent (Digital Verification & Contracts)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- 1-Click Action Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-4 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-200 mb-6">
-          <div class="space-y-1">
             <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full flex items-center gap-1.5">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Visual Ad Studio
+              </span>
               <span id="platformBadge" class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full shadow-sm"></span>
               <span id="postingStatusPill" class="px-2.5 py-0.5 bg-slate-200 text-slate-700 text-xs font-semibold rounded-full">Draft</span>
             </div>
-            <p class="text-xs text-slate-600">Click below to launch the automated Playwright poster with your saved credentials.</p>
+            <h2 class="text-xl font-bold text-slate-900 mt-1.5">Customize Your Rental Ad & Preview Live</h2>
+            <p class="text-sm text-slate-500">Adjust your headline, price, move-in date, or description on the left and see how your ad looks on each website on the right.</p>
           </div>
-          
-          <div class="flex flex-wrap items-center gap-3">
-            <!-- Post All Sites with Pre-Posting Verification Gate -->
-            <button onclick="startPostAllVerificationQueue()" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 rounded-xl hover:from-purple-700 hover:to-blue-700 shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5">
-              <i class="fa-solid fa-list-check text-yellow-300 text-base"></i>
-              <span>Post All (with Verification Gate)</span>
+
+          <!-- Primary Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="startPostAllVerificationQueue()" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-xl hover:from-blue-700 hover:to-purple-700 shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-paper-plane text-yellow-300"></i>
+              <span>Post to All 5 Sites (Review Each First)</span>
             </button>
-            <button onclick="executeOneClickPost()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 shadow-sm transition">
-              <i class="fa-solid fa-bolt text-amber-500"></i> Post Current Site
+            <button onclick="executeOneClickPost()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-800 bg-amber-50 border border-amber-300 rounded-xl hover:bg-amber-100 shadow-sm transition">
+              <i class="fa-solid fa-bolt text-amber-600"></i> Auto-Post Current Site
             </button>
-            <button onclick="copyListingText()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 shadow-sm transition">
-              <i class="fa-solid fa-copy"></i> Copy Listing Text
+            <button onclick="copyListingText()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 shadow-sm transition">
+              <i class="fa-solid fa-copy text-blue-600"></i> Copy Ad Text
             </button>
-            <button onclick="copyLeadReplySnippet()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 shadow-sm transition" title="Copies ready message with form link to send to incoming leads in Zumper / FB chat">
-              <i class="fa-solid fa-reply text-purple-600"></i> Copy Lead Reply
+            <button onclick="copyLeadReplySnippet()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 shadow-sm transition" title="Copy a friendly reply with your Google Form link for tenants who message you">
+              <i class="fa-solid fa-comment-dots text-purple-600"></i> Copy Reply for Inquiries
             </button>
-            <a id="platformDirectPostBtn" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-blue-700 bg-white border border-blue-300 rounded-xl hover:bg-blue-50 shadow-sm transition">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Portal
+            <a id="platformDirectPostBtn" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-semibold text-blue-700 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 shadow-sm transition">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Website
             </a>
           </div>
         </div>
 
-        <!-- Listing Content Preview Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="space-y-4">
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Payload Ready to Dispatch</h4>
-              <div>
-                <div class="flex items-center justify-between">
-                  <label class="text-xs font-semibold text-slate-700">Listing Title (Editable):</label>
-                  <span class="text-[10px] text-blue-600 font-semibold">Live in preview</span>
-                </div>
-                <div class="flex items-center gap-2 mt-1">
-                  <input id="listingTitle" type="text" oninput="onFieldChanged()" class="w-full bg-white border border-blue-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded px-2.5 py-1.5 text-xs font-mono font-medium">
-                  <button onclick="copyInput('listingTitle')" class="p-1.5 text-slate-500 hover:text-blue-600" title="Copy Title"><i class="fa-solid fa-copy"></i></button>
-                </div>
-              </div>
-              <div class="grid grid-cols-3 gap-2">
-                <div>
-                  <label class="text-xs font-semibold text-slate-700">Target Rent:</label>
-                  <input id="listingPrice" type="text" oninput="onFieldChanged()" class="w-full bg-white border border-slate-300 focus:border-blue-500 rounded px-2.5 py-1.5 text-xs font-mono font-bold text-green-700 mt-1">
-                </div>
-                <div>
-                  <label class="text-xs font-semibold text-slate-700">Bedrooms:</label>
-                  <input id="listingBeds" type="text" oninput="onFieldChanged()" class="w-full bg-white border border-slate-300 focus:border-blue-500 rounded px-2.5 py-1.5 text-xs font-mono mt-1">
-                </div>
-                <div>
-                  <label class="text-xs font-semibold text-slate-700">Move-In Date:</label>
-                  <input id="listingAvailableDate" type="text" oninput="onFieldChanged()" placeholder="e.g. Dec 1" class="w-full bg-white border border-slate-300 focus:border-blue-500 rounded px-2.5 py-1.5 text-xs font-mono font-medium mt-1">
-                </div>
-              </div>
-              <div>
-                <label class="text-xs font-semibold text-slate-700">Video Walkthrough URL:</label>
-                <div class="flex items-center gap-2 mt-1">
-                  <input id="listingVideo" type="text" oninput="onFieldChanged()" class="w-full bg-white border border-slate-300 focus:border-blue-500 rounded px-2.5 py-1.5 text-xs font-mono text-blue-600 truncate">
-                  <button onclick="copyInput('listingVideo')" class="p-1.5 text-slate-500 hover:text-blue-600" title="Copy Video Link"><i class="fa-solid fa-copy"></i></button>
-                </div>
-              </div>
-              <div>
-                <label class="text-xs font-medium text-slate-600">Photos Database Folder:</label>
-                <p id="listingPhotosPath" class="text-xs font-mono bg-white p-2 border border-slate-300 rounded text-slate-600 break-all"></p>
-              </div>
-            </div>
-
-            <!-- Platform Specific Rules Box -->
-            <div id="platformRulesBox" class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-xs text-amber-900 space-y-1.5">
+        <!-- Step 1: Easy Unit & Website Selector Bar -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pt-4 border-t border-slate-100 items-center">
+          <div class="md:col-span-4">
+            <label class="text-xs font-bold text-slate-700 block mb-1.5">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-white text-[11px] mr-1">1</span>
+              Choose Apartment Unit:
+            </label>
+            <select id="postingUnitSelect" onchange="renderPlatformListing()" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl p-2.5 font-semibold focus:ring-2 focus:ring-blue-500">
               <!-- Populated by JS -->
-            </div>
+            </select>
           </div>
 
-          <!-- Description Box with In-Browser Content Management -->
-          <div class="lg:col-span-2 flex flex-col justify-between">
-            <div>
-              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <div class="flex items-center gap-2">
-                  <label class="text-sm font-bold text-slate-800">Listing Description Editor</label>
-                  <span id="customSavedBadge" class="hidden text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full">Custom Saved</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span id="charCount" class="text-xs text-slate-500 font-mono">0 characters</span>
-                  <button onclick="saveCustomDescription()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1">
-                    <i class="fa-solid fa-floppy-disk"></i> Save Description
-                  </button>
-                  <button onclick="resetDefaultDescription()" class="px-2.5 py-1 bg-white border border-slate-300 hover:bg-slate-100 text-slate-600 rounded-lg text-xs font-medium transition" title="Reset to auto-generated template">
-                    <i class="fa-solid fa-rotate-left"></i> Reset
-                  </button>
-                </div>
-              </div>
-              <p class="text-[11px] text-slate-500 mb-2">You can type and edit your exact custom listing copy directly here. Saved edits persist and are used by the 1-Click Auto Poster.</p>
-              <textarea id="listingDescription" oninput="onDescriptionEdited()" rows="18" class="w-full p-4 font-mono text-xs bg-slate-900 text-slate-100 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"></textarea>
-            </div>
-            <div class="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100 mt-2">
-              <span><i class="fa-solid fa-check text-emerald-500 mr-1"></i> Formatted for clean pasting (no Word formatting errors)</span>
-              <button onclick="exportAllCustomDescriptions()" class="text-blue-600 hover:text-blue-800 font-semibold">
-                <i class="fa-solid fa-file-arrow-down mr-1"></i> Export Descriptions Backup
+          <div class="md:col-span-8">
+            <label class="text-xs font-bold text-slate-700 block mb-1.5">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-white text-[11px] mr-1">2</span>
+              Choose Rental Website to Customize & Preview:
+            </label>
+            <!-- Hidden select kept synced for compatibility -->
+            <select id="postingPlatformSelect" onchange="renderPlatformListing()" class="hidden">
+              <option value="facebook">Facebook Marketplace & Groups</option>
+              <option value="kijiji">Kijiji Ontario (YouTube Embed Badge)</option>
+              <option value="zumper">Zumper & PadMapper (Virtual Tour Link)</option>
+              <option value="rentals_ca">Rentals.ca (Top Google Rank)</option>
+              <option value="liv_rent">Liv.rent (Digital Verification & Contracts)</option>
+            </select>
+            <!-- Friendly Visual Website Pills -->
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+              <button onclick="switchPreviewPlatform('facebook')" id="prevTab-facebook" class="px-3 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-facebook"></i> Facebook
+              </button>
+              <button onclick="switchPreviewPlatform('kijiji')" id="prevTab-kijiji" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-tag"></i> Kijiji
+              </button>
+              <button onclick="switchPreviewPlatform('zumper')" id="prevTab-zumper" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-building-circle-check"></i> Zumper
+              </button>
+              <button onclick="switchPreviewPlatform('rentals_ca')" id="prevTab-rentals_ca" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-house-chimney"></i> Rentals.ca
+              </button>
+              <button onclick="switchPreviewPlatform('liv_rent')" id="prevTab-liv_rent" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-shield-heart"></i> Liv.rent
               </button>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- LIVE WEBSITE MOCKUP PREVIEW CONTAINER -->
-        <div class="mt-8 pt-8 border-t border-slate-200">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <i class="fa-solid fa-eye text-blue-600"></i> Live Website Listing Preview
-                </h3>
-                <span class="text-[10px] bg-blue-100 text-blue-800 font-semibold px-2 py-0.5 rounded-full">Real-Time Reactive</span>
-              </div>
-              <p class="text-xs text-slate-500 mt-0.5">As you make adjustments above, watch how your listing renders live on external websites.</p>
+      <!-- SIDE-BY-SIDE VISUAL AD EDITOR (LEFT) & LIVE WEBSITE PREVIEW (RIGHT) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- LEFT COLUMN: USER-FRIENDLY AD BUILDER -->
+        <div class="lg:col-span-5 space-y-5">
+          
+          <!-- Card 1: Headline, Price & Move-In Date -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-blue-600"></i> Step 3: Key Listing Details
+              </h3>
+              <span class="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold">Updates Live Preview &rarr;</span>
             </div>
 
-            <!-- Viewport & Platform Preview Switchers -->
-            <div class="flex flex-wrap items-center gap-3">
-              <!-- Platform Quick Switch Tabs for Preview -->
-              <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
-                <button onclick="switchPreviewPlatform('facebook')" id="prevTab-facebook" class="px-2.5 py-1 rounded-lg bg-white text-blue-600 shadow-sm transition">FB Marketplace</button>
-                <button onclick="switchPreviewPlatform('kijiji')" id="prevTab-kijiji" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition">Kijiji</button>
-                <button onclick="switchPreviewPlatform('zumper')" id="prevTab-zumper" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition">Zumper</button>
-                <button onclick="switchPreviewPlatform('rentals_ca')" id="prevTab-rentals_ca" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition">Rentals.ca</button>
-                <button onclick="switchPreviewPlatform('liv_rent')" id="prevTab-liv_rent" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition">Liv.rent</button>
+            <!-- Headline Input -->
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-semibold text-slate-700">Ad Headline / Title</label>
+                <button onclick="copyInput('listingTitle')" class="text-[11px] text-blue-600 hover:underline font-medium"><i class="fa-regular fa-copy mr-1"></i>Copy Title</button>
               </div>
+              <input id="listingTitle" type="text" oninput="onFieldChanged()" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 transition">
+            </div>
 
-              <!-- Device Viewport Toggle -->
-              <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
-                <button onclick="setPreviewDevice('desktop')" id="btnPreviewDesktop" class="px-3 py-1 text-xs font-semibold rounded-lg bg-white text-blue-600 shadow-sm transition flex items-center gap-1.5">
-                  <i class="fa-solid fa-desktop"></i> Desktop
+            <!-- Price, Bedrooms & Move-in Date -->
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Monthly Rent</label>
+                <input id="listingPrice" type="text" oninput="onFieldChanged()" class="w-full bg-emerald-50/60 border border-emerald-300 focus:bg-white focus:border-emerald-500 rounded-xl px-3 py-2 text-sm font-extrabold text-emerald-800">
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Bedrooms</label>
+                <input id="listingBeds" type="text" oninput="onFieldChanged()" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800">
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Move-In Date</label>
+                <input id="listingAvailableDate" type="text" oninput="onFieldChanged()" placeholder="e.g. Dec 1" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800">
+              </div>
+            </div>
+
+            <!-- Quick Move-in Date Chips -->
+            <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
+              <span class="text-[11px] text-slate-500 mr-1">Quick Set Date:</span>
+              <button type="button" onclick="setQuickAvailDate('Immediate')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-lg transition">Immediate</button>
+              <button type="button" onclick="setQuickAvailDate('December 1')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-lg transition">December 1</button>
+              <button type="button" onclick="setQuickAvailDate('January 1')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-lg transition">January 1</button>
+            </div>
+
+            <!-- Video Walkthrough & Photos Links -->
+            <div class="pt-2 border-t border-slate-100 space-y-2.5">
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                    <i class="fa-brands fa-youtube text-red-600"></i> YouTube Video Walkthrough Link
+                  </label>
+                  <button onclick="copyInput('listingVideo')" class="text-[11px] text-blue-600 hover:underline font-medium"><i class="fa-regular fa-copy mr-1"></i>Copy Link</button>
+                </div>
+                <input id="listingVideo" type="text" oninput="onFieldChanged()" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 rounded-xl px-3 py-2 text-xs text-blue-700 font-medium">
+              </div>
+              <div class="flex items-center justify-between p-2.5 bg-blue-50/50 rounded-xl border border-blue-100 text-xs">
+                <span class="text-slate-700 font-medium flex items-center gap-1.5 truncate">
+                  <i class="fa-brands fa-google-drive text-blue-600"></i>
+                  <span id="listingPhotosPath" class="truncate">Google Drive Photos</span>
+                </span>
+                <a href="https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing" target="_blank" class="text-blue-600 hover:underline font-bold shrink-0 ml-2">Open Photos &rarr;</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Friendly Ad Description Pad (No Dark Programmer Box!) -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <i class="fa-solid fa-align-left text-indigo-600"></i> Step 4: Ad Description
+                </h3>
+                <span id="customSavedBadge" class="hidden text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Saved</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="charCount" class="text-[11px] text-slate-400">0 chars</span>
+                <button onclick="saveCustomDescription()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
+                  <i class="fa-solid fa-check"></i> Save Changes
                 </button>
-                <button onclick="setPreviewDevice('mobile')" id="btnPreviewMobile" class="px-3 py-1 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
-                  <i class="fa-solid fa-mobile-screen"></i> Mobile App
+                <button onclick="resetDefaultDescription()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition" title="Restore original template">
+                  <i class="fa-solid fa-rotate-left"></i> Reset
                 </button>
               </div>
+            </div>
+
+            <!-- 1-Click Quick-Insert Highlight Chips -->
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1.5">
+              <span class="text-[11px] font-bold text-slate-600 block">1-Click Add Highlights into Description:</span>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" onclick="insertAdSnippet('form')" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 rounded-lg text-[11px] font-semibold transition">
+                  + Intake Form Link
+                </button>
+                <button type="button" onclick="insertAdSnippet('go_train')" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-lg text-[11px] font-semibold transition">
+                  + 5-Min Walk to GO Train
+                </button>
+                <button type="button" onclick="insertAdSnippet('parking')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-lg text-[11px] font-semibold transition">
+                  + Winter Parking Included
+                </button>
+                <button type="button" onclick="insertAdSnippet('video')" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-800 border border-red-200 rounded-lg text-[11px] font-semibold transition">
+                  + Video Tour Callout
+                </button>
+              </div>
+            </div>
+
+            <!-- Clean, Easy-to-Read Paper-Style Textarea -->
+            <textarea id="listingDescription" oninput="onDescriptionEdited()" rows="16" class="w-full p-4 font-sans text-sm bg-slate-50/40 focus:bg-white text-slate-800 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 leading-relaxed shadow-inner"></textarea>
+
+            <!-- Platform Helpful Note Box -->
+            <div id="platformRulesBox" class="bg-amber-50/80 p-3.5 rounded-xl border border-amber-200 text-xs text-amber-900 space-y-1">
+              <!-- Populated by JS -->
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+              <span><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> Ready for clean 1-click pasting</span>
+              <button onclick="exportAllCustomDescriptions()" class="text-blue-600 hover:text-blue-800 font-semibold">
+                <i class="fa-solid fa-file-arrow-down mr-1"></i> Backup Custom Ads
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: LIVE WEBSITE MOCKUP PREVIEW (STICKY SIDE-BY-SIDE) -->
+        <div class="lg:col-span-7 lg:sticky lg:top-28 space-y-3">
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <h3 class="text-base font-bold text-slate-900">Live Website Preview</h3>
+              <span class="text-[11px] bg-blue-50 text-blue-700 font-semibold px-2.5 py-0.5 rounded-full border border-blue-200">See exactly what renters see</span>
+            </div>
+
+            <!-- Desktop / Mobile Phone Toggle -->
+            <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+              <button onclick="setPreviewDevice('desktop')" id="btnPreviewDesktop" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white text-blue-600 shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-desktop"></i> Computer View
+              </button>
+              <button onclick="setPreviewDevice('mobile')" id="btnPreviewMobile" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-mobile-screen"></i> Phone App View
+              </button>
             </div>
           </div>
 
@@ -483,6 +550,331 @@
             </div>
           </div>
         </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 4B: TENANT SCREENING, AI CREDIT ANALYZER, SCHEDULING & 315KENTSTREET@GMAIL.COM HUB -->
+    <section id="tab-screening" class="hidden space-y-6">
+      <!-- Top Header & Pipeline Summary KPIs -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full flex items-center gap-1">
+                <i class="fa-solid fa-shield-check"></i> AI Screening & CRM
+              </span>
+              <span class="px-2.5 py-0.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
+                <i class="fa-regular fa-envelope mr-1"></i> Connected: 315kentstreet@gmail.com
+              </span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 mt-1">Tenant Screening, AI Credit Analyzer & Showing Scheduler</h2>
+            <p class="text-sm text-slate-500">Review Google Form applicants, analyze credit reports & affordability with AI, book showings on your calendar, and email tenants from <strong>315kentstreet@gmail.com</strong>.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="openAddApplicantModal()" class="inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition">
+              <i class="fa-solid fa-user-plus"></i> + Add / Import Applicant
+            </button>
+            <a href="https://docs.google.com/forms/d/1cAcunDapYNvATMh0u_fzs5H_dmfZy9_BIbakG0oO3ZU/edit#responses" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl transition">
+              <i class="fa-solid fa-table-list"></i> Open Google Form Responses
+            </a>
+            <a href="https://mail.google.com/mail/u/?authuser=315kentstreet@gmail.com" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl transition">
+              <i class="fa-solid fa-inbox"></i> Open 315kentstreet@gmail.com Inbox
+            </a>
+          </div>
+        </div>
+
+        <!-- 4 Pipeline Counter Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-semibold text-slate-500 uppercase">Total Applicants</span>
+              <p id="kpiTotalApplicants" class="text-2xl font-black text-slate-900 mt-0.5">4</p>
+              <span class="text-[11px] text-slate-500">Unit 2 (Dec 1) & Unit 3 (Now)</span>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg"><i class="fa-solid fa-users"></i></div>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-semibold text-slate-500 uppercase">Showings Scheduled</span>
+              <p id="kpiShowingsBooked" class="text-2xl font-black text-indigo-600 mt-0.5">2</p>
+              <span class="text-[11px] text-slate-500">Synced with Calendar</span>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg"><i class="fa-regular fa-calendar-check"></i></div>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-semibold text-slate-500 uppercase">AI Recommended (Tier A)</span>
+              <p id="kpiApprovedCount" class="text-2xl font-black text-emerald-600 mt-0.5">2</p>
+              <span class="text-[11px] text-slate-500">680+ Credit & &le;35% Rent/Income</span>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-award"></i></div>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-semibold text-slate-500 uppercase">Flagged / High Risk</span>
+              <p id="kpiFlaggedCount" class="text-2xl font-black text-amber-600 mt-0.5">1</p>
+              <span class="text-[11px] text-slate-500">Co-signer or Decline</span>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3-COLUMN SCREENING, AI CREDIT & EMAIL PORTAL -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- COLUMN 1: APPLICANT INTAKE QUEUE (4 COLS) -->
+        <div class="lg:col-span-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-address-card text-blue-600"></i> 1. Applicant Queue
+            </h3>
+            <select id="applicantUnitFilter" onchange="renderApplicantsList()" class="bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-lg px-2.5 py-1.5 font-semibold">
+              <option value="all">All Units</option>
+              <option value="unit_2">Unit 2 ($1,695 • Dec 1)</option>
+              <option value="unit_3">Unit 3 ($2,075 • Immediate)</option>
+              <option value="unit_1">Unit 1 ($1,695)</option>
+            </select>
+          </div>
+          <p class="text-xs text-slate-500">Click any applicant below to run AI Credit Analysis, schedule a showing, or email them from <code>315kentstreet@gmail.com</code>.</p>
+
+          <div id="applicantsListContainer" class="space-y-3 max-h-[680px] overflow-y-auto pr-1">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- COLUMN 2: AI CREDIT REPORT & AFFORDABILITY ANALYZER (4 COLS) -->
+        <div class="lg:col-span-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-brain text-purple-600"></i> 2. AI Credit & Income Analyzer
+              </h3>
+              <p class="text-xs text-slate-500">Evaluates Equifax/TransUnion credit, debt & rent-to-income ratio</p>
+            </div>
+            <span id="aiScoreBadgeHeader" class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800">92 / 100</span>
+          </div>
+
+          <!-- Upload Credit Report PDF / Image Dropzone -->
+          <div class="p-3.5 bg-purple-50/60 border-2 border-dashed border-purple-300 rounded-xl text-center space-y-1.5">
+            <i class="fa-solid fa-file-shield text-purple-600 text-xl"></i>
+            <div class="text-xs font-bold text-slate-800">Upload Credit Report or Paystub (PDF / Text / Image)</div>
+            <p class="text-[11px] text-slate-500">Drop Equifax, TransUnion, Borrowell, or SingleKey report to auto-extract metrics, or adjust values below:</p>
+            <input type="file" id="creditReportFileInput" accept=".txt,.pdf,.csv,.json,.png,.jpg,.jpeg" onchange="handleCreditFileUpload(event)" class="hidden">
+            <div class="pt-1 flex justify-center gap-2">
+              <button type="button" onclick="document.getElementById('creditReportFileInput').click()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-lg shadow-sm transition">
+                <i class="fa-solid fa-upload mr-1"></i> Select Report File
+              </button>
+              <span id="uploadedFileNameBadge" class="text-[11px] text-purple-800 font-semibold self-center truncate max-w-[160px]"></span>
+            </div>
+          </div>
+
+          <!-- Editable Credit & Income Inputs for Selected Applicant -->
+          <div class="space-y-3 text-xs">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="font-bold text-slate-700 block mb-1">Credit Score (300–900)</label>
+                <input id="screenCreditScore" type="number" min="300" max="900" oninput="runLiveAiScreening()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-bold text-slate-900">
+              </div>
+              <div>
+                <label class="font-bold text-slate-700 block mb-1">Monthly Gross Income ($)</label>
+                <input id="screenMonthlyIncome" type="number" step="100" oninput="runLiveAiScreening()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-bold text-emerald-700">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Credit Util %</label>
+                <input id="screenUtilization" type="number" min="0" max="100" oninput="runLiveAiScreening()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Late Payments</label>
+                <input id="screenLatePayments" type="number" min="0" max="20" oninput="runLiveAiScreening()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Occupants</label>
+                <input id="screenOccupants" type="number" min="1" max="8" oninput="runLiveAiScreening()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-semibold">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Employment Type</label>
+                <select id="screenEmployment" onchange="runLiveAiScreening()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-semibold">
+                  <option value="Full-Time Permanent">Full-Time Permanent</option>
+                  <option value="Retired / Pension">Retired / Pension</option>
+                  <option value="Contract / Self-Employed">Contract / Self-Employed</option>
+                  <option value="Student / Part-Time">Student / Part-Time</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Applicant Stage</label>
+                <select id="screenStageSelect" onchange="updateSelectedApplicantStage()" class="w-full bg-blue-50 border border-blue-300 text-blue-900 rounded-lg px-2.5 py-1.5 text-xs font-bold">
+                  <option value="New Inquiry">New Inquiry</option>
+                  <option value="Pre-Screened">Pre-Screened (Form Done)</option>
+                  <option value="Showing Booked">Showing Booked</option>
+                  <option value="Credit & Refs Review">Credit & Refs Review</option>
+                  <option value="Approved">Approved for Lease</option>
+                  <option value="Declined">Declined</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Checkboxes for Risk & House Rules -->
+            <div class="grid grid-cols-2 gap-2 pt-1 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="screenCollections" onchange="runLiveAiScreening()" class="rounded text-red-600">
+                <span class="text-[11px] font-medium text-slate-700">Collections / Bankruptcy</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="screenSmokes" onchange="runLiveAiScreening()" class="rounded text-red-600">
+                <span class="text-[11px] font-medium text-slate-700">Smoker / Vaper</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="screenPets" onchange="runLiveAiScreening()" class="rounded text-amber-600">
+                <span class="text-[11px] font-medium text-slate-700">Has Pets</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="screenLandlordRef" onchange="runLiveAiScreening()" class="rounded text-emerald-600">
+                <span class="text-[11px] font-medium text-slate-700">Landlord Ref Verified</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- AI Verdict & Affordability Breakdown Box -->
+          <div id="aiVerdictCard" class="p-4 rounded-xl border space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider">AI Recommendation</span>
+              <span id="aiRtiPill" class="text-xs font-bold px-2 py-0.5 rounded bg-white/80">RTI: 28.5%</span>
+            </div>
+            <div id="aiVerdictTitle" class="text-sm font-black">STRONG APPROVE</div>
+            <p id="aiVerdictSummary" class="text-xs leading-relaxed"></p>
+
+            <!-- Strengths & Risks Lists -->
+            <div class="space-y-1.5 pt-2 border-t border-black/10 text-xs">
+              <div id="aiStrengthsList" class="space-y-1"></div>
+              <div id="aiRisksList" class="space-y-1"></div>
+            </div>
+
+            <!-- AI Reference Check Questions -->
+            <div class="pt-2 border-t border-black/10">
+              <span class="text-[11px] font-bold uppercase block mb-1"><i class="fa-solid fa-clipboard-list mr-1"></i> Suggested Screening Actions:</span>
+              <ul id="aiQuestionsList" class="list-disc ml-4 text-[11px] space-y-1"></ul>
+            </div>
+          </div>
+
+          <!-- Button to Open Ontario Standard Lease (2229E) & Reference Log Modal -->
+          <button type="button" onclick="openLeaseChecklistModal()" class="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-file-signature text-emerald-400"></i>
+            <span>Open Reference Checklist & Ontario Lease (2229E) Summary</span>
+          </button>
+        </div>
+
+        <!-- COLUMN 3: SHOWING SCHEDULER & 315KENTSTREET@GMAIL.COM PORTAL (4 COLS) -->
+        <div class="lg:col-span-4 space-y-5">
+          
+          <!-- Card A: Showing Scheduler (Synced with Google Calendar) -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3.5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <div>
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <i class="fa-regular fa-calendar-days text-indigo-600"></i> 3. Showing Scheduler
+                </h3>
+                <p class="text-xs text-slate-500">Schedule private viewing at 315 Kent Street, Whitby</p>
+              </div>
+              <span id="currentShowingBadge" class="text-[11px] bg-indigo-50 text-indigo-700 font-bold px-2.5 py-0.5 rounded-full">Not Scheduled</span>
+            </div>
+
+            <!-- Quick Showing Slot Presets -->
+            <div>
+              <label class="text-xs font-semibold text-slate-700 block mb-1.5">Pick or Type a Showing Window:</label>
+              <div class="grid grid-cols-2 gap-1.5 mb-2">
+                <button type="button" onclick="setShowingSlotPreset('Thu Nov 12, 5:30 PM - 5:50 PM')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 rounded-lg text-[11px] font-semibold transition text-left">
+                  <i class="fa-regular fa-clock mr-1"></i>Thu 5:30 PM
+                </button>
+                <button type="button" onclick="setShowingSlotPreset('Fri Nov 13, 4:30 PM - 4:50 PM')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 rounded-lg text-[11px] font-semibold transition text-left">
+                  <i class="fa-regular fa-clock mr-1"></i>Fri 4:30 PM
+                </button>
+                <button type="button" onclick="setShowingSlotPreset('Sat Nov 14, 11:00 AM - 11:20 AM')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 rounded-lg text-[11px] font-semibold transition text-left">
+                  <i class="fa-regular fa-clock mr-1"></i>Sat 11:00 AM
+                </button>
+                <button type="button" onclick="setShowingSlotPreset('Sun Nov 15, 1:00 PM - 1:20 PM')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 rounded-lg text-[11px] font-semibold transition text-left">
+                  <i class="fa-regular fa-clock mr-1"></i>Sun 1:00 PM
+                </button>
+              </div>
+              <input id="showingSlotInput" type="text" placeholder="e.g. Saturday Nov 14 at 11:00 AM" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900">
+            </div>
+
+            <div class="flex gap-2">
+              <button type="button" onclick="bookShowingAndOpenCalendar()" class="flex-1 py-2.5 px-3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center justify-center gap-1.5">
+                <i class="fa-regular fa-calendar-plus"></i> Save & Add to Google Calendar
+              </button>
+            </div>
+          </div>
+
+          <!-- Card B: 315kentstreet@gmail.com Email Communication Center -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3.5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <div>
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <i class="fa-solid fa-envelope-open-text text-emerald-600"></i> 4. Email Applicant
+                </h3>
+                <p class="text-[11px] text-slate-500">Sending from <strong class="text-slate-800">315kentstreet@gmail.com</strong></p>
+              </div>
+              <span class="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold px-2 py-0.5 rounded-full">Gmail Ready</span>
+            </div>
+
+            <!-- 1-Click Email Templates -->
+            <div>
+              <label class="text-[11px] font-bold text-slate-600 block mb-1.5">1-Click Screening & Scheduling Templates:</label>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" onclick="loadEmailTemplate('intake')" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 rounded-lg text-[11px] font-semibold transition">
+                  1. Send Intake Form
+                </button>
+                <button type="button" onclick="loadEmailTemplate('showing')" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-200 rounded-lg text-[11px] font-semibold transition">
+                  2. Confirm Showing
+                </button>
+                <button type="button" onclick="loadEmailTemplate('credit_request')" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-lg text-[11px] font-semibold transition">
+                  3. Request Credit & Paystubs
+                </button>
+                <button type="button" onclick="loadEmailTemplate('approve_lease')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg text-[11px] font-semibold transition">
+                  4. Lease Approval Offer
+                </button>
+                <button type="button" onclick="loadEmailTemplate('decline')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[11px] font-semibold transition">
+                  5. Polite Decline
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div>
+                <label class="font-semibold text-slate-700 block mb-0.5">To Applicant Email:</label>
+                <input id="emailToInput" type="email" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-800">
+              </div>
+              <div>
+                <label class="font-semibold text-slate-700 block mb-0.5">Subject:</label>
+                <input id="emailSubjectInput" type="text" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-800">
+              </div>
+              <div>
+                <label class="font-semibold text-slate-700 block mb-0.5">Message Body:</label>
+                <textarea id="emailBodyInput" rows="7" class="w-full bg-slate-50/60 focus:bg-white border border-slate-300 rounded-xl p-3 text-xs text-slate-800 leading-relaxed font-sans"></textarea>
+              </div>
+            </div>
+
+            <!-- Send via 315kentstreet@gmail.com Action Buttons -->
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button type="button" onclick="sendViaGmailPortal()" class="flex-1 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-paper-plane"></i> Open in Gmail (315kentstreet@gmail.com)
+              </button>
+              <button type="button" onclick="copyEmailMessage()" class="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition" title="Copy message to paste into Zumper or Facebook Messenger">
+                <i class="fa-solid fa-copy"></i> Copy
+              </button>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
 
@@ -798,14 +1190,14 @@
         <!-- Editable Inputs for Verification -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="md:col-span-2">
-            <label class="text-xs font-bold text-slate-700 uppercase block mb-1">Listing Title to Post:</label>
-            <input id="queueVerifyTitle" type="text" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-mono font-medium focus:ring-2 focus:ring-blue-500">
+            <label class="text-xs font-bold text-slate-700 block mb-1">Ad Headline to Publish:</label>
+            <input id="queueVerifyTitle" type="text" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
-            <label class="text-xs font-bold text-slate-700 uppercase block mb-1">Target Rent & Move-In:</label>
+            <label class="text-xs font-bold text-slate-700 block mb-1">Monthly Rent & Move-In:</label>
             <div class="flex items-center gap-2">
-              <input id="queueVerifyRent" type="text" class="w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs font-mono font-bold text-green-700">
-              <input id="queueVerifyAvail" type="text" class="w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs font-mono font-medium">
+              <input id="queueVerifyRent" type="text" class="w-1/2 bg-emerald-50 border border-emerald-300 rounded-xl p-2.5 text-sm font-extrabold text-emerald-800">
+              <input id="queueVerifyAvail" type="text" class="w-1/2 bg-white border border-slate-300 rounded-xl p-2.5 text-sm font-semibold text-slate-800">
             </div>
           </div>
         </div>
@@ -813,10 +1205,10 @@
         <!-- Description Verification -->
         <div>
           <div class="flex items-center justify-between mb-1">
-            <label class="text-xs font-bold text-slate-700 uppercase">Exact Description to Publish (Editable):</label>
-            <span class="text-[11px] text-slate-500 font-mono" id="queueCharCount">0 chars</span>
+            <label class="text-xs font-bold text-slate-700">Ad Description to Publish (Editable):</label>
+            <span class="text-[11px] text-slate-500" id="queueCharCount">0 chars</span>
           </div>
-          <textarea id="queueVerifyDesc" rows="10" class="w-full p-3 font-mono text-xs bg-slate-900 text-slate-100 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"></textarea>
+          <textarea id="queueVerifyDesc" rows="10" class="w-full p-3.5 font-sans text-sm bg-slate-50 focus:bg-white text-slate-800 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"></textarea>
         </div>
       </div>
 
@@ -847,6 +1239,127 @@
             <i class="fa-solid fa-check-circle text-sm"></i>
             <span id="queueApproveBtnText">Approve & Post</span>
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add / Import Applicant Modal -->
+  <div id="addApplicantModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl p-6 space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 class="font-bold text-slate-900 text-base">Add or Import Tenant Applicant</h3>
+          <p class="text-xs text-slate-500">Enter details from your Google Intake Form or Zumper/FB inquiry</p>
+        </div>
+        <button onclick="closeAddApplicantModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="font-semibold text-slate-700 block mb-1">Applicant Full Name *</label>
+            <input id="newAppName" type="text" placeholder="e.g. Sarah Jenkins" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold">
+          </div>
+          <div>
+            <label class="font-semibold text-slate-700 block mb-1">Target Unit *</label>
+            <select id="newAppUnit" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50">
+              <option value="unit_3">Unit 3 ($2,075 • Immediate)</option>
+              <option value="unit_2">Unit 2 ($1,695 • Dec 1)</option>
+              <option value="unit_1">Unit 1 ($1,695)</option>
+              <option value="unit_4">Unit 4 ($2,050)</option>
+              <option value="unit_5">Unit 5 ($2,075)</option>
+              <option value="unit_6">Unit 6 ($2,075)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="font-semibold text-slate-700 block mb-1">Email Address</label>
+            <input id="newAppEmail" type="email" placeholder="tenant@email.com" class="w-full border border-slate-300 rounded-xl p-2">
+          </div>
+          <div>
+            <label class="font-semibold text-slate-700 block mb-1">Phone Number</label>
+            <input id="newAppPhone" type="text" placeholder="905-555-0199" class="w-full border border-slate-300 rounded-xl p-2">
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="font-semibold text-slate-700 block mb-1">Credit Score</label>
+            <input id="newAppCredit" type="number" value="720" class="w-full border border-slate-300 rounded-xl p-2 font-bold">
+          </div>
+          <div>
+            <label class="font-semibold text-slate-700 block mb-1">Monthly Income ($)</label>
+            <input id="newAppIncome" type="number" value="6500" class="w-full border border-slate-300 rounded-xl p-2 font-bold text-emerald-700">
+          </div>
+          <div>
+            <label class="font-semibold text-slate-700 block mb-1">Lead Source</label>
+            <select id="newAppSource" class="w-full border border-slate-300 rounded-xl p-2 bg-slate-50">
+              <option value="Google Form">Google Intake Form</option>
+              <option value="Zumper">Zumper Lead</option>
+              <option value="Facebook">FB Marketplace</option>
+              <option value="Kijiji">Kijiji</option>
+              <option value="Liv.rent">Liv.rent</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="font-semibold text-slate-700 block mb-1">Employer / Intake Form Notes</label>
+          <textarea id="newAppNotes" rows="2" placeholder="Paste Google Form summary or notes (e.g. Works at Lakeridge Health, 2 adults, non-smoker, no pets)..." class="w-full border border-slate-300 rounded-xl p-2"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+        <button onclick="closeAddApplicantModal()" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold">Cancel</button>
+        <button onclick="saveNewApplicant()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-sm">Add & Run AI Screening</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ontario Standard Lease (Form 2229E) & Reference Verification Modal -->
+  <div id="leaseChecklistModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl p-6 space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-file-contract"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900 text-base">Reference Verification & Ontario Standard Lease (2229E) Packet</h3>
+            <p id="leaseModalSub" class="text-xs text-slate-500">315 Kent Street, Whitby, ON L1N 4Y5</p>
+          </div>
+        </div>
+        <button onclick="closeLeaseChecklistModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- Verification Checklist -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+          <h4 class="font-bold text-slate-900 uppercase text-[11px] tracking-wider text-blue-700">1. Due Diligence Verification Checklist</h4>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked class="rounded text-emerald-600"> <span>Google Intake Form (`forms.gle`) completed</span></label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="rounded text-emerald-600"> <span>Gov Photo ID verified at showing</span></label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="rounded text-emerald-600"> <span>Full Equifax/TransUnion PDF credit report checked</span></label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="rounded text-emerald-600"> <span>Last 2 recent paystubs & employment letter verified</span></label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="rounded text-emerald-600"> <span>Previous landlord called & ownership confirmed</span></label>
+        </div>
+        <div class="p-3.5 bg-emerald-50/60 rounded-xl border border-emerald-200 space-y-1.5">
+          <h4 class="font-bold text-emerald-950 uppercase text-[11px] tracking-wider">2. Ontario Form 2229E Pre-Filled Terms</h4>
+          <div id="leaseSummaryPreview" class="text-xs text-slate-800 space-y-1 leading-relaxed"></div>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-xs font-bold text-slate-700 block mb-1">Ready-to-Copy Lease Appendix & Key Rules (Schedule A):</label>
+        <textarea id="leaseScheduleAText" rows="7" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 leading-relaxed font-sans"></textarea>
+      </div>
+
+      <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-slate-100">
+        <a href="https://forms.mgcs.gov.on.ca/en/dataset/047-2229e" target="_blank" class="text-xs font-bold text-blue-600 hover:underline">
+          <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Official Ontario Standard Lease (Form 2229E)
+        </a>
+        <div class="flex gap-2">
+          <button onclick="copyLeaseScheduleA()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm">
+            <i class="fa-solid fa-copy mr-1"></i> Copy Lease Terms & Schedule A
+          </button>
+          <button onclick="closeLeaseChecklistModal()" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold">Close</button>
         </div>
       </div>
     </div>
@@ -1568,17 +2081,50 @@
     ];
 
     let compsChartInstance = null;
+    let currentUnitFilter = 'all';
+
+    // Default Vacancy Status (Unit 2 Dec 1 & Unit 3 Immediate are Active Vacancies)
+    function isUnitVacant(unitId) {
+      const saved = localStorage.getItem(`unit_vacant_${unitId}`);
+      if (saved !== null) return saved === 'true';
+      return unitId === 'unit_2' || unitId === 'unit_3';
+    }
+
+    function toggleUnitVacancy(unitId) {
+      const current = isUnitVacant(unitId);
+      localStorage.setItem(`unit_vacant_${unitId}`, (!current).toString());
+      renderUnitsGrid();
+      showToast(`Updated occupancy status for ${unitId.replace('_', ' ').toUpperCase()}`);
+    }
+
+    function setUnitFilter(filter) {
+      currentUnitFilter = filter;
+      ['all', 'vacant', 'occupied'].forEach(f => {
+        const btn = document.getElementById(`unitFilter-${f}`);
+        if (!btn) return;
+        if (f === filter) {
+          btn.className = "px-3 py-1.5 rounded-lg bg-white text-blue-600 shadow-sm transition";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition";
+        }
+      });
+      renderUnitsGrid();
+    }
 
     function initApp() {
       // Check if running on local backend
       tryFetchFromBackend();
-      renderUnitsGrid();
       populateSelects();
+      // Default Ad Studio to Unit 3 (Available Immediately) or Unit 2
+      const postSel = document.getElementById('postingUnitSelect');
+      if (postSel) postSel.value = 'unit_3';
+      renderUnitsGrid();
       renderMediaGallery();
       renderCompsAnalysis();
       renderPlatformListing();
       renderPlatformsDirectory();
       calculateTotalRevenue();
+      initScreeningModule();
     }
 
     async function tryFetchFromBackend() {
@@ -1619,7 +2165,22 @@
       const grid = document.getElementById('unitsGrid');
       grid.innerHTML = '';
 
+      let vacantCount = 0;
+      let occupiedCount = 0;
       portfolioData.forEach(u => {
+        if (isUnitVacant(u.id)) vacantCount++;
+        else occupiedCount++;
+      });
+      const vLbl = document.getElementById('vacantCountLabel');
+      const oLbl = document.getElementById('occupiedCountLabel');
+      if (vLbl) vLbl.innerText = vacantCount;
+      if (oLbl) oLbl.innerText = occupiedCount;
+
+      portfolioData.forEach(u => {
+        const vacant = isUnitVacant(u.id);
+        if (currentUnitFilter === 'vacant' && !vacant) return;
+        if (currentUnitFilter === 'occupied' && vacant) return;
+
         const psqft = (u.financials.target_rent / u.specs.sqft).toFixed(2);
         const coverPhoto = u.photos && u.photos.length > 0 ? u.photos[0].url : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600";
         const fbStatus = u.postings.facebook.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
@@ -1629,14 +2190,18 @@
         const lrStatus = (u.postings.liv_rent && u.postings.liv_rent.status === "posted") ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
         const availBadge = u.financials.available_date || "Immediate";
 
+        const vacancyBadgeHtml = vacant
+          ? `<button onclick="toggleUnitVacancy('${u.id}')" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500 text-white shadow flex items-center gap-1 hover:bg-emerald-600 transition" title="Click to mark Occupied"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Available: ${availBadge}</button>`
+          : `<button onclick="toggleUnitVacancy('${u.id}')" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800/80 text-slate-200 hover:bg-slate-700 transition" title="Click to mark Available to Rent"><i class="fa-solid fa-house-lock mr-1"></i>Occupied</button>`;
+
         const card = document.createElement('div');
-        card.className = "bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between";
+        card.className = `bg-white rounded-2xl border ${vacant ? 'border-emerald-300 ring-1 ring-emerald-500/20' : 'border-slate-200'} overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between`;
         card.innerHTML = `
           <div>
             <div class="relative h-48 bg-slate-100 overflow-hidden">
               <img src="${coverPhoto}" alt="${u.name}" class="w-full h-full object-cover">
-              <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
-                <i class="fa-solid fa-location-dot text-red-400 mr-1"></i>${u.address.city} • Avail: ${availBadge}
+              <div class="absolute top-3 left-3">
+                ${vacancyBadgeHtml}
               </div>
               <div class="absolute top-3 right-3 bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full shadow">
                 $${u.financials.target_rent.toLocaleString()}/mo
@@ -1664,8 +2229,8 @@
                   <span class="font-bold text-slate-800">${u.specs.bedrooms}b / ${u.specs.bathrooms}ba</span>
                 </div>
                 <div>
-                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Photos</span>
-                  <span class="font-bold text-slate-800">${u.photos.length} photos</span>
+                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Move-In</span>
+                  <span class="font-bold ${vacant ? 'text-emerald-700' : 'text-slate-600'}">${vacant ? availBadge : 'Leased'}</span>
                 </div>
                 <div>
                   <span class="text-slate-400 block text-[10px] uppercase font-semibold">Rate</span>
@@ -1676,12 +2241,17 @@
           </div>
 
           <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
-            <button onclick="openVideoModal('${u.id}')" class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition">
-              <i class="fa-solid fa-play"></i> Watch Tour
+            <button onclick="openVideoModal('${u.id}')" class="inline-flex items-center gap-1 text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg transition">
+              <i class="fa-solid fa-play"></i> Video
             </button>
-            <button onclick="goToPosting('${u.id}')" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-lg shadow-sm transition">
-              <i class="fa-solid fa-bolt text-yellow-300"></i> 1-Click Post
-            </button>
+            <div class="flex items-center gap-1.5">
+              <button onclick="switchTab('screening')" class="inline-flex items-center gap-1 text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-2.5 py-1.5 rounded-lg transition">
+                <i class="fa-solid fa-user-check"></i> Screen Leads
+              </button>
+              <button onclick="goToPosting('${u.id}')" class="inline-flex items-center gap-1 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-lg shadow-sm transition">
+                <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i> Edit & Post Ad
+              </button>
+            </div>
           </div>
         `;
         grid.appendChild(card);
@@ -2021,12 +2591,48 @@
         const btn = document.getElementById(`prevTab-${p}`);
         if (!btn) return;
         if (p === plat) {
-          btn.className = "px-2.5 py-1 rounded-lg bg-white text-blue-600 shadow-sm transition";
+          btn.className = "px-3 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition flex items-center justify-center gap-1.5";
         } else {
-          btn.className = "px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition";
+          btn.className = "px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5";
         }
       });
       updateLiveMockupPreview();
+    }
+
+    function setQuickAvailDate(dateStr) {
+      const el = document.getElementById('listingAvailableDate');
+      if (el) {
+        el.value = dateStr;
+        onFieldChanged();
+        showToast(`Move-in date set to ${dateStr}`);
+      }
+    }
+
+    function insertAdSnippet(snippetType) {
+      const textarea = document.getElementById('listingDescription');
+      if (!textarea) return;
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId) || portfolioData[0];
+      const platform = document.getElementById('postingPlatformSelect').value;
+      const videoUrl = document.getElementById('listingVideo').value || (unit.cloud_media && unit.cloud_media.youtube_video_url) || "https://www.youtube.com/watch?v=TxRy1OvaRZo";
+      const formUrl = platform === 'zumper'
+        ? "forms . gle / UZSrP8PUSh9GsdLX8 (copy into browser, remove spaces)"
+        : "https://forms.gle/UZSrP8PUSh9GsdLX8";
+
+      let textToInsert = "";
+      if (snippetType === 'form') {
+        textToInsert = `\n\nFILL OUT FORM TO SET SHOWING DATE/TIME:\n${formUrl}\n`;
+      } else if (snippetType === 'go_train') {
+        textToInsert = `\n* Commuter Dream: Just a 5-minute walk to Whitby GO Station (direct train to Union Station Toronto) and Highway 401!`;
+      } else if (snippetType === 'parking') {
+        textToInsert = `\n* Includes 1 assigned off-street parking space (essential during Whitby's Nov-Apr winter overnight street parking ban).`;
+      } else if (snippetType === 'video') {
+        textToInsert = `\n\n🎥 Watch Walkthrough Video Tour:\n${videoUrl}\n`;
+      }
+
+      textarea.value = textarea.value.trimEnd() + textToInsert;
+      onDescriptionEdited();
+      showToast("Added highlight into your ad description!");
     }
 
     function onFieldChanged() {
@@ -2078,9 +2684,9 @@
         const btn = document.getElementById(`prevTab-${p}`);
         if (!btn) return;
         if (p === platform) {
-          btn.className = "px-2.5 py-1 rounded-lg bg-white text-blue-600 shadow-sm transition";
+          btn.className = "px-3 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition flex items-center justify-center gap-1.5";
         } else {
-          btn.className = "px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition";
+          btn.className = "px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5";
         }
       });
 
@@ -2618,21 +3224,30 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
 
     // Tab switching
     function switchTab(tabId) {
-      ['units', 'media', 'comps', 'posting', 'platforms', 'github'].forEach(id => {
-        document.getElementById(`tab-${id}`).classList.add('hidden');
-        document.getElementById(`tabBtn-${id}`).classList.remove('tab-active');
-        document.getElementById(`tabBtn-${id}`).classList.add('border-transparent', 'text-slate-500');
+      ['units', 'media', 'comps', 'posting', 'screening', 'platforms', 'github'].forEach(id => {
+        const sec = document.getElementById(`tab-${id}`);
+        const btn = document.getElementById(`tabBtn-${id}`);
+        if (sec) sec.classList.add('hidden');
+        if (btn) {
+          btn.classList.remove('tab-active');
+          btn.classList.add('border-transparent', 'text-slate-500');
+        }
       });
 
-      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      const targetSec = document.getElementById(`tab-${tabId}`);
+      if (targetSec) targetSec.classList.remove('hidden');
       const activeBtn = document.getElementById(`tabBtn-${tabId}`);
-      activeBtn.classList.add('tab-active');
-      activeBtn.classList.remove('border-transparent', 'text-slate-500');
+      if (activeBtn) {
+        activeBtn.classList.add('tab-active');
+        activeBtn.classList.remove('border-transparent', 'text-slate-500');
+      }
 
       if (tabId === 'comps') {
         setTimeout(renderCompsAnalysis, 50);
       } else if (tabId === 'media') {
         renderMediaGallery();
+      } else if (tabId === 'screening') {
+        renderApplicantsList();
       }
     }
 
@@ -2830,6 +3445,662 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
     function skipQueuePlatform() {
       currentQueueIdx++;
       renderQueueCurrentStep();
+    }
+
+    // ==========================================
+    // TENANT SCREENING, AI CREDIT ANALYZER, SHOWING SCHEDULER & GMAIL (315kentstreet@gmail.com) HUB
+    // ==========================================
+    const LANDLORD_EMAIL = "315kentstreet@gmail.com";
+    let applicantsData = [
+      {
+        id: "app_1",
+        unit_id: "unit_3",
+        full_name: "Michael & Priya Patel",
+        email: "mpatel.whitby@gmail.com",
+        phone: "905-441-8821",
+        source_platform: "Google Form",
+        stage: "Credit & Refs Review",
+        desired_move_in: "Immediate",
+        occupants: 2,
+        monthly_income: 7450,
+        employment_status: "Full-Time Permanent",
+        employment_months: 36,
+        employer_name: "Lakeridge Health Oshawa (RN) & OPG",
+        credit_score: 768,
+        credit_utilization: 18,
+        late_payments: 0,
+        collections_or_insolvency: false,
+        has_pets: false,
+        smokes: false,
+        landlord_ref_verified: true,
+        showing_slot: "Thu Nov 12, 5:30 PM - 5:50 PM",
+        notes: "Completed Google Form. Commute via Whitby GO & Hwy 401. Quiet couple, non-smokers, Equifax PDF uploaded."
+      },
+      {
+        id: "app_2",
+        unit_id: "unit_2",
+        full_name: "Sarah Jenkins",
+        email: "s.jenkins88@outlook.com",
+        phone: "289-314-9022",
+        source_platform: "Facebook",
+        stage: "Showing Booked",
+        desired_move_in: "December 1",
+        occupants: 1,
+        monthly_income: 5800,
+        employment_status: "Full-Time Permanent",
+        employment_months: 24,
+        employer_name: "Durham District School Board",
+        credit_score: 732,
+        credit_utilization: 22,
+        late_payments: 0,
+        collections_or_insolvency: false,
+        has_pets: false,
+        smokes: false,
+        landlord_ref_verified: false,
+        showing_slot: "Sat Nov 14, 11:00 AM - 11:20 AM",
+        notes: "Looking for Dec 1 move-in for Unit 2 ($1,695). Watched Unit 1 sister walkthrough video, loves the layout."
+      },
+      {
+        id: "app_3",
+        unit_id: "unit_3",
+        full_name: "Active Zumper Inquiry (Unit 3)",
+        email: "zumper.lead.whitby@gmail.com",
+        phone: "647-892-1140",
+        source_platform: "Zumper",
+        stage: "New Inquiry",
+        desired_move_in: "Immediate",
+        occupants: 2,
+        monthly_income: 6100,
+        employment_status: "Full-Time Permanent",
+        employment_months: 14,
+        employer_name: "General Motors Oshawa",
+        credit_score: 675,
+        credit_utilization: 41,
+        late_payments: 1,
+        collections_or_insolvency: false,
+        has_pets: false,
+        smokes: false,
+        landlord_ref_verified: false,
+        showing_slot: "",
+        notes: "Inquired via Zumper Renter Portal on Unit 3. Send Google Intake Form link to complete full screening."
+      },
+      {
+        id: "app_4",
+        unit_id: "unit_2",
+        full_name: "Jordan Vance",
+        email: "jvance99@yahoo.ca",
+        phone: "416-909-3318",
+        source_platform: "Kijiji",
+        stage: "Pre-Screened",
+        desired_move_in: "December 1",
+        occupants: 2,
+        monthly_income: 3900,
+        employment_status: "Contract / Self-Employed",
+        employment_months: 5,
+        employer_name: "Freelance Delivery",
+        credit_score: 585,
+        credit_utilization: 78,
+        late_payments: 3,
+        collections_or_insolvency: true,
+        has_pets: true,
+        smokes: true,
+        landlord_ref_verified: false,
+        showing_slot: "",
+        notes: "Flagged by AI pre-screening: high credit utilization, smoker, and high rent-to-income ratio."
+      }
+    ];
+
+    let selectedApplicantId = "app_1";
+
+    function initScreeningModule() {
+      const savedApps = localStorage.getItem('durham_applicants_v1');
+      if (savedApps) {
+        try {
+          const parsed = JSON.parse(savedApps);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            applicantsData = parsed;
+          }
+        } catch(e) {}
+      }
+      renderApplicantsList();
+      selectApplicant(applicantsData[0].id);
+    }
+
+    function persistApplicants() {
+      localStorage.setItem('durham_applicants_v1', JSON.stringify(applicantsData));
+    }
+
+    function evaluateApplicantAI(app) {
+      const unit = portfolioData.find(u => u.id === app.unit_id) || portfolioData[2];
+      const targetRent = unit.financials.target_rent || 2075;
+      const estHydro = 65;
+      const totalHousing = targetRent + estHydro;
+
+      const credit = Number(app.credit_score) || 0;
+      const income = Number(app.monthly_income) || 0;
+      const util = Number(app.credit_utilization) || 25;
+      const lates = Number(app.late_payments) || 0;
+      const collections = Boolean(app.collections_or_insolvency);
+      const smokes = Boolean(app.smokes);
+      const pets = Boolean(app.has_pets);
+      const refOk = Boolean(app.landlord_ref_verified);
+      const occupants = Number(app.occupants) || 1;
+
+      const rti = income > 0 ? Number(((targetRent / income) * 100).toFixed(1)) : 100;
+      const totalRti = income > 0 ? Number(((totalHousing / income) * 100).toFixed(1)) : 100;
+      const multiplier = income > 0 ? Number((income / targetRent).toFixed(2)) : 0;
+
+      let score = 0;
+      const strengths = [];
+      const risks = [];
+      const questions = [];
+
+      // 1. Credit Score (max 40)
+      if (credit >= 740) {
+        score += 40;
+        strengths.push(`Excellent Credit Score (${credit} — Tier A+ applicant)`);
+      } else if (credit >= 680) {
+        score += 33;
+        strengths.push(`Solid Credit Score (${credit} — Meets 680+ benchmark)`);
+      } else if (credit >= 640) {
+        score += 22;
+        risks.push(`Moderate Credit Score (${credit} — slightly below 680 target)`);
+        questions.push("Ask for last 6 months of rent e-transfer receipts to confirm on-time rent history.");
+      } else if (credit > 0) {
+        score += 8;
+        risks.push(`Low Credit Score (${credit} — High risk without a guarantor)`);
+        questions.push("Require an Ontario homeowner guarantor/co-signer with 720+ credit.");
+      } else {
+        risks.push("Credit report not yet uploaded — request Equifax or TransUnion PDF");
+      }
+
+      // 2. Rent-to-Income Ratio (max 35)
+      if (rti <= 30) {
+        score += 35;
+        strengths.push(`Strong Affordability: Rent is ${rti}% of gross income (${multiplier}x rent coverage)`);
+      } else if (rti <= 36) {
+        score += 28;
+        strengths.push(`Healthy Affordability: Rent is ${rti}% of income (Heat & Water included saves ~$180/mo)`);
+      } else if (rti <= 42) {
+        score += 16;
+        risks.push(`Tight Rent-to-Income Ratio (${rti}% of gross income; ${totalRti}% incl. ~$65 hydro)`);
+        questions.push("Verify net take-home pay on last 2 recent paystubs and check savings buffer.");
+      } else {
+        score += 5;
+        risks.push(`High Rent Burden: Rent takes ${rti}% of monthly income (benchmark is ≤35%)`);
+        questions.push("Income alone is stretched for this unit; require co-applicant or guarantor.");
+      }
+
+      // 3. Utilization & Derogatory Marks (max 15)
+      if (!collections && lates === 0 && util <= 35) {
+        score += 15;
+        strengths.push(`Clean Credit File: 0 late payments, 0 collections, ${util}% credit utilization`);
+      } else {
+        if (util <= 50) score += 8;
+        if (util > 50) {
+          risks.push(`High Revolving Debt Utilization (${util}% of credit limits used)`);
+          questions.push("Check total monthly debt obligations on credit report.");
+        }
+        if (lates > 0) {
+          score = Math.max(0, score - lates * 5);
+          risks.push(`${lates} late payment(s) reported on credit bureau file`);
+        }
+        if (collections) {
+          score = Math.max(0, score - 25);
+          risks.push("Active collections, consumer proposal, or bankruptcy reported");
+        }
+      }
+
+      // 4. Employment & Building Policies (max 10)
+      if (app.employment_status === "Full-Time Permanent" || app.employment_status === "Retired / Pension") {
+        score += 10;
+        strengths.push(`Stable Employment: ${app.employment_status}${app.employer_name ? ' (' + app.employer_name + ')' : ''}`);
+      } else {
+        score += 5;
+        questions.push(`Verify employment continuity (${app.employment_status}) with supervisor/HR.`);
+      }
+
+      if (smokes) {
+        score = Math.max(0, score - 30);
+        risks.push("Smoker/Vaper — conflicts with 315 Kent St strict non-smoking rule");
+      }
+      if (pets) {
+        risks.push("Has pet(s) — review against unit pet policy");
+      }
+      if (refOk) {
+        strengths.push("Previous landlord reference verified (on-time rent & clean unit)");
+      } else {
+        questions.push("Call current landlord to confirm rent amount, on-time payments, and unit upkeep.");
+      }
+
+      score = Math.max(0, Math.min(100, Math.round(score)));
+
+      let verdict = "STRONG APPROVE";
+      let badgeClass = "bg-emerald-100 text-emerald-800 border-emerald-300";
+      let cardClass = "p-4 rounded-xl border bg-emerald-50/70 border-emerald-200 text-emerald-950 space-y-2.5";
+
+      if (score >= 76 && !collections && !smokes && rti <= 37) {
+        verdict = "STRONG APPROVE — TIER A TENANT";
+      } else if (score >= 56 && !collections && !smokes) {
+        verdict = "CONDITIONAL — VERIFY REFS / GUARANTOR";
+        badgeClass = "bg-amber-100 text-amber-800 border-amber-300";
+        cardClass = "p-4 rounded-xl border bg-amber-50/70 border-amber-200 text-amber-950 space-y-2.5";
+      } else {
+        verdict = "DECLINE — HIGH RISK";
+        badgeClass = "bg-red-100 text-red-800 border-red-300";
+        cardClass = "p-4 rounded-xl border bg-red-50/70 border-red-200 text-red-950 space-y-2.5";
+      }
+
+      return {
+        score,
+        verdict,
+        badgeClass,
+        cardClass,
+        rti,
+        totalRti,
+        multiplier,
+        targetRent,
+        strengths,
+        risks,
+        questions
+      };
+    }
+
+    function renderApplicantsList() {
+      const container = document.getElementById('applicantsListContainer');
+      if (!container) return;
+      const unitFilter = document.getElementById('applicantUnitFilter') ? document.getElementById('applicantUnitFilter').value : 'all';
+
+      let totalCount = applicantsData.length;
+      let showingsCount = 0;
+      let approvedCount = 0;
+      let flaggedCount = 0;
+
+      applicantsData.forEach(a => {
+        const ai = evaluateApplicantAI(a);
+        a.ai_score = ai.score;
+        a.ai_verdict = ai.verdict;
+        if (a.showing_slot && a.showing_slot.trim() !== '') showingsCount++;
+        if (ai.score >= 76 && !a.collections_or_insolvency && !a.smokes) approvedCount++;
+        if (ai.score < 56 || a.collections_or_insolvency || a.smokes) flaggedCount++;
+      });
+
+      const elTotal = document.getElementById('kpiTotalApplicants');
+      const elShow = document.getElementById('kpiShowingsBooked');
+      const elApp = document.getElementById('kpiApprovedCount');
+      const elFlag = document.getElementById('kpiFlaggedCount');
+      if (elTotal) elTotal.innerText = totalCount;
+      if (elShow) elShow.innerText = showingsCount;
+      if (elApp) elApp.innerText = approvedCount;
+      if (elFlag) elFlag.innerText = flaggedCount;
+
+      const filtered = unitFilter === 'all'
+        ? applicantsData
+        : applicantsData.filter(a => a.unit_id === unitFilter);
+
+      container.innerHTML = '';
+      filtered.forEach(a => {
+        const ai = evaluateApplicantAI(a);
+        const unit = portfolioData.find(u => u.id === a.unit_id) || portfolioData[0];
+        const isSelected = a.id === selectedApplicantId;
+
+        const card = document.createElement('div');
+        card.onclick = () => selectApplicant(a.id);
+        card.className = `p-3.5 rounded-xl border cursor-pointer transition ${
+          isSelected
+            ? 'bg-blue-50/70 border-blue-500 ring-2 ring-blue-500/20 shadow-sm'
+            : 'bg-white hover:bg-slate-50 border-slate-200'
+        }`;
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                ${a.full_name}
+              </h4>
+              <p class="text-[11px] text-slate-500 font-medium">${unit.name} ($${unit.financials.target_rent}/mo) • ${a.source_platform}</p>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-extrabold border ${ai.badgeClass}">
+              ${ai.score}/100
+            </span>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-1.5 mt-2.5 text-[10px] font-semibold">
+            <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700">${a.stage}</span>
+            <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700">Credit: ${a.credit_score}</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800">$${Number(a.monthly_income).toLocaleString()}/mo (${ai.rti}% RTI)</span>
+            ${a.showing_slot ? `<span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700"><i class="fa-regular fa-calendar mr-1"></i>${a.showing_slot}</span>` : ''}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function selectApplicant(appId) {
+      const app = applicantsData.find(a => a.id === appId) || applicantsData[0];
+      if (!app) return;
+      selectedApplicantId = app.id;
+
+      // Populate Column 2 Inputs
+      document.getElementById('screenCreditScore').value = app.credit_score;
+      document.getElementById('screenMonthlyIncome').value = app.monthly_income;
+      document.getElementById('screenUtilization').value = app.credit_utilization;
+      document.getElementById('screenLatePayments').value = app.late_payments;
+      document.getElementById('screenOccupants').value = app.occupants || 1;
+      document.getElementById('screenEmployment').value = app.employment_status || 'Full-Time Permanent';
+      document.getElementById('screenStageSelect').value = app.stage || 'New Inquiry';
+      document.getElementById('screenCollections').checked = Boolean(app.collections_or_insolvency);
+      document.getElementById('screenSmokes').checked = Boolean(app.smokes);
+      document.getElementById('screenPets').checked = Boolean(app.has_pets);
+      document.getElementById('screenLandlordRef').checked = Boolean(app.landlord_ref_verified);
+
+      // Populate Column 3 Showing & Email Inputs
+      document.getElementById('showingSlotInput').value = app.showing_slot || '';
+      const showBadge = document.getElementById('currentShowingBadge');
+      if (app.showing_slot) {
+        showBadge.innerText = app.showing_slot;
+        showBadge.className = "text-[11px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full";
+      } else {
+        showBadge.innerText = "Not Scheduled";
+        showBadge.className = "text-[11px] bg-slate-100 text-slate-600 font-semibold px-2.5 py-0.5 rounded-full";
+      }
+
+      document.getElementById('emailToInput').value = app.email || '';
+      renderApplicantsList();
+      updateAiVerdictDisplay(app);
+
+      // Pre-load appropriate email template based on stage
+      if (app.stage === 'New Inquiry') {
+        loadEmailTemplate('intake');
+      } else if (app.stage === 'Showing Booked') {
+        loadEmailTemplate('showing');
+      } else if (app.stage === 'Credit & Refs Review') {
+        loadEmailTemplate('approve_lease');
+      } else {
+        loadEmailTemplate('credit_request');
+      }
+    }
+
+    function runLiveAiScreening() {
+      const app = applicantsData.find(a => a.id === selectedApplicantId);
+      if (!app) return;
+
+      app.credit_score = Number(document.getElementById('screenCreditScore').value) || 0;
+      app.monthly_income = Number(document.getElementById('screenMonthlyIncome').value) || 0;
+      app.credit_utilization = Number(document.getElementById('screenUtilization').value) || 0;
+      app.late_payments = Number(document.getElementById('screenLatePayments').value) || 0;
+      app.occupants = Number(document.getElementById('screenOccupants').value) || 1;
+      app.employment_status = document.getElementById('screenEmployment').value;
+      app.collections_or_insolvency = document.getElementById('screenCollections').checked;
+      app.smokes = document.getElementById('screenSmokes').checked;
+      app.has_pets = document.getElementById('screenPets').checked;
+      app.landlord_ref_verified = document.getElementById('screenLandlordRef').checked;
+
+      persistApplicants();
+      renderApplicantsList();
+      updateAiVerdictDisplay(app);
+    }
+
+    function updateSelectedApplicantStage() {
+      const app = applicantsData.find(a => a.id === selectedApplicantId);
+      if (!app) return;
+      app.stage = document.getElementById('screenStageSelect').value;
+      persistApplicants();
+      renderApplicantsList();
+      showToast(`Updated ${app.full_name} stage to ${app.stage}`);
+    }
+
+    function updateAiVerdictDisplay(app) {
+      const ai = evaluateApplicantAI(app);
+      const unit = portfolioData.find(u => u.id === app.unit_id) || portfolioData[2];
+
+      const badgeHeader = document.getElementById('aiScoreBadgeHeader');
+      badgeHeader.innerText = `${ai.score} / 100`;
+      badgeHeader.className = `px-3 py-1 rounded-full text-xs font-extrabold border ${ai.badgeClass}`;
+
+      const card = document.getElementById('aiVerdictCard');
+      card.className = ai.cardClass;
+
+      document.getElementById('aiRtiPill').innerText = `Rent/Income: ${ai.rti}% (${ai.multiplier}x)`;
+      document.getElementById('aiVerdictTitle').innerText = ai.verdict;
+      document.getElementById('aiVerdictSummary').innerText = `Target Rent for ${unit.name} is $${ai.targetRent.toLocaleString()}/mo (Heat & Water included; ~$65 hydro). Applicant gross income is $${Number(app.monthly_income).toLocaleString()}/mo.`;
+
+      const sList = document.getElementById('aiStrengthsList');
+      sList.innerHTML = ai.strengths.map(s => `<div class="flex items-start gap-1.5 text-emerald-900 font-medium"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i><span>${s}</span></div>`).join('');
+
+      const rList = document.getElementById('aiRisksList');
+      rList.innerHTML = ai.risks.map(r => `<div class="flex items-start gap-1.5 text-red-900 font-semibold"><i class="fa-solid fa-triangle-exclamation text-red-600 mt-0.5"></i><span>${r}</span></div>`).join('');
+
+      const qList = document.getElementById('aiQuestionsList');
+      qList.innerHTML = ai.questions.length
+        ? ai.questions.map(q => `<li>${q}</li>`).join('')
+        : `<li>All primary credit and income benchmarks passed. Proceed to Ontario Standard Lease (Form 2229E).</li>`;
+    }
+
+    function handleCreditFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      document.getElementById('uploadedFileNameBadge').innerText = file.name;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const content = (e.target.result || "").toString();
+        // Extract 3-digit credit score if present in text (e.g. 600-850)
+        const scoreMatch = content.match(/(?:score|equifax|transunion|beacon)[:\s]*([5-8]\d{2})/i) || content.match(/\b(6\d{2}|7\d{2}|8[0-5]\d)\b/);
+        const incomeMatch = content.match(/(?:income|salary|gross|monthly)[:\s\$]*([3-9],?\d{3}|\d{4,5})/i);
+
+        const app = applicantsData.find(a => a.id === selectedApplicantId);
+        if (app) {
+          if (scoreMatch && scoreMatch[1]) {
+            app.credit_score = parseInt(scoreMatch[1].replace(/,/g, ''), 10);
+            document.getElementById('screenCreditScore').value = app.credit_score;
+          }
+          if (incomeMatch && incomeMatch[1]) {
+            const val = parseInt(incomeMatch[1].replace(/,/g, ''), 10);
+            app.monthly_income = val > 20000 ? Math.round(val / 12) : val;
+            document.getElementById('screenMonthlyIncome').value = app.monthly_income;
+          }
+          runLiveAiScreening();
+        }
+        showToast(`AI analyzed "${file.name}" and updated credit scorecard!`);
+      };
+      reader.readAsText(file);
+    }
+
+    function setShowingSlotPreset(slotStr) {
+      document.getElementById('showingSlotInput').value = slotStr;
+      const app = applicantsData.find(a => a.id === selectedApplicantId);
+      if (app) {
+        app.showing_slot = slotStr;
+        app.stage = "Showing Booked";
+        document.getElementById('screenStageSelect').value = "Showing Booked";
+        const showBadge = document.getElementById('currentShowingBadge');
+        showBadge.innerText = slotStr;
+        showBadge.className = "text-[11px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full";
+        persistApplicants();
+        renderApplicantsList();
+        loadEmailTemplate('showing');
+        showToast(`Showing slot set to ${slotStr}`);
+      }
+    }
+
+    function bookShowingAndOpenCalendar() {
+      const slotStr = document.getElementById('showingSlotInput').value.trim() || "Saturday 11:00 AM";
+      const app = applicantsData.find(a => a.id === selectedApplicantId);
+      if (!app) return;
+      const unit = portfolioData.find(u => u.id === app.unit_id) || portfolioData[2];
+
+      app.showing_slot = slotStr;
+      app.stage = "Showing Booked";
+      document.getElementById('screenStageSelect').value = "Showing Booked";
+      const showBadge = document.getElementById('currentShowingBadge');
+      showBadge.innerText = slotStr;
+      showBadge.className = "text-[11px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full";
+
+      persistApplicants();
+      renderApplicantsList();
+      loadEmailTemplate('showing');
+
+      const eventTitle = encodeURIComponent(`Showing: ${unit.name} — ${app.full_name} (${app.phone})`);
+      const eventDetails = encodeURIComponent(
+        `Tenant Showing for ${unit.name} ($${unit.financials.target_rent}/mo)\n` +
+        `Applicant: ${app.full_name}\nPhone: ${app.phone}\nEmail: ${app.email}\n` +
+        `AI Credit Score: ${app.credit_score} | Monthly Income: $${app.monthly_income}\n` +
+        `Requested Window: ${slotStr}\nNotes: ${app.notes || ''}`
+      );
+      const location = encodeURIComponent("315 Kent Street, Whitby, ON L1N 4Y5");
+      const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&authuser=${encodeURIComponent(LANDLORD_EMAIL)}&text=${eventTitle}&details=${eventDetails}&location=${location}&add=${encodeURIComponent(app.email || '')}`;
+
+      window.open(gcalUrl, '_blank');
+      showToast("Showing saved & opened in Google Calendar (315kentstreet@gmail.com)!");
+    }
+
+    function loadEmailTemplate(templateKey) {
+      const app = applicantsData.find(a => a.id === selectedApplicantId) || applicantsData[0];
+      const unit = portfolioData.find(u => u.id === app.unit_id) || portfolioData[2];
+      const formUrl = "https://forms.gle/UZSrP8PUSh9GsdLX8";
+      const videoUrl = (unit.cloud_media && unit.cloud_media.youtube_video_url) || "https://www.youtube.com/watch?v=TxRy1OvaRZo";
+      const slot = app.showing_slot || "this Thursday at 5:30 PM or Saturday at 11:00 AM";
+
+      let subject = "";
+      let body = "";
+
+      if (templateKey === 'intake') {
+        subject = `315 Kent Street, Whitby (${unit.name}) — Pre-Screening & Showing Request`;
+        body = `Hi ${app.full_name},\n\nThank you for your inquiry regarding ${unit.name} at 315 Kent Street in downtown Whitby ($${unit.financials.target_rent}/month, Heat, Water & 1 Parking Space included; available ${unit.financials.available_date}).\n\nYou can watch the video walkthrough tour of the suite here:\n${videoUrl}\n\nTo schedule a private in-person showing, please complete our brief Tenant Pre-Screening Form here:\n${formUrl}\n\nOnce submitted, we will reach out right away to confirm your showing time.\n\nBest regards,\nProperty Management — 315 Kent Street\n${LANDLORD_EMAIL}`;
+      } else if (templateKey === 'showing') {
+        subject = `Showing Confirmation: ${unit.name} (315 Kent Street, Whitby) — ${slot}`;
+        body = `Hi ${app.full_name},\n\nThank you for completing our pre-screening form! We would love to show you ${unit.name} at 315 Kent Street, Whitby, ON L1N 4Y5.\n\n📅 Proposed Showing Time: ${slot}\n📍 Address: 315 Kent Street, Whitby (Kent St off Brock St — feel free to park in the driveway for the viewing).\n\nPlease reply to this email to confirm that this time works for you, and bring government photo ID to the showing.\n\nBest regards,\nProperty Management — 315 Kent Street\n${LANDLORD_EMAIL}`;
+      } else if (templateKey === 'credit_request') {
+        subject = `Next Steps & Application Documents — ${unit.name} (315 Kent Street, Whitby)`;
+        body = `Hi ${app.full_name},\n\nIt was great meeting you at the showing for ${unit.name} at 315 Kent Street! To complete our final tenant verification, please reply to this email (${LANDLORD_EMAIL}) with the following attached:\n\n1. Full Credit Report PDF (Equifax or TransUnion showing score and trade lines)\n2. Two (2) most recent paystubs & employment confirmation\n3. Contact info for your current & previous landlord reference\n4. Photo ID\n\nAs soon as we review these, we will follow up with the Ontario Standard Lease.\n\nBest regards,\nProperty Management — 315 Kent Street\n${LANDLORD_EMAIL}`;
+      } else if (templateKey === 'approve_lease') {
+        subject = `Application Approved! Ontario Standard Lease Offer — ${unit.name} (315 Kent Street)`;
+        body = `Hi ${app.full_name},\n\nCongratulations! We have completed our review of your application, credit report, and references, and we are pleased to approve your application for ${unit.name} at 315 Kent Street, Whitby.\n\nLease Summary:\n• Suite: ${unit.name}, Whitby, ON L1N 4Y5\n• Monthly Rent: $${unit.financials.target_rent.toLocaleString()}/month (Includes Heat, Water, and 1 Assigned Parking Space; tenant pays personal hydro)\n• Move-In Date: ${unit.financials.available_date}\n• Building Rules: Strictly Non-Smoking / No Marijuana Growing, No Pets\n\nPlease reply to confirm and we will send over the official Ontario Standard Lease (Form 2229E) for signature and last month's rent deposit instructions.\n\nBest regards,\nProperty Management — 315 Kent Street\n${LANDLORD_EMAIL}`;
+      } else if (templateKey === 'decline') {
+        subject = `Update Regarding Your Rental Inquiry — 315 Kent Street, Whitby`;
+        body = `Hi ${app.full_name},\n\nThank you very much for taking the time to apply for ${unit.name} at 315 Kent Street in Whitby. We received multiple strong applications and have selected another candidate whose profile and move-in timeline most closely matched our requirements.\n\nWe wish you all the best in your housing search!\n\nSincerely,\nProperty Management — 315 Kent Street\n${LANDLORD_EMAIL}`;
+      }
+
+      document.getElementById('emailSubjectInput').value = subject;
+      document.getElementById('emailBodyInput').value = body;
+    }
+
+    function sendViaGmailPortal() {
+      const to = document.getElementById('emailToInput').value.trim();
+      const subject = document.getElementById('emailSubjectInput').value.trim();
+      const body = document.getElementById('emailBodyInput').value;
+
+      if (!to) {
+        alert("Please enter the applicant's email address first.");
+        return;
+      }
+
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&authuser=${encodeURIComponent(LANDLORD_EMAIL)}&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(gmailUrl, '_blank');
+      showToast(`Opened Gmail Compose as ${LANDLORD_EMAIL}!`);
+    }
+
+    function copyEmailMessage() {
+      const body = document.getElementById('emailBodyInput').value;
+      navigator.clipboard.writeText(body);
+      showToast("Message copied to clipboard!");
+    }
+
+    function openAddApplicantModal() {
+      document.getElementById('addApplicantModal').classList.remove('hidden');
+    }
+
+    function closeAddApplicantModal() {
+      document.getElementById('addApplicantModal').classList.add('hidden');
+    }
+
+    async function saveNewApplicant() {
+      const name = document.getElementById('newAppName').value.trim();
+      if (!name) {
+        alert("Please enter the applicant's name.");
+        return;
+      }
+      const unitId = document.getElementById('newAppUnit').value;
+      const unit = portfolioData.find(u => u.id === unitId) || portfolioData[2];
+
+      const newApp = {
+        id: "app_" + Date.now(),
+        unit_id: unitId,
+        full_name: name,
+        email: document.getElementById('newAppEmail').value.trim(),
+        phone: document.getElementById('newAppPhone').value.trim(),
+        source_platform: document.getElementById('newAppSource').value,
+        stage: "Pre-Screened",
+        desired_move_in: unit.financials.available_date || "Immediate",
+        occupants: 2,
+        monthly_income: Number(document.getElementById('newAppIncome').value) || 6000,
+        employment_status: "Full-Time Permanent",
+        employment_months: 12,
+        employer_name: "",
+        credit_score: Number(document.getElementById('newAppCredit').value) || 700,
+        credit_utilization: 25,
+        late_payments: 0,
+        collections_or_insolvency: false,
+        has_pets: false,
+        smokes: false,
+        landlord_ref_verified: false,
+        showing_slot: "",
+        notes: document.getElementById('newAppNotes').value.trim()
+      };
+
+      applicantsData.unshift(newApp);
+      persistApplicants();
+      closeAddApplicantModal();
+      selectApplicant(newApp.id);
+      showToast(`Added ${name} and generated AI Credit Scorecard!`);
+
+      try {
+        await fetch('/api/applicants', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(newApp)
+        });
+      } catch(e) {}
+    }
+
+    function openLeaseChecklistModal() {
+      const app = applicantsData.find(a => a.id === selectedApplicantId) || applicantsData[0];
+      const unit = portfolioData.find(u => u.id === app.unit_id) || portfolioData[2];
+      const ai = evaluateApplicantAI(app);
+
+      document.getElementById('leaseModalSub').innerText = `${unit.name} • Applicant: ${app.full_name} (AI Score: ${ai.score}/100)`;
+      document.getElementById('leaseSummaryPreview').innerHTML = `
+        <div>• <strong>Landlord Email:</strong> ${LANDLORD_EMAIL}</div>
+        <div>• <strong>Tenant Name:</strong> ${app.full_name} (${app.phone})</div>
+        <div>• <strong>Rental Unit:</strong> ${unit.address.street}, Whitby, ON L1N 4Y5</div>
+        <div>• <strong>Base Rent:</strong> $${unit.financials.target_rent.toLocaleString()}.00 / month (Due 1st of month)</div>
+        <div>• <strong>Included in Rent:</strong> Heat, Water, 1 Outdoor Parking Space</div>
+        <div>• <strong>Paid by Tenant:</strong> Personal Unit Hydro & Tenant Insurance</div>
+      `;
+
+      document.getElementById('leaseScheduleAText').value =
+`ONTARIO STANDARD LEASE (FORM 2229E) — SCHEDULE A ADDENDUM
+Property: ${unit.address.street}, Whitby, ON L1N 4Y5 (${unit.name})
+Tenant(s): ${app.full_name}
+Monthly Rent: $${unit.financials.target_rent.toLocaleString()}.00 CAD | Start Date: ${unit.financials.available_date}
+
+1. UTILITIES & PARKING: Rent includes radiant boiler heat, water, and one (1) assigned outdoor parking space. Tenant is responsible for setting up their own personal unit Hydro account prior to key handover.
+2. STRICT NON-SMOKING & NO CANNABIS CULTIVATION: 315 Kent Street is a smoke-free apartment building. No smoking or vaping of tobacco, cannabis, or any substance inside the unit, balcony, or interior common areas. No growing of cannabis plants on the premises.
+3. LAUNDRY & COMMON AREAS: On-site coin laundry facilities are for registered residents only. Hallways and shared yard must be kept clean and unobstructed.
+4. TENANT INSURANCE: Tenant agrees to maintain valid Tenant Liability & Contents Insurance ($1,000,000 minimum liability) throughout the tenancy.`;
+
+      document.getElementById('leaseChecklistModal').classList.remove('hidden');
+    }
+
+    function closeLeaseChecklistModal() {
+      document.getElementById('leaseChecklistModal').classList.add('hidden');
+    }
+
+    function copyLeaseScheduleA() {
+      const txt = document.getElementById('leaseScheduleAText').value;
+      navigator.clipboard.writeText(txt);
+      showToast("Copied Ontario Standard Lease (2229E) Schedule A terms!");
     }
 
   </script>

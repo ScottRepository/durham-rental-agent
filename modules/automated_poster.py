@@ -85,6 +85,21 @@ class AutomatedPoster:
             page.goto("https://www.facebook.com/marketplace/create/rental", wait_until="domcontentloaded")
             time.sleep(3)
 
+            # Attempt to pre-fill standard Facebook Marketplace rental inputs if visible
+            try:
+                for label_text, val in [
+                    ("Price", str(payload["price"])),
+                    ("Number of bedrooms", str(payload["bedrooms"])),
+                    ("Number of bathrooms", str(payload["bathrooms"])),
+                    ("Property address", "315 Kent Street, Whitby, ON"),
+                    ("Rental description", payload["description"])
+                ]:
+                    loc = page.get_by_label(label_text, exact=False).first
+                    if loc.count() > 0 and loc.is_visible():
+                        loc.fill(val)
+            except Exception as fill_err:
+                print(f"[Facebook Auto-Fill Note] {fill_err}")
+
             page.screenshot(path=str(screenshot_path))
             context.close()
 
@@ -113,6 +128,20 @@ class AutomatedPoster:
             page = context.new_page()
             page.goto("https://www.kijiji.ca/p-post-ad.html?categoryId=37", wait_until="domcontentloaded")
             time.sleep(3)
+
+            # Attempt to pre-fill standard Kijiji ad title, description, price, and YouTube link if visible
+            try:
+                for sel, val in [
+                    ("input[name*='postAdForm.title'], #AdTitleForm", payload["title"]),
+                    ("textarea[name*='postAdForm.description'], #pstad-descrptn", payload["description"]),
+                    ("input[name*='postAdForm.priceAmount'], #PriceAmount", str(payload["price"])),
+                    ("input[name*='youtube'], input[id*='youtube']", payload["youtube_video_url"])
+                ]:
+                    loc = page.locator(sel).first
+                    if loc.count() > 0 and loc.is_visible():
+                        loc.fill(val)
+            except Exception as fill_err:
+                print(f"[Kijiji Auto-Fill Note] {fill_err}")
 
             page.screenshot(path=str(screenshot_path))
             context.close()
