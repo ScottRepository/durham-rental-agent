@@ -43,11 +43,15 @@ class PostingEngine:
         out_path.mkdir(parents=True, exist_ok=True)
         file_path = out_path / f"{unit_id}_listing_dossier.md"
 
+        media = unit.get("cloud_media") or unit.get("media") or {}
+        video_url = media.get("youtube_video_url") or media.get("video_walkthrough_url", "N/A")
+        photos_folder = media.get("google_drive_photos_folder") or media.get("photos_dir", "N/A")
+
         content = f"""# Rental Listing Packet: {unit['name']}
 **Property Address**: {unit['address']['street']}, {unit['address']['city']}, {unit['address']['region']}
 **Target Rent**: ${unit['financials']['target_rent']} CAD/mo | **Move-in**: {unit['financials']['available_date']}
-**Walkthrough Video**: {unit['media'].get('video_walkthrough_url', 'N/A')}
-**Photos Folder**: `{unit['media'].get('photos_dir', 'N/A')}`
+**YouTube Walkthrough Video**: {video_url}
+**Google Drive Photos Folder**: `{photos_folder}`
 
 ---
 

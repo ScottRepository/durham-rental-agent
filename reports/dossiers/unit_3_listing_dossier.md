@@ -1,52 +1,53 @@
-# Rental Listing Packet: Unit 3 - 1 Bed Executive Suite
-**Property Address**: 45 Brock St E, Whitby, Durham Region
-**Target Rent**: $1850 CAD/mo | **Move-in**: 2026-12-15
-**Walkthrough Video**: https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3
-**Photos Folder**: `/home/scottcarpentier/Property Management Posting/media/unit_3/photos`
+# Rental Listing Packet: Unit 3 - 315 Kent Street
+**Property Address**: 315 Kent Street, Unit 3, Whitby, Durham Region
+**Target Rent**: $2075 CAD/mo | **Move-in**: Immediate / Dec 1
+**YouTube Walkthrough Video**: https://www.youtube.com/watch?v=Y4_7Kd_KESA
+**Google Drive Photos Folder**: `https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing`
 
 ---
 
 ## 1. Facebook Marketplace
 - **Direct Link to Post**: https://www.facebook.com/marketplace/create/rental
-- **Listing Title**: `1 Bed 1 Bath - Apartment Suite | Whitby`
-- **Price**: `$1850`
+- **Listing Title**: `2 Bed 1 Bath - Apartment Suite | Whitby`
+- **Price**: `$2075`
 - **Category**: Property Rentals > Apartment Suite
-- **Bedrooms**: 1 | **Bathrooms**: 1
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-✨ BEAUTIFULLY MAINTAINED 1 BEDROOM RENTAL IN WHITBY, ON ✨
+✨ BEAUTIFULLY MAINTAINED 2 BEDROOM RENTAL IN WHITBY, ON ✨
 
-📍 LOCATION: 45 Brock St E, Whitby (Durham Region)
-💰 RENT: $1,850/month
-📅 MOVE-IN DATE: 2026-12-15
+📍 LOCATION: 315 Kent Street, Unit 3, Whitby (Durham Region)
+💰 RENT: $2,075/month
+📅 MOVE-IN DATE: Immediate / Dec 1
 
-🎥 FULL VIDEO WALKTHROUGH:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3
+🎥 YOUTUBE WALKTHROUGH TOUR:
+https://www.youtube.com/watch?v=Y4_7Kd_KESA
 
 🏢 UNIT HIGHLIGHTS & SPECS:
-• Bedrooms: 1
+• Bedrooms: 2
 • Bathrooms: 1
-• Approximate Size: ~650 sq. ft.
+• Approximate Size: ~850 sq. ft.
 • Parking: 1 dedicated parking spot(s)
 • Type: Apartment Suite
 
 🌟 FEATURES & AMENITIES:
-• Walking distance to Downtown Whitby restaurants
-• Quick access to Whitby GO Station
-• Modern laminate floors
-• Secure keyless entry
-• On-site card laundry
+• 2nd Floor 2-Bedroom unit with private balcony
+• Generous closet and storage space
+• Heat & water included (tenant pays hydro)
+• On-site coin laundry
+• Assigned parking space included
+• Walking distance to downtown Whitby shops & Whitby GO
 
 💡 UTILITIES & LEASE TERMS:
-• Included: Water, Heat
+• Included: Heat, Water
 • Extra: Hydro
 • Lease: 12 Month Standard Ontario Residential Tenancy Agreement
-• Pets: Quiet pets permitted
-• Smoking: Non-smoking unit
+• Pets: Pets considered (Ontario standard)
+• Smoking: Strictly non-smoking unit
 
 🚇 COMMUTE & TRANSIT:
-Close to 401 & Whitby entertainment district.
+2nd floor unit with balcony in boutique 6-plex.
 
 📋 REQUIREMENTS FOR APPLICATION:
 1. Proof of income / recent paystubs & employment letter
@@ -61,36 +62,37 @@ Please message directly with a brief introduction about yourself and anyone who 
 
 ## 2. Kijiji Ontario
 - **Direct Link to Post**: https://www.kijiji.ca/p-post-ad.html?categoryId=37
-- **Title**: `1 Bedroom Apartment Suite for Rent in Whitby - Video Tour Available`
-- **Price**: `$1850`
-- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3`
-- **Bedrooms**: 1 | **Bathrooms**: 1
+- **Title**: `2 Bedroom Apartment Suite for Rent in Whitby - Video Tour Available`
+- **Price**: `$2075`
+- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/watch?v=Y4_7Kd_KESA`
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-FOR RENT: Spacious & Clean 1 Bed / 1 Bath Unit in Whitby
+FOR RENT: Spacious & Clean 2 Bed / 1 Bath Unit in Whitby
 
-Watch the full video walkthrough tour here:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3
+Watch the full YouTube walkthrough tour here:
+https://www.youtube.com/watch?v=Y4_7Kd_KESA
 
 UNIT DETAILS:
-- Address: 45 Brock St E, Whitby, ON (L1N 2H8)
-- Rent: $1,850/month
-- Bedrooms: 1
+- Address: 315 Kent Street, Unit 3, Whitby, ON (L1N 4Y5)
+- Rent: $2,075/month
+- Bedrooms: 2
 - Bathrooms: 1
-- Square Footage: approx. 650 sqft
+- Square Footage: approx. 850 sqft
 - Parking: 1 space(s) included
-- Move-In Availability: 2026-12-15
+- Move-In Availability: Immediate / Dec 1
 
 AMENITIES & HIGHLIGHTS:
-- Walking distance to Downtown Whitby restaurants
-- Quick access to Whitby GO Station
-- Modern laminate floors
-- Secure keyless entry
-- On-site card laundry
+- 2nd Floor 2-Bedroom unit with private balcony
+- Generous closet and storage space
+- Heat & water included (tenant pays hydro)
+- On-site coin laundry
+- Assigned parking space included
+- Walking distance to downtown Whitby shops & Whitby GO
 
 UTILITY BREAKDOWN:
-- Utilities Included: Water, Heat
+- Utilities Included: Heat, Water
 - Utilities Extra: Hydro
 
 LEASE TERMS & VETTING:
@@ -99,7 +101,7 @@ LEASE TERMS & VETTING:
 - Required: Credit check, letter of employment, recent pay stubs, reference check
 
 LOCATION HIGHLIGHTS:
-Close to 401 & Whitby entertainment district.
+2nd floor unit with balcony in boutique 6-plex.
 
 Interested? Send a message with your intended move-in date and a short introduction.
 ```
@@ -108,30 +110,31 @@ Interested? Send a message with your intended move-in date and a short introduct
 
 ## 3. Zumper / PadMapper
 - **Direct Link to Post**: https://www.zumper.com/manage
-- **Title**: `45 Brock St E, Unit - 1 Bed / 1 Bath in Whitby`
-- **Price**: `$1850`
-- **Virtual Tour Link**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3`
-- **Bedrooms**: 1 | **Bathrooms**: 1 | **Sqft**: 650
+- **Title**: `315 Kent Street, Unit 3, Unit - 2 Bed / 1 Bath in Whitby`
+- **Price**: `$2075`
+- **Virtual Tour Link**: `https://www.youtube.com/watch?v=Y4_7Kd_KESA`
+- **Bedrooms**: 2 | **Bathrooms**: 1 | **Sqft**: 850
 
 ### Description:
 ```text
-Welcome to this modern 1-bedroom, 1-bathroom rental located at 45 Brock St E in desirable Whitby, Durham Region.
+Welcome to this modern 2-bedroom, 1-bathroom rental located at 315 Kent Street, Unit 3 in desirable Whitby, Durham Region.
 
 Key Unit Features:
-- Living Area: Approximately 650 sq ft
+- Living Area: Approximately 850 sq ft
 - Parking: 1 spot(s)
-- Available Date: 2026-12-15
+- Available Date: Immediate / Dec 1
 - Lease Duration: 12 months
 
 Amenities:
-• Walking distance to Downtown Whitby restaurants
-• Quick access to Whitby GO Station
-• Modern laminate floors
-• Secure keyless entry
-• On-site card laundry
+• 2nd Floor 2-Bedroom unit with private balcony
+• Generous closet and storage space
+• Heat & water included (tenant pays hydro)
+• On-site coin laundry
+• Assigned parking space included
+• Walking distance to downtown Whitby shops & Whitby GO
 
-Virtual Walkthrough Video:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_3
+YouTube Virtual Walkthrough:
+https://www.youtube.com/watch?v=Y4_7Kd_KESA
 
 Lease Terms:
 Standard Ontario Tenancy Agreement. Full application, credit evaluation, and employment verification required.

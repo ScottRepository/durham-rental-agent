@@ -1,52 +1,52 @@
-# Rental Listing Packet: Unit 4 - 2 Bed Townhouse Unit
-**Property Address**: 78 Kingston Rd W, Ajax, Durham Region
-**Target Rent**: $2400 CAD/mo | **Move-in**: 2027-01-01
-**Walkthrough Video**: https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4
-**Photos Folder**: `/home/scottcarpentier/Property Management Posting/media/unit_4/photos`
+# Rental Listing Packet: Unit 4 - 315 Kent Street
+**Property Address**: 315 Kent Street, Unit 4, Whitby, Durham Region
+**Target Rent**: $2050 CAD/mo | **Move-in**: Immediate / Dec 1
+**YouTube Walkthrough Video**: https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+**Google Drive Photos Folder**: `https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing`
 
 ---
 
 ## 1. Facebook Marketplace
 - **Direct Link to Post**: https://www.facebook.com/marketplace/create/rental
-- **Listing Title**: `2 Bed 2 Bath - Townhouse | Ajax`
-- **Price**: `$2400`
-- **Category**: Property Rentals > Townhouse
-- **Bedrooms**: 2 | **Bathrooms**: 2
+- **Listing Title**: `2 Bed 1 Bath - Apartment Suite | Whitby`
+- **Price**: `$2050`
+- **Category**: Property Rentals > Apartment Suite
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-✨ BEAUTIFULLY MAINTAINED 2 BEDROOM RENTAL IN AJAX, ON ✨
+✨ BEAUTIFULLY MAINTAINED 2 BEDROOM RENTAL IN WHITBY, ON ✨
 
-📍 LOCATION: 78 Kingston Rd W, Ajax (Durham Region)
-💰 RENT: $2,400/month
-📅 MOVE-IN DATE: 2027-01-01
+📍 LOCATION: 315 Kent Street, Unit 4, Whitby (Durham Region)
+💰 RENT: $2,050/month
+📅 MOVE-IN DATE: Immediate / Dec 1
 
-🎥 FULL VIDEO WALKTHROUGH:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4
+🎥 YOUTUBE WALKTHROUGH TOUR:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 🏢 UNIT HIGHLIGHTS & SPECS:
 • Bedrooms: 2
-• Bathrooms: 2
-• Approximate Size: ~1050 sq. ft.
+• Bathrooms: 1
+• Approximate Size: ~800 sq. ft.
 • Parking: 1 dedicated parking spot(s)
-• Type: Townhouse
+• Type: Apartment Suite
 
 🌟 FEATURES & AMENITIES:
-• Attached garage with direct interior access
-• Balcony
-• Primary bedroom with ensuite bathroom & walk-in closet
-• Central Air Conditioning
-• Steps to Durham Centre shopping & Ajax GO
+• Clean, well-maintained apartment in quiet building
+• Hardwood/laminate style flooring
+• On-site laundry facilities
+• Assigned parking spot
+• Steps to downtown Whitby amenities & quick 401 commute
 
 💡 UTILITIES & LEASE TERMS:
-• Included: None (Tenant pays utilities)
-• Extra: All utilities paid by tenant
+• Included: Heat, Water
+• Extra: Hydro
 • Lease: 12 Month Standard Ontario Residential Tenancy Agreement
-• Pets: Pets permitted
-• Smoking: Non-smoking
+• Pets: Pets considered (Ontario standard)
+• Smoking: Strictly non-smoking unit
 
 🚇 COMMUTE & TRANSIT:
-Ideal commuter location with direct Durham transit & GO access.
+Quiet 6-unit building in prime downtown Whitby.
 
 📋 REQUIREMENTS FOR APPLICATION:
 1. Proof of income / recent paystubs & employment letter
@@ -61,37 +61,37 @@ Please message directly with a brief introduction about yourself and anyone who 
 
 ## 2. Kijiji Ontario
 - **Direct Link to Post**: https://www.kijiji.ca/p-post-ad.html?categoryId=37
-- **Title**: `2 Bedroom Townhouse for Rent in Ajax - Video Tour Available`
-- **Price**: `$2400`
-- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4`
-- **Bedrooms**: 2 | **Bathrooms**: 2
+- **Title**: `2 Bedroom Apartment Suite for Rent in Whitby - Video Tour Available`
+- **Price**: `$2050`
+- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-FOR RENT: Spacious & Clean 2 Bed / 2 Bath Unit in Ajax
+FOR RENT: Spacious & Clean 2 Bed / 1 Bath Unit in Whitby
 
-Watch the full video walkthrough tour here:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4
+Watch the full YouTube walkthrough tour here:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 UNIT DETAILS:
-- Address: 78 Kingston Rd W, Ajax, ON (L1S 7J4)
-- Rent: $2,400/month
+- Address: 315 Kent Street, Unit 4, Whitby, ON (L1N 4Y5)
+- Rent: $2,050/month
 - Bedrooms: 2
-- Bathrooms: 2
-- Square Footage: approx. 1050 sqft
+- Bathrooms: 1
+- Square Footage: approx. 800 sqft
 - Parking: 1 space(s) included
-- Move-In Availability: 2027-01-01
+- Move-In Availability: Immediate / Dec 1
 
 AMENITIES & HIGHLIGHTS:
-- Attached garage with direct interior access
-- Balcony
-- Primary bedroom with ensuite bathroom & walk-in closet
-- Central Air Conditioning
-- Steps to Durham Centre shopping & Ajax GO
+- Clean, well-maintained apartment in quiet building
+- Hardwood/laminate style flooring
+- On-site laundry facilities
+- Assigned parking spot
+- Steps to downtown Whitby amenities & quick 401 commute
 
 UTILITY BREAKDOWN:
-- Utilities Included: None
-- Utilities Extra: All utilities paid by tenant
+- Utilities Included: Heat, Water
+- Utilities Extra: Hydro
 
 LEASE TERMS & VETTING:
 - 1-Year Ontario Standard Lease Agreement
@@ -99,7 +99,7 @@ LEASE TERMS & VETTING:
 - Required: Credit check, letter of employment, recent pay stubs, reference check
 
 LOCATION HIGHLIGHTS:
-Ideal commuter location with direct Durham transit & GO access.
+Quiet 6-unit building in prime downtown Whitby.
 
 Interested? Send a message with your intended move-in date and a short introduction.
 ```
@@ -108,30 +108,30 @@ Interested? Send a message with your intended move-in date and a short introduct
 
 ## 3. Zumper / PadMapper
 - **Direct Link to Post**: https://www.zumper.com/manage
-- **Title**: `78 Kingston Rd W, Unit - 2 Bed / 2 Bath in Ajax`
-- **Price**: `$2400`
-- **Virtual Tour Link**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4`
-- **Bedrooms**: 2 | **Bathrooms**: 2 | **Sqft**: 1050
+- **Title**: `315 Kent Street, Unit 4, Unit - 2 Bed / 1 Bath in Whitby`
+- **Price**: `$2050`
+- **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1 | **Sqft**: 800
 
 ### Description:
 ```text
-Welcome to this modern 2-bedroom, 2-bathroom rental located at 78 Kingston Rd W in desirable Ajax, Durham Region.
+Welcome to this modern 2-bedroom, 1-bathroom rental located at 315 Kent Street, Unit 4 in desirable Whitby, Durham Region.
 
 Key Unit Features:
-- Living Area: Approximately 1050 sq ft
+- Living Area: Approximately 800 sq ft
 - Parking: 1 spot(s)
-- Available Date: 2027-01-01
+- Available Date: Immediate / Dec 1
 - Lease Duration: 12 months
 
 Amenities:
-• Attached garage with direct interior access
-• Balcony
-• Primary bedroom with ensuite bathroom & walk-in closet
-• Central Air Conditioning
-• Steps to Durham Centre shopping & Ajax GO
+• Clean, well-maintained apartment in quiet building
+• Hardwood/laminate style flooring
+• On-site laundry facilities
+• Assigned parking spot
+• Steps to downtown Whitby amenities & quick 401 commute
 
-Virtual Walkthrough Video:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_4
+YouTube Virtual Walkthrough:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 Lease Terms:
 Standard Ontario Tenancy Agreement. Full application, credit evaluation, and employment verification required.

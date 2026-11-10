@@ -1,52 +1,53 @@
-# Rental Listing Packet: Unit 5 - 1 Bed + Den Condo Style
-**Property Address**: 1400 Bayly St, Pickering, Durham Region
-**Target Rent**: $2200 CAD/mo | **Move-in**: 2026-12-01
-**Walkthrough Video**: https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5
-**Photos Folder**: `/home/scottcarpentier/Property Management Posting/media/unit_5/photos`
+# Rental Listing Packet: Unit 5 - 315 Kent Street
+**Property Address**: 315 Kent Street, Unit 5, Whitby, Durham Region
+**Target Rent**: $2075 CAD/mo | **Move-in**: Immediate / Dec 1
+**YouTube Walkthrough Video**: https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+**Google Drive Photos Folder**: `https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing`
 
 ---
 
 ## 1. Facebook Marketplace
 - **Direct Link to Post**: https://www.facebook.com/marketplace/create/rental
-- **Listing Title**: `1.5 Bed 1 Bath - Condo / Suite | Pickering`
-- **Price**: `$2200`
-- **Category**: Property Rentals > Condo / Suite
-- **Bedrooms**: 1.5 | **Bathrooms**: 1
+- **Listing Title**: `2 Bed 1 Bath - Apartment Suite | Whitby`
+- **Price**: `$2075`
+- **Category**: Property Rentals > Apartment Suite
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-✨ BEAUTIFULLY MAINTAINED 1.5 BEDROOM RENTAL IN PICKERING, ON ✨
+✨ BEAUTIFULLY MAINTAINED 2 BEDROOM RENTAL IN WHITBY, ON ✨
 
-📍 LOCATION: 1400 Bayly St, Pickering (Durham Region)
-💰 RENT: $2,200/month
-📅 MOVE-IN DATE: 2026-12-01
+📍 LOCATION: 315 Kent Street, Unit 5, Whitby (Durham Region)
+💰 RENT: $2,075/month
+📅 MOVE-IN DATE: Immediate / Dec 1
 
-🎥 FULL VIDEO WALKTHROUGH:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5
+🎥 YOUTUBE WALKTHROUGH TOUR:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 🏢 UNIT HIGHLIGHTS & SPECS:
-• Bedrooms: 1.5
+• Bedrooms: 2
 • Bathrooms: 1
-• Approximate Size: ~700 sq. ft.
+• Approximate Size: ~830 sq. ft.
 • Parking: 1 dedicated parking spot(s)
-• Type: Condo / Suite
+• Type: Apartment Suite
 
 🌟 FEATURES & AMENITIES:
-• Separate enclosed den perfect for work-from-home
-• Direct pedestrian bridge access to Pickering GO
-• Floor to ceiling windows
-• Gym & rooftop patio access in building
-• Underground parking space + storage locker
+• Spacious living room with large windows
+• Full kitchen with ample cabinet storage
+• Heat & water included
+• Assigned parking space included
+• On-site laundry
+• 5 minutes to Whitby GO station and 401
 
 💡 UTILITIES & LEASE TERMS:
-• Included: Water, Heat
+• Included: Heat, Water
 • Extra: Hydro
 • Lease: 12 Month Standard Ontario Residential Tenancy Agreement
-• Pets: Small pets allowed per condo bylaws
-• Smoking: Strictly non-smoking building
+• Pets: Pets considered (Ontario standard)
+• Smoking: Strictly non-smoking unit
 
 🚇 COMMUTE & TRANSIT:
-Direct bridge connection to Pickering GO Station (28 mins to Union Station).
+Ideal location for commuters to Toronto or local Durham professionals.
 
 📋 REQUIREMENTS FOR APPLICATION:
 1. Proof of income / recent paystubs & employment letter
@@ -61,36 +62,37 @@ Please message directly with a brief introduction about yourself and anyone who 
 
 ## 2. Kijiji Ontario
 - **Direct Link to Post**: https://www.kijiji.ca/p-post-ad.html?categoryId=37
-- **Title**: `1.5 Bedroom Condo / Suite for Rent in Pickering - Video Tour Available`
-- **Price**: `$2200`
-- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5`
-- **Bedrooms**: 1.5 | **Bathrooms**: 1
+- **Title**: `2 Bedroom Apartment Suite for Rent in Whitby - Video Tour Available`
+- **Price**: `$2075`
+- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-FOR RENT: Spacious & Clean 1.5 Bed / 1 Bath Unit in Pickering
+FOR RENT: Spacious & Clean 2 Bed / 1 Bath Unit in Whitby
 
-Watch the full video walkthrough tour here:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5
+Watch the full YouTube walkthrough tour here:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 UNIT DETAILS:
-- Address: 1400 Bayly St, Pickering, ON (L1W 3R2)
-- Rent: $2,200/month
-- Bedrooms: 1.5
+- Address: 315 Kent Street, Unit 5, Whitby, ON (L1N 4Y5)
+- Rent: $2,075/month
+- Bedrooms: 2
 - Bathrooms: 1
-- Square Footage: approx. 700 sqft
+- Square Footage: approx. 830 sqft
 - Parking: 1 space(s) included
-- Move-In Availability: 2026-12-01
+- Move-In Availability: Immediate / Dec 1
 
 AMENITIES & HIGHLIGHTS:
-- Separate enclosed den perfect for work-from-home
-- Direct pedestrian bridge access to Pickering GO
-- Floor to ceiling windows
-- Gym & rooftop patio access in building
-- Underground parking space + storage locker
+- Spacious living room with large windows
+- Full kitchen with ample cabinet storage
+- Heat & water included
+- Assigned parking space included
+- On-site laundry
+- 5 minutes to Whitby GO station and 401
 
 UTILITY BREAKDOWN:
-- Utilities Included: Water, Heat
+- Utilities Included: Heat, Water
 - Utilities Extra: Hydro
 
 LEASE TERMS & VETTING:
@@ -99,7 +101,7 @@ LEASE TERMS & VETTING:
 - Required: Credit check, letter of employment, recent pay stubs, reference check
 
 LOCATION HIGHLIGHTS:
-Direct bridge connection to Pickering GO Station (28 mins to Union Station).
+Ideal location for commuters to Toronto or local Durham professionals.
 
 Interested? Send a message with your intended move-in date and a short introduction.
 ```
@@ -108,30 +110,31 @@ Interested? Send a message with your intended move-in date and a short introduct
 
 ## 3. Zumper / PadMapper
 - **Direct Link to Post**: https://www.zumper.com/manage
-- **Title**: `1400 Bayly St, Unit - 1.5 Bed / 1 Bath in Pickering`
-- **Price**: `$2200`
-- **Virtual Tour Link**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5`
-- **Bedrooms**: 1.5 | **Bathrooms**: 1 | **Sqft**: 700
+- **Title**: `315 Kent Street, Unit 5, Unit - 2 Bed / 1 Bath in Whitby`
+- **Price**: `$2075`
+- **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1 | **Sqft**: 830
 
 ### Description:
 ```text
-Welcome to this modern 1.5-bedroom, 1-bathroom rental located at 1400 Bayly St in desirable Pickering, Durham Region.
+Welcome to this modern 2-bedroom, 1-bathroom rental located at 315 Kent Street, Unit 5 in desirable Whitby, Durham Region.
 
 Key Unit Features:
-- Living Area: Approximately 700 sq ft
+- Living Area: Approximately 830 sq ft
 - Parking: 1 spot(s)
-- Available Date: 2026-12-01
+- Available Date: Immediate / Dec 1
 - Lease Duration: 12 months
 
 Amenities:
-• Separate enclosed den perfect for work-from-home
-• Direct pedestrian bridge access to Pickering GO
-• Floor to ceiling windows
-• Gym & rooftop patio access in building
-• Underground parking space + storage locker
+• Spacious living room with large windows
+• Full kitchen with ample cabinet storage
+• Heat & water included
+• Assigned parking space included
+• On-site laundry
+• 5 minutes to Whitby GO station and 401
 
-Virtual Walkthrough Video:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_5
+YouTube Virtual Walkthrough:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 Lease Terms:
 Standard Ontario Tenancy Agreement. Full application, credit evaluation, and employment verification required.

@@ -1,53 +1,52 @@
-# Rental Listing Packet: Unit 2 - 3 Bed Main Floor
-**Property Address**: 123 Simcoe St N, Oshawa, Durham Region
-**Target Rent**: $2750 CAD/mo | **Move-in**: 2026-12-01
-**Walkthrough Video**: https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2
-**Photos Folder**: `/home/scottcarpentier/Property Management Posting/media/unit_2/photos`
+# Rental Listing Packet: Unit 2 - 315 Kent Street
+**Property Address**: 315 Kent Street, Unit 2, Whitby, Durham Region
+**Target Rent**: $2075 CAD/mo | **Move-in**: Immediate / Dec 1
+**YouTube Walkthrough Video**: https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+**Google Drive Photos Folder**: `https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing`
 
 ---
 
 ## 1. Facebook Marketplace
 - **Direct Link to Post**: https://www.facebook.com/marketplace/create/rental
-- **Listing Title**: `3 Bed 1.5 Bath - Main Floor House | Oshawa`
-- **Price**: `$2750`
-- **Category**: Property Rentals > Main Floor House
-- **Bedrooms**: 3 | **Bathrooms**: 1.5
+- **Listing Title**: `2 Bed 1 Bath - Apartment Suite | Whitby`
+- **Price**: `$2075`
+- **Category**: Property Rentals > Apartment Suite
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-✨ BEAUTIFULLY MAINTAINED 3 BEDROOM RENTAL IN OSHAWA, ON ✨
+✨ BEAUTIFULLY MAINTAINED 2 BEDROOM RENTAL IN WHITBY, ON ✨
 
-📍 LOCATION: 123 Simcoe St N, Oshawa (Durham Region)
-💰 RENT: $2,750/month
-📅 MOVE-IN DATE: 2026-12-01
+📍 LOCATION: 315 Kent Street, Unit 2, Whitby (Durham Region)
+💰 RENT: $2,075/month
+📅 MOVE-IN DATE: Immediate / Dec 1
 
-🎥 FULL VIDEO WALKTHROUGH:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2
+🎥 YOUTUBE WALKTHROUGH TOUR:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 🏢 UNIT HIGHLIGHTS & SPECS:
-• Bedrooms: 3
-• Bathrooms: 1.5
-• Approximate Size: ~1250 sq. ft.
-• Parking: 2 dedicated parking spot(s)
-• Type: Main Floor House
+• Bedrooms: 2
+• Bathrooms: 1
+• Approximate Size: ~820 sq. ft.
+• Parking: 1 dedicated parking spot(s)
+• Type: Apartment Suite
 
 🌟 FEATURES & AMENITIES:
-• Dedicated garage + driveway parking
-• Spacious private deck
-• Ensuite laundry
-• Hardwood flooring throughout
-• Open-concept living & dining room
-• Dishwasher & microwave included
+• Quiet boutique 6-unit building
+• Bright natural daylight & generous layout
+• On-site laundry facilities
+• 1 dedicated parking space included
+• Minutes from Whitby GO Station, 401, parks, and downtown core
 
 💡 UTILITIES & LEASE TERMS:
-• Included: Water
-• Extra: Heat (60% split), Hydro (60% split)
+• Included: Heat, Water
+• Extra: Hydro
 • Lease: 12 Month Standard Ontario Residential Tenancy Agreement
-• Pets: Pets welcome
+• Pets: Pets considered (Ontario standard)
 • Smoking: Strictly non-smoking unit
 
 🚇 COMMUTE & TRANSIT:
-Main level unit with exclusive backyard deck access.
+Downtown Whitby near public transit, shopping, and highway access.
 
 📋 REQUIREMENTS FOR APPLICATION:
 1. Proof of income / recent paystubs & employment letter
@@ -62,38 +61,37 @@ Please message directly with a brief introduction about yourself and anyone who 
 
 ## 2. Kijiji Ontario
 - **Direct Link to Post**: https://www.kijiji.ca/p-post-ad.html?categoryId=37
-- **Title**: `3 Bedroom Main Floor House for Rent in Oshawa - Video Tour Available`
-- **Price**: `$2750`
-- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2`
-- **Bedrooms**: 3 | **Bathrooms**: 1.5
+- **Title**: `2 Bedroom Apartment Suite for Rent in Whitby - Video Tour Available`
+- **Price**: `$2075`
+- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-FOR RENT: Spacious & Clean 3 Bed / 1.5 Bath Unit in Oshawa
+FOR RENT: Spacious & Clean 2 Bed / 1 Bath Unit in Whitby
 
-Watch the full video walkthrough tour here:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2
+Watch the full YouTube walkthrough tour here:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 UNIT DETAILS:
-- Address: 123 Simcoe St N, Oshawa, ON (L1G 4S6)
-- Rent: $2,750/month
-- Bedrooms: 3
-- Bathrooms: 1.5
-- Square Footage: approx. 1250 sqft
-- Parking: 2 space(s) included
-- Move-In Availability: 2026-12-01
+- Address: 315 Kent Street, Unit 2, Whitby, ON (L1N 4Y5)
+- Rent: $2,075/month
+- Bedrooms: 2
+- Bathrooms: 1
+- Square Footage: approx. 820 sqft
+- Parking: 1 space(s) included
+- Move-In Availability: Immediate / Dec 1
 
 AMENITIES & HIGHLIGHTS:
-- Dedicated garage + driveway parking
-- Spacious private deck
-- Ensuite laundry
-- Hardwood flooring throughout
-- Open-concept living & dining room
-- Dishwasher & microwave included
+- Quiet boutique 6-unit building
+- Bright natural daylight & generous layout
+- On-site laundry facilities
+- 1 dedicated parking space included
+- Minutes from Whitby GO Station, 401, parks, and downtown core
 
 UTILITY BREAKDOWN:
-- Utilities Included: Water
-- Utilities Extra: Heat (60% split), Hydro (60% split)
+- Utilities Included: Heat, Water
+- Utilities Extra: Hydro
 
 LEASE TERMS & VETTING:
 - 1-Year Ontario Standard Lease Agreement
@@ -101,7 +99,7 @@ LEASE TERMS & VETTING:
 - Required: Credit check, letter of employment, recent pay stubs, reference check
 
 LOCATION HIGHLIGHTS:
-Main level unit with exclusive backyard deck access.
+Downtown Whitby near public transit, shopping, and highway access.
 
 Interested? Send a message with your intended move-in date and a short introduction.
 ```
@@ -110,31 +108,30 @@ Interested? Send a message with your intended move-in date and a short introduct
 
 ## 3. Zumper / PadMapper
 - **Direct Link to Post**: https://www.zumper.com/manage
-- **Title**: `123 Simcoe St N, Unit - 3 Bed / 1.5 Bath in Oshawa`
-- **Price**: `$2750`
-- **Virtual Tour Link**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2`
-- **Bedrooms**: 3 | **Bathrooms**: 1.5 | **Sqft**: 1250
+- **Title**: `315 Kent Street, Unit 2, Unit - 2 Bed / 1 Bath in Whitby`
+- **Price**: `$2075`
+- **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1 | **Sqft**: 820
 
 ### Description:
 ```text
-Welcome to this modern 3-bedroom, 1.5-bathroom rental located at 123 Simcoe St N in desirable Oshawa, Durham Region.
+Welcome to this modern 2-bedroom, 1-bathroom rental located at 315 Kent Street, Unit 2 in desirable Whitby, Durham Region.
 
 Key Unit Features:
-- Living Area: Approximately 1250 sq ft
-- Parking: 2 spot(s)
-- Available Date: 2026-12-01
+- Living Area: Approximately 820 sq ft
+- Parking: 1 spot(s)
+- Available Date: Immediate / Dec 1
 - Lease Duration: 12 months
 
 Amenities:
-• Dedicated garage + driveway parking
-• Spacious private deck
-• Ensuite laundry
-• Hardwood flooring throughout
-• Open-concept living & dining room
-• Dishwasher & microwave included
+• Quiet boutique 6-unit building
+• Bright natural daylight & generous layout
+• On-site laundry facilities
+• 1 dedicated parking space included
+• Minutes from Whitby GO Station, 401, parks, and downtown core
 
-Virtual Walkthrough Video:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_2
+YouTube Virtual Walkthrough:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 Lease Terms:
 Standard Ontario Tenancy Agreement. Full application, credit evaluation, and employment verification required.

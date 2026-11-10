@@ -1,52 +1,52 @@
-# Rental Listing Packet: Unit 6 - 3 Bed Detached Upper Unit
-**Property Address**: 210 King St E, Bowmanville (Clarington), Durham Region
-**Target Rent**: $2500 CAD/mo | **Move-in**: 2027-01-15
-**Walkthrough Video**: https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6
-**Photos Folder**: `/home/scottcarpentier/Property Management Posting/media/unit_6/photos`
+# Rental Listing Packet: Unit 6 - 315 Kent Street
+**Property Address**: 315 Kent Street, Unit 6, Whitby, Durham Region
+**Target Rent**: $2075 CAD/mo | **Move-in**: Immediate / Dec 1
+**YouTube Walkthrough Video**: https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+**Google Drive Photos Folder**: `https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing`
 
 ---
 
 ## 1. Facebook Marketplace
 - **Direct Link to Post**: https://www.facebook.com/marketplace/create/rental
-- **Listing Title**: `3 Bed 1 Bath - Upper Level House | Bowmanville (Clarington)`
-- **Price**: `$2500`
-- **Category**: Property Rentals > Upper Level House
-- **Bedrooms**: 3 | **Bathrooms**: 1
+- **Listing Title**: `2 Bed 1 Bath - Apartment Suite | Whitby`
+- **Price**: `$2075`
+- **Category**: Property Rentals > Apartment Suite
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-✨ BEAUTIFULLY MAINTAINED 3 BEDROOM RENTAL IN BOWMANVILLE (CLARINGTON), ON ✨
+✨ BEAUTIFULLY MAINTAINED 2 BEDROOM RENTAL IN WHITBY, ON ✨
 
-📍 LOCATION: 210 King St E, Bowmanville (Clarington) (Durham Region)
-💰 RENT: $2,500/month
-📅 MOVE-IN DATE: 2027-01-15
+📍 LOCATION: 315 Kent Street, Unit 6, Whitby (Durham Region)
+💰 RENT: $2,075/month
+📅 MOVE-IN DATE: Immediate / Dec 1
 
-🎥 FULL VIDEO WALKTHROUGH:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6
+🎥 YOUTUBE WALKTHROUGH TOUR:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 🏢 UNIT HIGHLIGHTS & SPECS:
-• Bedrooms: 3
+• Bedrooms: 2
 • Bathrooms: 1
-• Approximate Size: ~1100 sq. ft.
-• Parking: 2 dedicated parking spot(s)
-• Type: Upper Level House
+• Approximate Size: ~840 sq. ft.
+• Parking: 1 dedicated parking spot(s)
+• Type: Apartment Suite
 
 🌟 FEATURES & AMENITIES:
-• Large private fenced backyard
-• Spacious front porch
-• In-suite laundry
-• Family-friendly neighbourhood close to schools
-• Minutes from Highway 401 & future Bowmanville GO extension
+• Well-maintained 2-bedroom layout
+• Heat and water included
+• On-site laundry facilities
+• 1 parking spot included
+• Close to schools, shopping, Whitby Marina, and GO Transit
 
 💡 UTILITIES & LEASE TERMS:
-• Included: Water
-• Extra: Heat & Hydro (70% split)
+• Included: Heat, Water
+• Extra: Hydro
 • Lease: 12 Month Standard Ontario Residential Tenancy Agreement
-• Pets: Pets welcome
-• Smoking: Non-smoking unit
+• Pets: Pets considered (Ontario standard)
+• Smoking: Strictly non-smoking unit
 
 🚇 COMMUTE & TRANSIT:
-Quiet residential street in historic downtown Bowmanville.
+Conveniently situated in central Whitby with rapid highway access.
 
 📋 REQUIREMENTS FOR APPLICATION:
 1. Proof of income / recent paystubs & employment letter
@@ -61,37 +61,37 @@ Please message directly with a brief introduction about yourself and anyone who 
 
 ## 2. Kijiji Ontario
 - **Direct Link to Post**: https://www.kijiji.ca/p-post-ad.html?categoryId=37
-- **Title**: `3 Bed Upper Level House in Bowmanville (Clarington) - Video Tour`
-- **Price**: `$2500`
-- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6`
-- **Bedrooms**: 3 | **Bathrooms**: 1
+- **Title**: `2 Bedroom Apartment Suite for Rent in Whitby - Video Tour Available`
+- **Price**: `$2075`
+- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
 ```text
-FOR RENT: Spacious & Clean 3 Bed / 1 Bath Unit in Bowmanville (Clarington)
+FOR RENT: Spacious & Clean 2 Bed / 1 Bath Unit in Whitby
 
-Watch the full video walkthrough tour here:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6
+Watch the full YouTube walkthrough tour here:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 UNIT DETAILS:
-- Address: 210 King St E, Bowmanville (Clarington), ON (L1C 1P2)
-- Rent: $2,500/month
-- Bedrooms: 3
+- Address: 315 Kent Street, Unit 6, Whitby, ON (L1N 4Y5)
+- Rent: $2,075/month
+- Bedrooms: 2
 - Bathrooms: 1
-- Square Footage: approx. 1100 sqft
-- Parking: 2 space(s) included
-- Move-In Availability: 2027-01-15
+- Square Footage: approx. 840 sqft
+- Parking: 1 space(s) included
+- Move-In Availability: Immediate / Dec 1
 
 AMENITIES & HIGHLIGHTS:
-- Large private fenced backyard
-- Spacious front porch
-- In-suite laundry
-- Family-friendly neighbourhood close to schools
-- Minutes from Highway 401 & future Bowmanville GO extension
+- Well-maintained 2-bedroom layout
+- Heat and water included
+- On-site laundry facilities
+- 1 parking spot included
+- Close to schools, shopping, Whitby Marina, and GO Transit
 
 UTILITY BREAKDOWN:
-- Utilities Included: Water
-- Utilities Extra: Heat & Hydro (70% split)
+- Utilities Included: Heat, Water
+- Utilities Extra: Hydro
 
 LEASE TERMS & VETTING:
 - 1-Year Ontario Standard Lease Agreement
@@ -99,7 +99,7 @@ LEASE TERMS & VETTING:
 - Required: Credit check, letter of employment, recent pay stubs, reference check
 
 LOCATION HIGHLIGHTS:
-Quiet residential street in historic downtown Bowmanville.
+Conveniently situated in central Whitby with rapid highway access.
 
 Interested? Send a message with your intended move-in date and a short introduction.
 ```
@@ -108,30 +108,30 @@ Interested? Send a message with your intended move-in date and a short introduct
 
 ## 3. Zumper / PadMapper
 - **Direct Link to Post**: https://www.zumper.com/manage
-- **Title**: `210 King St E, Unit - 3 Bed / 1 Bath in Bowmanville (Clarington)`
-- **Price**: `$2500`
-- **Virtual Tour Link**: `https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6`
-- **Bedrooms**: 3 | **Bathrooms**: 1 | **Sqft**: 1100
+- **Title**: `315 Kent Street, Unit 6, Unit - 2 Bed / 1 Bath in Whitby`
+- **Price**: `$2075`
+- **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Bedrooms**: 2 | **Bathrooms**: 1 | **Sqft**: 840
 
 ### Description:
 ```text
-Welcome to this modern 3-bedroom, 1-bathroom rental located at 210 King St E in desirable Bowmanville (Clarington), Durham Region.
+Welcome to this modern 2-bedroom, 1-bathroom rental located at 315 Kent Street, Unit 6 in desirable Whitby, Durham Region.
 
 Key Unit Features:
-- Living Area: Approximately 1100 sq ft
-- Parking: 2 spot(s)
-- Available Date: 2027-01-15
+- Living Area: Approximately 840 sq ft
+- Parking: 1 spot(s)
+- Available Date: Immediate / Dec 1
 - Lease Duration: 12 months
 
 Amenities:
-• Large private fenced backyard
-• Spacious front porch
-• In-suite laundry
-• Family-friendly neighbourhood close to schools
-• Minutes from Highway 401 & future Bowmanville GO extension
+• Well-maintained 2-bedroom layout
+• Heat and water included
+• On-site laundry facilities
+• 1 parking spot included
+• Close to schools, shopping, Whitby Marina, and GO Transit
 
-Virtual Walkthrough Video:
-https://www.youtube.com/watch?v=EXAMPLE_VIDEO_6
+YouTube Virtual Walkthrough:
+https://www.youtube.com/playlist?list=PLLwTe84kfw7U
 
 Lease Terms:
 Standard Ontario Tenancy Agreement. Full application, credit evaluation, and employment verification required.
