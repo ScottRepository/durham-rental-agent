@@ -7,7 +7,7 @@ import sqlite3
 import json
 from pathlib import Path
 from typing import Dict, List, Any, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 
 DB_PATH = Path(__file__).parent / "rental_portfolio.db"
 SAMPLE_JSON_PATH = Path(__file__).parent / "units" / "sample_units.json"
@@ -45,10 +45,34 @@ def init_db(db_path: Path = DB_PATH):
         pet_policy TEXT,
         smoking_policy TEXT,
         notes TEXT,
+        ad_active INTEGER DEFAULT 1,
+        last_refreshed_at TIMESTAMP,
+        next_refresh_at TIMESTAMP,
+        refresh_interval_days INTEGER DEFAULT 7,
+        master_title TEXT,
+        master_description TEXT,
+        master_price REAL,
+        master_avail_date TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     """)
+
+    # Safe Schema Migrations for existing DBs
+    for col_def in [
+        ("ad_active", "INTEGER DEFAULT 1"),
+        ("last_refreshed_at", "TIMESTAMP"),
+        ("next_refresh_at", "TIMESTAMP"),
+        ("refresh_interval_days", "INTEGER DEFAULT 7"),
+        ("master_title", "TEXT"),
+        ("master_description", "TEXT"),
+        ("master_price", "REAL"),
+        ("master_avail_date", "TEXT"),
+    ]:
+        try:
+            cur.execute(f"ALTER TABLE units ADD COLUMN {col_def[0]} {col_def[1]}")
+        except Exception:
+            pass  # column already exists
 
     # Media Table (Photos & Videos)
     cur.execute("""
@@ -72,7 +96,7 @@ def init_db(db_path: Path = DB_PATH):
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         unit_id TEXT NOT NULL,
         platform TEXT NOT NULL CHECK(platform IN ('facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent')),
-        status TEXT NOT NULL CHECK(status IN ('draft', 'in_progress', 'posted', 'failed')),
+        status TEXT NOT NULL CHECK(status IN ('draft', 'in_progress', 'posted', 'failed', 'inactive')),
         external_url TEXT,
         last_posted_at TIMESTAMP,
         log_output TEXT,
@@ -233,6 +257,11 @@ def get_all_units(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
                 else:
                     cloud_media["google_drive_photos_folder"] = m["file_path"]
 
+        u_dict = dict(u)
+        ad_active = u_dict.get("ad_active", 1) == 1
+        last_ref = u_dict.get("last_refreshed_at") or datetime.now().isoformat()
+        next_ref = u_dict.get("next_refresh_at") or (datetime.now() + timedelta(days=7)).isoformat()
+
         results.append({
             "id": u["id"],
             "name": u["name"],
@@ -260,6 +289,14 @@ def get_all_units(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
             "pet_policy": u["pet_policy"],
             "smoking_policy": u["smoking_policy"],
             "notes": u["notes"],
+            "ad_active": ad_active,
+            "last_refreshed_at": last_ref,
+            "next_refresh_at": next_ref,
+            "refresh_interval_days": u_dict.get("refresh_interval_days", 7),
+            "master_title": u_dict.get("master_title"),
+            "master_description": u_dict.get("master_description"),
+            "master_price": u_dict.get("master_price", u["target_rent"]),
+            "master_avail_date": u_dict.get("master_avail_date", u["available_date"]),
             "cloud_media": cloud_media,
             "media_assets": media_list,
             "postings": posting_dict
@@ -276,7 +313,7 @@ def get_unit_by_id(unit_id: str, db_path: Path = DB_PATH) -> Optional[Dict[str, 
     return None
 
 def update_posting_status(unit_id: str, platform: str, status: str, external_url: str = None, log: str = "", db_path: Path = DB_PATH):
-    """Updates the status of a posting (e.g. 'in_progress', 'posted', 'failed')."""
+    """Updates the status of a posting (e.g. 'in_progress', 'posted', 'failed', 'inactive')."""
     conn = get_connection(db_path)
     cur = conn.cursor()
     now = datetime.now().isoformat()
@@ -287,6 +324,26 @@ def update_posting_status(unit_id: str, platform: str, status: str, external_url
     """, (status, external_url, now, log, unit_id, platform))
     conn.commit()
     conn.close()
+
+def update_unit_master_content(unit_id: str, title: str = None, price: float = None, avail_date: str = None, description: str = None, db_path: Path = DB_PATH) -> bool:
+    """Updates the unit's master listing copy so all platforms pull from the same single source of truth."""
+    conn = get_connection(db_path)
+    cur = conn.cursor()
+    now = datetime.now().isoformat()
+    cur.execute("""
+    UPDATE units
+    SET master_title = COALESCE(?, master_title),
+        target_rent = COALESCE(?, target_rent),
+        master_price = COALESCE(?, master_price),
+        available_date = COALESCE(?, available_date),
+        master_avail_date = COALESCE(?, master_avail_date),
+        master_description = COALESCE(?, master_description),
+        updated_at = ?
+    WHERE id = ?
+    """, (title, price, price, avail_date, avail_date, description, now, unit_id))
+    conn.commit()
+    conn.close()
+    return True
 
 def add_media_asset(unit_id: str, media_type: str, file_path: str = None, web_url: str = None, caption: str = "", is_cover: bool = False, db_path: Path = DB_PATH):
     """Adds a photo or video record to the unit's media catalog."""

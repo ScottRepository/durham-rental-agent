@@ -148,6 +148,49 @@ def cmd_package(args):
 
     console.print(f"\n[bold]Ready![/bold] All dossiers generated in 'reports/dossiers/'. You can open and copy directly or trigger automated posting.")
 
+def cmd_lifecycle(args):
+    from modules.lifecycle_manager import get_lifecycle_overview
+    overview = get_lifecycle_overview()
+    table = Table(title="7-Day Listing Auto-Refresh & Active Status", show_header=True, header_style="bold cyan")
+    table.add_column("Unit ID", style="bold yellow")
+    table.add_column("Unit Name", style="white")
+    table.add_column("Ad Status", justify="center")
+    table.add_column("Last Refreshed", style="dim")
+    table.add_column("Next Refresh Date", style="bold green")
+    table.add_column("Countdown", style="bold magenta")
+
+    for item in overview:
+        status_style = "bold green" if item["ad_active"] else "dim red"
+        table.add_row(
+            item["unit_id"],
+            item["unit_name"],
+            f"[{status_style}]{'ACTIVE' if item['ad_active'] else 'INACTIVE'}[/{status_style}]",
+            item["last_refreshed_display"],
+            item["next_refresh_display"],
+            item["countdown_label"]
+        )
+    console.print(table)
+    console.print("[dim]Every 7 days, active listings automatically take down and re-post to trigger fresh views.[/dim]")
+
+def cmd_refresh(args):
+    from modules.lifecycle_manager import execute_7day_refresh, check_and_run_all_due_refreshes
+    if args.unit:
+        res = execute_7day_refresh(args.unit)
+        console.print(f"[bold green]✔ {res['message']}[/bold green]")
+    else:
+        results = check_and_run_all_due_refreshes()
+        if not results:
+            console.print("[bold yellow]No active postings are currently due for 7-day refresh.[/bold yellow]")
+        for r in results:
+            console.print(f"[bold green]✔ {r['message']}[/bold green]")
+
+def cmd_toggle(args):
+    from modules.lifecycle_manager import toggle_posting_active
+    is_active = args.state.lower() in ("true", "1", "active", "on")
+    res = toggle_posting_active(args.unit, is_active)
+    color = "green" if is_active else "yellow"
+    console.print(f"[bold {color}]✔ {res['message']}[/bold {color}]")
+
 def main():
     parser = argparse.ArgumentParser(description="Durham Region Property Management Posting & Market Comps Agent")
     subparsers = parser.add_subparsers(dest="command", help="Agent Commands")
@@ -166,6 +209,18 @@ def main():
     pkg_p = subparsers.add_parser("package", help="Generate platform listing packages & dossiers")
     pkg_p.add_argument("--unit", type=str, help="Specific unit ID (e.g. unit_1), or omit for all")
 
+    # lifecycle
+    subparsers.add_parser("lifecycle", help="View 7-day auto-refresh countdowns and ad active status")
+
+    # refresh
+    ref_p = subparsers.add_parser("refresh", help="Take down old post and re-post fresh (resets 7-day cycle)")
+    ref_p.add_argument("--unit", type=str, help="Unit ID to refresh, or omit to check all due units")
+
+    # toggle
+    tog_p = subparsers.add_parser("toggle", help="Activate or deactivate a unit listing campaign")
+    tog_p.add_argument("--unit", type=str, required=True, help="Unit ID (e.g. unit_3)")
+    tog_p.add_argument("--state", type=str, required=True, choices=["active", "inactive", "true", "false", "on", "off"], help="New status")
+
     args = parser.parse_args()
     if not args.command:
         parser.print_help()
@@ -179,6 +234,12 @@ def main():
         cmd_platforms(args)
     elif args.command == "package":
         cmd_package(args)
+    elif args.command == "lifecycle":
+        cmd_lifecycle(args)
+    elif args.command == "refresh":
+        cmd_refresh(args)
+    elif args.command == "toggle":
+        cmd_toggle(args)
 
 if __name__ == "__main__":
     main()

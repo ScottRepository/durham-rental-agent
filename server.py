@@ -18,6 +18,7 @@ from data.database import (
     get_unit_by_id,
     add_media_asset,
     update_posting_status,
+    update_unit_master_content,
     init_db,
     seed_from_sample_if_empty,
     get_all_applicants,
@@ -26,6 +27,12 @@ from data.database import (
 from modules.automated_poster import AutomatedPoster
 from modules.content_generator import package_all_listings_for_unit
 from modules.tenant_screening import analyze_tenant_application, generate_gmail_compose_url
+from modules.lifecycle_manager import (
+    get_lifecycle_overview,
+    toggle_posting_active,
+    execute_7day_refresh,
+    check_and_run_all_due_refreshes
+)
 
 PORT = int(os.environ.get("PORT", 8000))
 DOCS_DIR = Path(__file__).parent / "docs"
@@ -66,6 +73,15 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             applicants = get_all_applicants()
             self.wfile.write(json.dumps({"success": True, "applicants": applicants}).encode("utf-8"))
+            return
+
+        elif path == "/api/lifecycle":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            overview = get_lifecycle_overview()
+            self.wfile.write(json.dumps({"success": True, "lifecycle": overview}).encode("utf-8"))
             return
 
         elif path.startswith("/api/units/") and path.endswith("/package"):
@@ -177,16 +193,77 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps({"success": True, "analysis": analysis}).encode("utf-8"))
             return
 
+        # 7-Day Auto-Refresh Lifecycle: Toggle Active / Inactive
+        elif path == "/api/postings/toggle-active":
+            unit_id = data.get("unit_id")
+            is_active = data.get("is_active", True)
+            if not unit_id:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self._set_cors_headers()
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "unit_id required"}).encode("utf-8"))
+                return
+            result = toggle_posting_active(unit_id, is_active)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps(result).encode("utf-8"))
+            return
+
+        # 7-Day Auto-Refresh Lifecycle: Take Down & Re-Post Fresh Now
+        elif path == "/api/postings/refresh":
+            unit_id = data.get("unit_id")
+            if not unit_id:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self._set_cors_headers()
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "unit_id required"}).encode("utf-8"))
+                return
+            result = execute_7day_refresh(unit_id)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps(result).encode("utf-8"))
+            return
+
+        # Master Ad Content Sync: Update Master fields across all channels
+        elif path == "/api/units/master-content":
+            unit_id = data.get("unit_id")
+            if not unit_id:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self._set_cors_headers()
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "unit_id required"}).encode("utf-8"))
+                return
+            update_unit_master_content(
+                unit_id=unit_id,
+                title=data.get("title"),
+                price=data.get("price"),
+                avail_date=data.get("avail_date"),
+                description=data.get("description")
+            )
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "message": f"Master ad content synchronized for {unit_id}"}).encode("utf-8"))
+            return
+
         self.send_error(404, "Endpoint not found")
 
 def run_server():
     init_db()
     seed_from_sample_if_empty()
     os.chdir(Path(__file__).parent)
-    with socketserver.TCPServer(("", PORT), AgentAPIHandler) as httpd:
+    with http.server.ThreadingHTTPServer(("", PORT), AgentAPIHandler) as httpd:
         print(f"\n[Durham Rental Agent Server] Live on http://localhost:{PORT}")
         print(" • Serving dashboard from /docs")
-        print(" • REST API & 1-Click Posting Engine active")
+        print(" • REST API & 1-Click Posting Engine active (Multi-threaded)")
         print("Press Ctrl+C to terminate.\n")
         try:
             httpd.serve_forever()

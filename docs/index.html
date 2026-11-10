@@ -350,6 +350,40 @@
           </div>
         </div>
 
+        <!-- 7-Day Auto-Refresh Lifecycle & Active / Inactive Control Bar -->
+        <div class="p-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl text-white flex flex-col md:flex-row md:items-center justify-between gap-4 border border-indigo-800/40 shadow-sm">
+          <div class="flex items-center gap-3.5">
+            <div id="lifecycleIconBox" class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg shadow-inner shrink-0">
+              <i id="lifecycleIcon" class="fa-solid fa-arrows-rotate animate-spin" style="animation-duration: 9s;"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span id="lifecycleStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500 text-white shadow-xs">
+                  ● ACTIVE LISTING
+                </span>
+                <span id="lifecycleCountdownLabel" class="text-xs font-bold text-emerald-300">
+                  Auto-refreshes in 6 days
+                </span>
+                <span class="text-[10px] bg-white/10 text-slate-300 px-2 py-0.5 rounded-md">
+                  7-Day Refresh Cycle
+                </span>
+              </div>
+              <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                Automatically takes down and re-posts every 7 days to get new views & top algorithm ranking until you mark it Inactive.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0">
+            <button id="lifecycleToggleBtn" onclick="toggleCurrentUnitActive()" class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm bg-amber-500 hover:bg-amber-400 text-slate-950">
+              <i class="fa-solid fa-power-off"></i> <span id="lifecycleToggleText">Take Down / Deactivate</span>
+            </button>
+            <button onclick="refreshCurrentUnitNow()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white transition flex items-center gap-1.5 shadow-sm" title="Take down old posting and immediately re-post fresh to bump back to #1 in search">
+              <i class="fa-solid fa-arrows-rotate"></i> Re-post Fresh Now
+            </button>
+          </div>
+        </div>
+
         <!-- Step 1: Easy Unit & Website Selector Bar -->
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pt-4 border-t border-slate-100 items-center">
           <div class="md:col-span-4">
@@ -402,6 +436,24 @@
         
         <!-- LEFT COLUMN: USER-FRIENDLY AD BUILDER -->
         <div class="lg:col-span-5 space-y-5">
+
+          <!-- MASTER AD CONTENT SYNC BANNER (Single Source of Truth) -->
+          <div class="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 p-4 rounded-2xl border border-blue-200/90 shadow-sm flex items-start gap-3">
+            <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-sm shrink-0 mt-0.5">
+              <i class="fa-solid fa-link"></i>
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h4 class="text-xs font-bold text-slate-900">Master Ad Content (Single Source of Truth)</h4>
+                <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">
+                  Synced Across 5 Sites
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-snug">
+                One change to price, headline, or description automatically updates Facebook, Kijiji, Rentals.ca, Liv.rent & Zumper. For Zumper, the form link is automatically adapted to bypass URL filters!
+              </p>
+            </div>
+          </div>
           
           <!-- Card 1: Headline, Price & Move-In Date -->
           <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
@@ -2289,6 +2341,10 @@
 
         const psqft = (u.financials.target_rent / u.specs.sqft).toFixed(2);
         const driveUrl = (u.cloud_media && u.cloud_media.google_drive_photos_folder) || 'https://drive.google.com';
+        const lc = getUnitLifecycle(u.id);
+        const lifecycleBadgeHtml = lc.is_active
+          ? `<button onclick="toggleUnitActive('${u.id}')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-white hover:bg-amber-600 transition flex items-center gap-1 shadow" title="Click to Deactivate / Take Down Listing"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Active Ad (${lc.days_remaining}d left)</button>`
+          : `<button onclick="toggleUnitActive('${u.id}')" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-700 text-slate-300 hover:bg-emerald-600 hover:text-white transition flex items-center gap-1 shadow" title="Click to Activate & Re-post Listing"><i class="fa-solid fa-play text-[9px]"></i> Inactive (Taken Down)</button>`;
         const buildingFolder = (u.cloud_media && u.cloud_media.building_exterior_folder) || 'https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO';
         const videoUrl = (u.cloud_media && u.cloud_media.youtube_video_url) || '';
         const fbStatus = u.postings.facebook.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
@@ -2312,7 +2368,10 @@
                 <i class="fa-solid fa-building-circle-check"></i>
               </div>
               <div class="flex items-center justify-between z-10">
-                ${vacancyBadgeHtml}
+                <div class="flex items-center gap-1.5">
+                  ${vacancyBadgeHtml}
+                  ${lifecycleBadgeHtml}
+                </div>
                 <div class="bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full shadow">
                   $${u.financials.target_rent.toLocaleString()}/mo
                 </div>
@@ -3166,50 +3225,194 @@
     }
 
 
-    function renderPlatformListing() {
-      const unitId = document.getElementById('postingUnitSelect').value;
-      const platform = document.getElementById('postingPlatformSelect').value;
-      const unit = portfolioData.find(u => u.id === unitId) || portfolioData[0];
-
-      const utilInc = unit.financials.utilities_included.length ? unit.financials.utilities_included.join(', ') : 'None';
-      const utilExt = unit.financials.utilities_extra.length ? unit.financials.utilities_extra.join(', ') : 'Included in rent';
-
-      let title = "";
-      let description = "";
-      let postUrl = "";
-      let platformName = "";
-      let rulesHtml = "";
-
-      const videoUrl = (unit.cloud_media && unit.cloud_media.youtube_video_url) || (unit.media && unit.media.video_walkthrough_url) || "https://www.youtube.com/playlist?list=PLLwTe84kfw7U";
-      const formUrl = unit.intake_form_url || "https://forms.gle/UZSrP8PUSh9GsdLX8";
-
-      // Unit specific bullet replication from sample Google Doc
-      let unitSpecificBullet = "";
-      if (unit.id === "unit_1") {
-        unitSpecificBullet = "* Lower Level Unit 1 is half above ground and half below. Lots of light\n* The second bedroom is smaller so it would be suitable for an office, spare bedroom, small bedroom or den.";
-      } else if (unit.id === "unit_2") {
-        unitSpecificBullet = "* Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.\n* Video walkthrough of sister lower-level suite available to preview layout/finishes while Unit 2 video is filmed this Friday.";
-      } else if (unit.id === "unit_3") {
-        unitSpecificBullet = "* Upper Level Unit 3 features a private walkout balcony overlooking the property grounds.\n* Full 2 bedroom layout with spacious living room.";
-      } else if (unit.id === "unit_4") {
-        unitSpecificBullet = "* Unit 4 features clean modern laminate/hardwood style flooring in a quiet, peaceful building setting.";
-      } else if (unit.id === "unit_5") {
-        unitSpecificBullet = "* Upper Level Unit 5 with expansive picture windows and elevated views.\n* Full kitchen with ample cabinet storage.";
-      } else if (unit.id === "unit_6") {
-        unitSpecificBullet = "* Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.";
-      } else {
-        unitSpecificBullet = `* ${unit.notes || 'Well-maintained boutique apartment suite.'}`;
+    
+    // =========================================================================
+    // 7-DAY AUTO-REFRESH LIFECYCLE & ACTIVE/INACTIVE CAMPAIGN MANAGER
+    // =========================================================================
+    function getUnitLifecycle(unitId) {
+      const saved = localStorage.getItem(`lifecycle_${unitId}`);
+      const now = new Date();
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          const nextRef = parsed.next_refresh ? new Date(parsed.next_refresh) : new Date(now.getTime() + 7 * 24 * 3600 * 1000);
+          const msLeft = Math.max(0, nextRef.getTime() - now.getTime());
+          const daysLeft = Math.floor(msLeft / (24 * 3600 * 1000));
+          const hoursLeft = Math.floor((msLeft % (24 * 3600 * 1000)) / (3600 * 1000));
+          return {
+            is_active: parsed.is_active !== false,
+            last_refreshed: parsed.last_refreshed || now.toISOString(),
+            next_refresh: nextRef.toISOString(),
+            days_remaining: daysLeft,
+            hours_remaining: hoursLeft,
+            countdown_label: parsed.is_active !== false ? `Auto-refreshes in ${daysLeft}d ${hoursLeft}h` : "Campaign Inactive"
+          };
+        } catch(e) {}
       }
 
+      // Default: Active with 7-day refresh scheduled
+      const nextRef = new Date(now.getTime() + 7 * 24 * 3600 * 1000);
+      return {
+        is_active: true,
+        last_refreshed: now.toISOString(),
+        next_refresh: nextRef.toISOString(),
+        days_remaining: 6,
+        hours_remaining: 23,
+        countdown_label: "Auto-refreshes in 6d 23h"
+      };
+    }
+
+    function saveUnitLifecycle(unitId, data) {
+      localStorage.setItem(`lifecycle_${unitId}`, JSON.stringify(data));
+    }
+
+    function updateLifecycleUI(unitId) {
+      const lc = getUnitLifecycle(unitId);
+      const badge = document.getElementById('lifecycleStatusBadge');
+      const label = document.getElementById('lifecycleCountdownLabel');
+      const btn = document.getElementById('lifecycleToggleBtn');
+      const btnText = document.getElementById('lifecycleToggleText');
+      const icon = document.getElementById('lifecycleIcon');
+      const iconBox = document.getElementById('lifecycleIconBox');
+
+      if (!badge) return;
+
+      if (lc.is_active) {
+        badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500 text-white shadow-xs";
+        badge.innerText = "● ACTIVE LISTING";
+        label.className = "text-xs font-bold text-emerald-300";
+        label.innerText = lc.countdown_label;
+        btn.className = "px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm bg-amber-500 hover:bg-amber-400 text-slate-950";
+        btnText.innerText = "Take Down / Deactivate";
+        if (icon) icon.className = "fa-solid fa-arrows-rotate animate-spin";
+        if (iconBox) iconBox.className = "w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg shadow-inner shrink-0";
+      } else {
+        badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-600 text-slate-200 shadow-xs";
+        badge.innerText = "○ INACTIVE / TAKEN DOWN";
+        label.className = "text-xs font-semibold text-slate-400";
+        label.innerText = "Ads taken down. Auto-refresh paused.";
+        btn.className = "px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm bg-emerald-600 hover:bg-emerald-500 text-white";
+        btnText.innerText = "Re-activate & Re-post";
+        if (icon) icon.className = "fa-solid fa-power-off text-slate-400";
+        if (iconBox) iconBox.className = "w-11 h-11 rounded-xl bg-slate-800 text-slate-400 border border-slate-700 flex items-center justify-center text-lg shadow-inner shrink-0";
+      }
+    }
+
+    function toggleCurrentUnitActive() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      toggleUnitActive(unitId);
+    }
+
+    function toggleUnitActive(unitId) {
+      const lc = getUnitLifecycle(unitId);
+      const newActive = !lc.is_active;
+      const now = new Date();
+      const next = new Date(now.getTime() + 7 * 24 * 3600 * 1000);
+
+      const updated = {
+        is_active: newActive,
+        last_refreshed: now.toISOString(),
+        next_refresh: newActive ? next.toISOString() : null
+      };
+      saveUnitLifecycle(unitId, updated);
+
+      // Sync with Python backend SQLite API if server is running
+      try {
+        fetch('/api/postings/toggle-active', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ unit_id: unitId, is_active: newActive })
+        }).catch(() => {});
+      } catch(e) {}
+
+      // Update unit posting status locally
+      const unit = portfolioData.find(u => u.id === unitId);
+      if (unit && unit.postings) {
+        Object.keys(unit.postings).forEach(plat => {
+          unit.postings[plat].status = newActive ? 'posted' : 'inactive';
+        });
+      }
+
+      if (newActive) {
+        showToast(`Listing ${unitId.toUpperCase()} ACTIVATED! Fresh ads re-posted & 7-day auto-refresh cycle started.`);
+      } else {
+        showToast(`Listing ${unitId.toUpperCase()} DEACTIVATED. Ads taken down and auto-refresh paused.`);
+      }
+
+      renderUnitsGrid();
+      updateLifecycleUI(unitId);
+      const currentUnitSelect = document.getElementById('postingUnitSelect');
+      if (currentUnitSelect && currentUnitSelect.value === unitId) {
+        renderPlatformListing();
+      }
+    }
+
+    function refreshCurrentUnitNow() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId);
+      const now = new Date();
+      const next = new Date(now.getTime() + 7 * 24 * 3600 * 1000);
+
+      const updated = {
+        is_active: true,
+        last_refreshed: now.toISOString(),
+        next_refresh: next.toISOString()
+      };
+      saveUnitLifecycle(unitId, updated);
+
+      try {
+        fetch('/api/postings/refresh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ unit_id: unitId })
+        }).catch(() => {});
+      } catch(e) {}
+
+      if (unit && unit.postings) {
+        Object.keys(unit.postings).forEach(plat => {
+          unit.postings[plat].status = 'posted';
+        });
+      }
+
+      showToast(`7-Day Refresh Triggered! Old post taken down and fresh ad re-posted to bump ${unit ? unit.name : unitId} to #1 search ranking.`);
+      renderUnitsGrid();
+      updateLifecycleUI(unitId);
+      renderPlatformListing();
+    }
+
+    // =========================================================================
+    // MASTER AD CONTENT SYNC (Single Source of Truth across all 5 platforms)
+    // =========================================================================
+    function getStandardMasterTemplate(unit) {
+      const formUrl = unit.intake_form_url || "https://forms.gle/UZSrP8PUSh9GsdLX8";
+      const videoUrl = (unit.cloud_media && unit.cloud_media.youtube_video_url) || (unit.media && unit.media.video_walkthrough_url) || "https://www.youtube.com/playlist?list=PLLwTe84kfw7U";
       const rawAvail = unit.financials.available_date || "Immediate";
       const availIntro = rawAvail.toLowerCase() === "immediate" ? "immediately" : `for ${rawAvail}`;
+
+      let unitBullet = "";
+      if (unit.id === "unit_1") {
+        unitBullet = "* Lower Level Unit 1 is half above ground and half below. Lots of light\n* The second bedroom is smaller so it would be suitable for an office, spare bedroom, small bedroom or den.";
+      } else if (unit.id === "unit_2") {
+        unitBullet = "* Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.\n* Video walkthrough of sister lower-level suite available to preview layout/finishes while Unit 2 video is filmed this Friday.";
+      } else if (unit.id === "unit_3") {
+        unitBullet = "* Upper Level Unit 3 features a private walkout balcony overlooking the property grounds.\n* Full 2 bedroom layout with spacious living room.";
+      } else if (unit.id === "unit_4") {
+        unitBullet = "* Unit 4 features clean modern laminate/hardwood style flooring in a quiet, peaceful building setting.";
+      } else if (unit.id === "unit_5") {
+        unitBullet = "* Upper Level Unit 5 with expansive picture windows and elevated views.\n* Full kitchen with ample cabinet storage.";
+      } else if (unit.id === "unit_6") {
+        unitBullet = "* Upper Level Unit 6 is a quiet corner suite offering maximum privacy and bright living spaces.";
+      } else {
+        unitBullet = `* ${unit.notes || 'Well-maintained boutique apartment suite.'}`;
+      }
+
       const videoHeading = unit.id === "unit_2"
         ? `🎥 YouTube Walkthrough Tour (Model Suite / Similar Finishes):\n${videoUrl}\n*(Unit 2 specific walkthrough video being filmed this Friday!)*`
         : `🎥 YouTube Walkthrough Tour:\n${videoUrl}`;
 
-      const standardReplicatedDesc = `Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - ${unit.name}
+      return `Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - ${unit.name}
 
-FILL OUT FORM TO SET SHOWING DATE/TIME
+FILL OUT FORM TO SET SHOWING DATE/TIME:
 ${formUrl}
 
 Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent ${availIntro}. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
@@ -3220,7 +3423,7 @@ ${videoHeading}
 
 KEY HIGHLIGHTS:
 * Kent St off Brock, Whitby
-${unitSpecificBullet}
+${unitBullet}
 * Includes heat, on-site coin laundry, water and one parking space
 * Renovated & very clean
 * Five minute walk to everything including 401 and GO Train
@@ -3231,14 +3434,96 @@ ${unitSpecificBullet}
 * Owners have many past references from previous tenants providing quality service to tenants
 * Available ${rawAvail}
 
-FILL OUT FORM TO SET SHOWING DATE/TIME
+FILL OUT FORM TO SET SHOWING DATE/TIME:
 ${formUrl}
 
 We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.`;
+    }
 
+    function getUnitMaster(unitId) {
+      const unit = portfolioData.find(u => u.id === unitId) || portfolioData[0];
+      const savedMeta = localStorage.getItem(`master_meta_${unitId}`);
+      const savedDesc = localStorage.getItem(`master_desc_${unitId}`);
+
+      let title = `${unit.specs.bedrooms} Bed ${unit.specs.bathrooms} Bath - ${unit.name} | Whitby Central`;
+      let price = `$${unit.financials.target_rent.toLocaleString()}`;
+      let beds = `${unit.specs.bedrooms} Bed`;
+      let avail = unit.financials.available_date || "Immediate";
+      let video = (unit.cloud_media && unit.cloud_media.youtube_video_url) || (unit.media && unit.media.video_walkthrough_url) || "";
+      let description = getStandardMasterTemplate(unit);
+
+      if (savedMeta) {
+        try {
+          const parsed = JSON.parse(savedMeta);
+          if (parsed.title) title = parsed.title;
+          if (parsed.price) price = parsed.price;
+          if (parsed.beds) beds = parsed.beds;
+          if (parsed.avail) avail = parsed.avail;
+          if (parsed.video) video = parsed.video;
+        } catch(e) {}
+      }
+      if (savedDesc) {
+        description = savedDesc;
+      }
+
+      return { title, price, beds, avail, video, description, isCustom: Boolean(savedMeta || savedDesc) };
+    }
+
+    function saveUnitMaster(unitId, meta, desc) {
+      localStorage.setItem(`master_meta_${unitId}`, JSON.stringify(meta));
+      localStorage.setItem(`master_desc_${unitId}`, desc);
+
+      // Sync with server API
+      try {
+        fetch('/api/units/master-content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            unit_id: unitId,
+            title: meta.title,
+            price: parseFloat(String(meta.price).replace(/[^0-9.]/g, '')),
+            avail_date: meta.avail,
+            description: desc
+          })
+        }).catch(() => {});
+      } catch(e) {}
+    }
+
+    function adaptDescriptionForZumper(masterDesc, formUrl) {
+      const zumperSafeForm = "forms . gle / UZSrP8PUSh9GsdLX8 (copy into browser, remove spaces)";
+      return masterDesc
+        .replaceAll(formUrl, zumperSafeForm)
+        .replace(
+          "We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.",
+          "We will contact qualified candidates for a showing. Please copy/paste the form link above or send an inquiry message here on Zumper to receive the direct link instantly."
+        );
+    }
+
+    function renderPlatformListing() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const platform = document.getElementById('postingPlatformSelect').value;
+      const unit = portfolioData.find(u => u.id === unitId) || portfolioData[0];
+
+      // Update 7-Day Auto-Refresh Lifecycle bar for current unit
+      updateLifecycleUI(unitId);
+
+      // 1. Fetch Single Source of Truth Master Content
+      const master = getUnitMaster(unitId);
+      const formUrl = unit.intake_form_url || "https://forms.gle/UZSrP8PUSh9GsdLX8";
+
+      let title = master.title;
+      let price = master.price;
+      let beds = master.beds;
+      let avail = master.avail;
+      let video = master.video;
+      let description = master.description;
+      let platformName = "";
+      let postUrl = "";
+      let rulesHtml = "";
+
+      // 2. Platform-specific routing
       if (platform === "facebook") {
         platformName = "Facebook Marketplace & Groups";
-        title = `${unit.specs.bedrooms} Bed ${unit.specs.bathrooms} Bath - ${unit.name} | Whitby Central`;
         postUrl = "https://www.facebook.com/marketplace/create/rental";
         rulesHtml = `
           <strong>Facebook Marketplace & Groups:</strong>
@@ -3248,10 +3533,8 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
             <li>After publishing, use "List in more places" to cross-post to up to 20 joined Durham groups in 1 click!</li>
           </ul>
         `;
-        description = standardReplicatedDesc;
       } else if (platform === "kijiji") {
         platformName = "Kijiji Ontario";
-        title = `Whitby Central Renovated 2-Bed Apt (${unit.name}) - Most Utilities`;
         postUrl = "https://www.kijiji.ca/p-post-ad.html?categoryId=37";
         rulesHtml = `
           <strong>Kijiji 1-Click Posting:</strong>
@@ -3260,29 +3543,21 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
             <li>Intake Form CTA prominently displayed in description.</li>
           </ul>
         `;
-        description = standardReplicatedDesc;
       } else if (platform === "zumper") {
         platformName = "Zumper / PadMapper";
-        title = `${unit.address.street} - 2 Bed / 1 Bath Boutique Suite | Whitby`;
         postUrl = "https://www.zumper.com/manage";
         rulesHtml = `
-          <strong class="text-amber-900 font-bold"><i class="fa-solid fa-shield-halved text-amber-600 mr-1"></i> Zumper Link Filter Active (Method 1 Applied):</strong>
+          <strong class="text-amber-900 font-bold"><i class="fa-solid fa-shield-halved text-amber-600 mr-1"></i> Zumper Link Filter Active (Auto-Adapted from Master):</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1 text-[11px] text-amber-900">
-            <li><strong>Method 1 Bypass Active:</strong> The description below is pre-formatted with spaced syntax (<code>forms . gle / UZSrP8PUSh9GsdLX8</code>) so Zumper's bot scanner cannot strip or block your intake link!</li>
-            <li><strong>Replying to Leads in Renter Dashboard:</strong> Use the "Copy Lead Reply" button above to send your direct clickable link to leads in Zumper chat (links in chat replies are never blocked).</li>
-            <li><strong>Virtual Tour Field:</strong> Paste your YouTube walkthrough link in Zumper's dedicated Virtual Tour field.</li>
+            <li><strong>Auto URL Filter Bypass:</strong> Your master description has been automatically adapted with spaced syntax (<code>forms . gle / UZSrP8PUSh9GsdLX8</code>) so Zumper cannot strip your link!</li>
+            <li><strong>Dedicated Virtual Tour Field:</strong> Paste your YouTube walkthrough link in Zumper's dedicated Virtual Tour box (use the button below).</li>
+            <li><strong>Replying to Leads in Zumper Chat:</strong> Outbound form links in Zumper chat are never filtered.</li>
           </ul>
         `;
-        const zumperSafeForm = "forms . gle / UZSrP8PUSh9GsdLX8 (copy into browser, remove spaces)";
-        description = standardReplicatedDesc
-          .replaceAll(formUrl, zumperSafeForm)
-          .replace(
-            "We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.",
-            "We will contact qualified candidates for a showing. Please copy/paste the form link above or send an inquiry message here on Zumper to receive the direct link instantly."
-          );
+        // Auto-adapt for Zumper URL filter from master description!
+        description = adaptDescriptionForZumper(master.description, formUrl);
       } else if (platform === "rentals_ca") {
         platformName = "Rentals.ca";
-        title = `Whitby Central - Renovated 2-Bed Apartment (${unit.name})`;
         postUrl = "https://rentals.ca/landlord";
         rulesHtml = `
           <strong>Rentals.ca Tips:</strong>
@@ -3291,54 +3566,33 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
             <li>Ranks #1 organically on Google in Canada for rental queries in Durham Region.</li>
           </ul>
         `;
-        description = standardReplicatedDesc;
       } else if (platform === "liv_rent") {
         platformName = "Liv.rent";
-        title = `Whitby Central 2-Bedroom Suite - ${unit.name}`;
         postUrl = "https://liv.rent/landlords";
         rulesHtml = `
           <strong>Liv.rent Features:</strong>
           <ul class="list-disc ml-4 mt-1 space-y-1">
             <li>Free Standard Landlord Tier.</li>
-            <li>Built-in Trust Score tenant verification, digital applications, and Equifax credit evaluation.</li>
+            <li>Built-in Trust Score tenant verification and digital applications.</li>
           </ul>
         `;
-        description = standardReplicatedDesc;
       }
 
-      const customKey = `custom_desc_${unitId}_${platform}`;
-      const savedCustom = localStorage.getItem(customKey);
-      const savedMetaStr = localStorage.getItem(`custom_meta_${unitId}_${platform}`);
-      const customBadge = document.getElementById('customSavedBadge');
-
-      if (savedCustom) {
-        description = savedCustom;
-        if (customBadge) customBadge.classList.remove('hidden');
-      } else {
-        if (customBadge) customBadge.classList.add('hidden');
-      }
-
-      let rentVal = `$${unit.financials.target_rent}`;
-      let availVal = unit.financials.available_date || "Immediate";
-      let videoVal = (unit.cloud_media && unit.cloud_media.youtube_video_url) || (unit.media && unit.media.video_walkthrough_url) || '';
-
-      if (savedMetaStr) {
-        try {
-          const meta = JSON.parse(savedMetaStr);
-          if (meta.title) title = meta.title;
-          if (meta.price) rentVal = meta.price;
-          if (meta.avail) availVal = meta.avail;
-          if (meta.video) videoVal = meta.video;
-          if (customBadge) customBadge.classList.remove('hidden');
-        } catch(e) {}
-      }
-
+      // Populate Inputs with Master Content
       document.getElementById('platformBadge').innerText = platformName;
       document.getElementById('platformDirectPostBtn').href = postUrl;
       document.getElementById('listingTitle').value = title;
-      document.getElementById('listingPrice').value = rentVal;
-      document.getElementById('listingBeds').value = `${unit.specs.bedrooms} Bed`;
-      document.getElementById('listingVideo').value = videoVal;
+      document.getElementById('listingPrice').value = price;
+      document.getElementById('listingBeds').value = beds;
+      document.getElementById('listingVideo').value = video;
+      document.getElementById('listingDescription').value = description;
+      document.getElementById('charCount').innerText = `${description.length} characters`;
+      document.getElementById('platformRulesBox').innerHTML = rulesHtml;
+
+      const availInput = document.getElementById('listingAvailableDate');
+      if (availInput) availInput.value = avail;
+
+      // Google Drive links
       const unitDriveFolder = (unit.cloud_media && unit.cloud_media.google_drive_photos_folder) || 'https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt';
       const buildingDriveFolder = (unit.cloud_media && unit.cloud_media.building_exterior_folder) || 'https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2BI9CyO';
       
@@ -3350,54 +3604,72 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
 
       const buildingBtnEl = document.getElementById('listingBuildingOpenBtn');
       if (buildingBtnEl) buildingBtnEl.href = buildingDriveFolder;
-      document.getElementById('listingDescription').value = description;
-      document.getElementById('charCount').innerText = `${description.length} characters`;
-      document.getElementById('platformRulesBox').innerHTML = rulesHtml;
 
-      const availInput = document.getElementById('listingAvailableDate');
-      if (availInput) {
-        availInput.value = availVal;
+      const customBadge = document.getElementById('customSavedBadge');
+      if (customBadge) {
+        if (master.isCustom) customBadge.classList.remove('hidden');
+        else customBadge.classList.add('hidden');
       }
 
       currentPreviewPlatform = platform;
       updateLiveMockupPreview();
 
-      const pStatus = unit.postings[platform] ? unit.postings[platform].status : 'draft';
+      const lc = getUnitLifecycle(unitId);
       const pill = document.getElementById('postingStatusPill');
-      if (pStatus === 'posted') {
-        pill.className = "px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full";
-        pill.innerText = "Posted ✅";
-      } else {
-        pill.className = "px-2.5 py-0.5 bg-slate-200 text-slate-700 text-xs font-semibold rounded-full";
-        pill.innerText = "Draft";
+      if (pill) {
+        if (lc.is_active) {
+          pill.className = "px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full";
+          pill.innerText = "Active • 7d Refresh ✅";
+        } else {
+          pill.className = "px-2.5 py-0.5 bg-slate-200 text-slate-700 text-xs font-semibold rounded-full";
+          pill.innerText = "Inactive (Taken Down)";
+        }
       }
+    }
+
+    function onFieldChanged() {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const title = document.getElementById('listingTitle').value;
+      const price = document.getElementById('listingPrice').value;
+      const beds = document.getElementById('listingBeds').value;
+      const avail = document.getElementById('listingAvailableDate').value;
+      const video = document.getElementById('listingVideo').value;
+      const desc = document.getElementById('listingDescription').value;
+
+      // Update Master Single Source of Truth
+      saveUnitMaster(unitId, { title, price, beds, avail, video }, desc);
+
+      const customBadge = document.getElementById('customSavedBadge');
+      if (customBadge) customBadge.classList.remove('hidden');
+
+      onDescriptionEdited();
+      updateLiveMockupPreview();
     }
 
     function saveCustomDescription() {
       const unitId = document.getElementById('postingUnitSelect').value;
-      const platform = document.getElementById('postingPlatformSelect').value;
-      const desc = document.getElementById('listingDescription').value;
       const title = document.getElementById('listingTitle').value;
       const price = document.getElementById('listingPrice').value;
+      const beds = document.getElementById('listingBeds').value;
       const avail = document.getElementById('listingAvailableDate').value;
       const video = document.getElementById('listingVideo').value;
+      const desc = document.getElementById('listingDescription').value;
 
-      localStorage.setItem(`custom_desc_${unitId}_${platform}`, desc);
-      localStorage.setItem(`custom_meta_${unitId}_${platform}`, JSON.stringify({ title, price, avail, video }));
+      saveUnitMaster(unitId, { title, price, beds, avail, video }, desc);
 
       const customBadge = document.getElementById('customSavedBadge');
       if (customBadge) customBadge.classList.remove('hidden');
+
       updateLiveMockupPreview();
-      showToast("All posting adjustments & copy saved for this unit!");
+      showToast("Master ad content saved! Price & copy synchronized across all 5 rental sites.");
     }
 
     function resetDefaultDescription() {
       const unitId = document.getElementById('postingUnitSelect').value;
-      const platform = document.getElementById('postingPlatformSelect').value;
-      localStorage.removeItem(`custom_desc_${unitId}_${platform}`);
-      localStorage.removeItem(`custom_meta_${unitId}_${platform}`);
+      localStorage.removeItem(`master_meta_${unitId}`);
+      localStorage.removeItem(`master_desc_${unitId}`);
       renderPlatformListing();
-      showToast("Reset all adjustments & copy to default template!");
+      showToast("Reset all fields to standard master template!");
     }
 
     function onDescriptionEdited() {
@@ -3409,26 +3681,26 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
     function exportAllCustomDescriptions() {
       const exportObj = {};
       portfolioData.forEach(u => {
+        const master = getUnitMaster(u.id);
         exportObj[u.id] = {
           name: u.name,
-          facebook: localStorage.getItem(`custom_desc_${u.id}_facebook`) || "Default template",
-          kijiji: localStorage.getItem(`custom_desc_${u.id}_kijiji`) || "Default template",
-          zumper: localStorage.getItem(`custom_desc_${u.id}_zumper`) || "Default template",
-          rentals_ca: localStorage.getItem(`custom_desc_${u.id}_rentals_ca`) || "Default template",
-          liv_rent: localStorage.getItem(`custom_desc_${u.id}_liv_rent`) || "Default template"
+          master_title: master.title,
+          master_price: master.price,
+          master_available: master.avail,
+          master_description: master.description
         };
       });
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "315_kent_custom_descriptions.json");
+      downloadAnchor.setAttribute("download", "315_kent_master_ad_content.json");
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
-      showToast("Exported all descriptions to JSON backup!");
+      showToast("Exported all master ad copy to JSON backup!");
     }
 
-    function renderPlatformsDirectory() {
+function renderPlatformsDirectory() {
       const container = document.getElementById('platformsDirectoryGrid');
       container.innerHTML = '';
       platformsDirectory.forEach(p => {
