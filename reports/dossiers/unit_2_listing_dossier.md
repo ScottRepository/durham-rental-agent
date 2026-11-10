@@ -1,8 +1,8 @@
 # Rental Listing Packet: Unit 2 - 315 Kent Street
 **Property Address**: 315 Kent Street, Unit 2, Whitby, Durham Region
-**Target Rent**: $1,695 CAD/mo | **Move-in**: Immediate
+**Target Rent**: $1,695 CAD/mo | **Move-in**: December 1
 **Applicant Intake Form**: https://forms.gle/UZSrP8PUSh9GsdLX8
-**YouTube Walkthrough Video**: https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+**YouTube Walkthrough Video**: https://www.youtube.com/watch?v=TxRy1OvaRZo
 **Google Drive Photos Folder**: `https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing`
 
 ---
@@ -21,16 +21,18 @@ Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 2 - 315 K
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
 
-Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent for December 1. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
 
 Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
 
-🎥 YouTube Walkthrough Tour:
-https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+🎥 YouTube Walkthrough Tour (Model Suite / Similar Finishes):
+https://www.youtube.com/watch?v=TxRy1OvaRZo
+*(Unit 2 specific walkthrough video being filmed this Friday!)*
 
 KEY HIGHLIGHTS:
 • Kent St off Brock, Whitby
 * Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.
+* Video walkthrough of sister lower-level suite available to preview layout/finishes while Unit 2 video is filmed this Friday.
 • Includes heat, on-site coin laundry, water and one parking space
 • Renovated & very clean
 • Five minute walk to everything including 401 and GO Train
@@ -39,7 +41,7 @@ KEY HIGHLIGHTS:
 • No Pets
 • Suitable for Professional, retired or mature student
 • Owners have many past references from previous tenants providing quality service
-• Available Immediately
+• Available December 1
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
@@ -53,7 +55,7 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
 - **Direct Link to Post**: https://www.kijiji.ca/p-post-ad.html?categoryId=37
 - **Title**: `Whitby Central 2-Bed Apt - Most Utilities (unit_2)`
 - **Price**: `$1695`
-- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Dedicated YouTube Video Link Field**: `https://www.youtube.com/watch?v=TxRy1OvaRZo`
 - **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
@@ -63,16 +65,18 @@ Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 2 - 315 K
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
 
-Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent for December 1. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
 
 Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
 
-🎥 YouTube Walkthrough Tour:
-https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+🎥 YouTube Walkthrough Tour (Model Suite / Similar Finishes):
+https://www.youtube.com/watch?v=TxRy1OvaRZo
+*(Unit 2 specific walkthrough video being filmed this Friday!)*
 
 KEY HIGHLIGHTS:
 * Kent St off Brock, Whitby
 * Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.
+* Video walkthrough of sister lower-level suite available to preview layout/finishes while Unit 2 video is filmed this Friday.
 * Includes heat, on-site coin laundry, water and one parking space
 * Renovated & very clean
 * Five minute walk to everything including 401 and GO Train
@@ -81,7 +85,7 @@ KEY HIGHLIGHTS:
 * No Pets
 * Suitable for Professional, retired or mature student
 * Owners have many past references from previous tenants providing quality service
-* Available Immediately
+* Available December 1
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
@@ -95,7 +99,7 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
 - **Direct Link to Post**: https://www.zumper.com/manage
 - **Title**: `315 Kent Street, Unit 2 - 2 Bed / 1 Bath Boutique Suite | Whitby`
 - **Price**: `$1695`
-- **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Virtual Tour Link**: `https://www.youtube.com/watch?v=TxRy1OvaRZo`
 - **Bedrooms**: 2 | **Bathrooms**: 1 | **Sqft**: 820
 
 ### Description:
@@ -105,16 +109,18 @@ Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 2 - 315 K
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
 
-Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent for December 1. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
 
 Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
 
-🎥 YouTube Walkthrough Tour:
-https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+🎥 YouTube Walkthrough Tour (Model Suite / Similar Finishes):
+https://www.youtube.com/watch?v=TxRy1OvaRZo
+*(Unit 2 specific walkthrough video being filmed this Friday!)*
 
 KEY HIGHLIGHTS:
 * Kent St off Brock, Whitby
 * Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.
+* Video walkthrough of sister lower-level suite available to preview layout/finishes while Unit 2 video is filmed this Friday.
 * Includes heat, on-site coin laundry, water and one parking space
 * Renovated & very clean
 * Five minute walk to everything including 401 and GO Train
@@ -123,7 +129,7 @@ KEY HIGHLIGHTS:
 * No Pets
 * Suitable for Professional, retired or mature student
 * Owners have many past references from previous tenants providing quality service
-* Available Immediately
+* Available December 1
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
@@ -137,7 +143,7 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
 - **Direct Link to Post**: https://rentals.ca/landlord
 - **Title**: `Whitby Central - Renovated 2-Bed Apartment (Unit 2 - 315 Kent Street)`
 - **Price**: `$1695`
-- **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Virtual Tour Link**: `https://www.youtube.com/watch?v=TxRy1OvaRZo`
 - **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
@@ -147,16 +153,18 @@ Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 2 - 315 K
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
 
-Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent for December 1. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
 
 Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
 
-🎥 YouTube Walkthrough Tour:
-https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+🎥 YouTube Walkthrough Tour (Model Suite / Similar Finishes):
+https://www.youtube.com/watch?v=TxRy1OvaRZo
+*(Unit 2 specific walkthrough video being filmed this Friday!)*
 
 KEY HIGHLIGHTS:
 * Kent St off Brock, Whitby
 * Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.
+* Video walkthrough of sister lower-level suite available to preview layout/finishes while Unit 2 video is filmed this Friday.
 * Includes heat, on-site coin laundry, water and one parking space
 * Renovated & very clean
 * Five minute walk to everything including 401 and GO Train
@@ -165,7 +173,7 @@ KEY HIGHLIGHTS:
 * No Pets
 * Suitable for Professional, retired or mature student
 * Owners have many past references from previous tenants providing quality service
-* Available Immediately
+* Available December 1
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
@@ -179,7 +187,7 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
 - **Direct Link to Post**: https://liv.rent/landlords
 - **Title**: `Whitby Central 2-Bedroom Suite - Unit 2 - 315 Kent Street`
 - **Price**: `$1695`
-- **Virtual Tour Link**: `https://www.youtube.com/playlist?list=PLLwTe84kfw7U`
+- **Virtual Tour Link**: `https://www.youtube.com/watch?v=TxRy1OvaRZo`
 - **Bedrooms**: 2 | **Bathrooms**: 1
 
 ### Description:
@@ -189,16 +197,18 @@ Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - Unit 2 - 315 K
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
 
-Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent for December 1. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
 
 Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
 
-🎥 YouTube Walkthrough Tour:
-https://www.youtube.com/playlist?list=PLLwTe84kfw7U
+🎥 YouTube Walkthrough Tour (Model Suite / Similar Finishes):
+https://www.youtube.com/watch?v=TxRy1OvaRZo
+*(Unit 2 specific walkthrough video being filmed this Friday!)*
 
 KEY HIGHLIGHTS:
 * Kent St off Brock, Whitby
 * Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.
+* Video walkthrough of sister lower-level suite available to preview layout/finishes while Unit 2 video is filmed this Friday.
 * Includes heat, on-site coin laundry, water and one parking space
 * Renovated & very clean
 * Five minute walk to everything including 401 and GO Train
@@ -207,7 +217,7 @@ KEY HIGHLIGHTS:
 * No Pets
 * Suitable for Professional, retired or mature student
 * Owners have many past references from previous tenants providing quality service
-* Available Immediately
+* Available December 1
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8

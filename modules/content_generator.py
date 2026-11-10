@@ -25,7 +25,7 @@ def get_unit_specific_bullet(unit: Dict[str, Any]) -> str:
     if uid == "unit_1":
         return "* Lower Level Unit 1 is half above ground and half below. Lots of light\n* The second bedroom is smaller so it would be suitable for an office, spare bedroom, small bedroom or den."
     elif uid == "unit_2":
-        return "* Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout."
+        return "* Lower Level Unit 2 is half above ground and half below. Generous natural daylight and comfortable layout.\n* Video walkthrough of sister lower-level suite available to preview layout/finishes while Unit 2 video is filmed this Friday."
     elif uid == "unit_3":
         return "* Upper Level Unit 3 features a private walkout balcony overlooking the property grounds.\n* Full 2 bedroom layout with spacious living room."
     elif uid == "unit_4":
@@ -47,6 +47,7 @@ def generate_standard_description(unit: Dict[str, Any], include_emojis: bool = F
     media_info = _get_media(unit)
     unit_bullet = get_unit_specific_bullet(unit)
     unit_label = unit.get("name", f"Unit {unit['id']}")
+    avail_date = financials.get("available_date", "Immediately")
 
     rent_str = f"${financials['target_rent']:,}"
     form_link = media_info["intake_form"]
@@ -55,17 +56,22 @@ def generate_standard_description(unit: Dict[str, Any], include_emojis: bool = F
     header_icon = "✨ " if include_emojis else ""
     point_prefix = "• " if include_emojis else "* "
 
+    avail_intro = "immediately" if avail_date.lower() == "immediate" else f"for {avail_date}"
+
+    video_section = f"🎥 YouTube Walkthrough Tour:\n{video_link}"
+    if unit.get("id") == "unit_2":
+        video_section = f"🎥 YouTube Walkthrough Tour (Model Suite / Similar Finishes):\n{video_link}\n*(Unit 2 specific walkthrough video being filmed this Friday!)*"
+
     desc = f"""Whitby Central, Renovated 2-Bed, Great Location, Most Utilities - {unit_label}
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 {form_link}
 
-Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent immediately. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
+Very clean and comfortable 2 bedroom (or 1 bed + den) available for rent {avail_intro}. Just a 5-minute walk to downtown Whitby, shopping, transit, grocery stores, 401, GO Transit, schools, and many other great amenities!
 
 Includes one parking space with laundry on-site. The property has a beautiful yard and great neighbours. Located in a safe neighbourhood and in a small six unit apartment building.
 
-🎥 YouTube Walkthrough Tour:
-{video_link}
+{video_section}
 
 KEY HIGHLIGHTS:
 {point_prefix}Kent St off Brock, Whitby
@@ -78,7 +84,7 @@ KEY HIGHLIGHTS:
 {point_prefix}No Pets
 {point_prefix}Suitable for Professional, retired or mature student
 {point_prefix}Owners have many past references from previous tenants providing quality service
-{point_prefix}Available Immediately
+{point_prefix}Available {avail_date}
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 {form_link}

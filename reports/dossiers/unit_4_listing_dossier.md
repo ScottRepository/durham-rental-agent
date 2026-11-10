@@ -39,7 +39,7 @@ KEY HIGHLIGHTS:
 • No Pets
 • Suitable for Professional, retired or mature student
 • Owners have many past references from previous tenants providing quality service
-• Available Immediately
+• Available Immediate
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
@@ -81,7 +81,7 @@ KEY HIGHLIGHTS:
 * No Pets
 * Suitable for Professional, retired or mature student
 * Owners have many past references from previous tenants providing quality service
-* Available Immediately
+* Available Immediate
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
@@ -123,7 +123,7 @@ KEY HIGHLIGHTS:
 * No Pets
 * Suitable for Professional, retired or mature student
 * Owners have many past references from previous tenants providing quality service
-* Available Immediately
+* Available Immediate
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
@@ -165,7 +165,7 @@ KEY HIGHLIGHTS:
 * No Pets
 * Suitable for Professional, retired or mature student
 * Owners have many past references from previous tenants providing quality service
-* Available Immediately
+* Available Immediate
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
@@ -207,7 +207,7 @@ KEY HIGHLIGHTS:
 * No Pets
 * Suitable for Professional, retired or mature student
 * Owners have many past references from previous tenants providing quality service
-* Available Immediately
+* Available Immediate
 
 FILL OUT FORM TO SET SHOWING DATE/TIME:
 https://forms.gle/UZSrP8PUSh9GsdLX8
