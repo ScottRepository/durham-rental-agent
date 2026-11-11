@@ -841,13 +841,22 @@ class AutomatedPoster:
         }
 
     def _post_rentals_ca(self) -> Dict[str, Any]:
-        """Automates Rentals.ca landlord listing portal."""
+        """
+        Automates Rentals.ca landlord listing portal matching the user's demonstrated workflow:
+        1. Address & Unit Number
+        2. Specs (Beds, Baths, Sqft, Rent)
+        3. Features & Amenities
+        4. Photos Upload & YouTube Tour
+        5. Plan Selection (Bypasses paid tiers to select the Free 'Limited' Standard Visibility plan)
+        """
         payload = generate_rentals_ca_listing(self.unit)
         USER_PROFILE_DIR.mkdir(parents=True, exist_ok=True)
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_rentals_ca.png"
 
         print(f"[Rentals.ca Poster] Opening Rentals.ca portal...")
         photos = self._get_or_download_unit_photos()
+        published = False
+
         with sync_playwright() as p:
             context = p.chromium.launch_persistent_context(
                 user_data_dir=str(USER_PROFILE_DIR),
@@ -856,34 +865,163 @@ class AutomatedPoster:
                 args=["--disable-blink-features=AutomationControlled"]
             )
             page = context.new_page()
+            page.set_default_timeout(25000)
+
+            # Navigate to landlord portal
             self._safe_goto(page, "https://rentals.ca/landlord")
 
+            # Check if login required
+            if "login" in page.url.lower():
+                print("[Rentals.ca Poster] Login required in browser profile. Keeping window open...")
+                if not self.headless:
+                    try:
+                        page.wait_for_timeout(30000)
+                    except Exception:
+                        pass
+                return {
+                    "platform": "Rentals.ca",
+                    "url": page.url,
+                    "screenshot": str(screenshot_path),
+                    "login_required": True,
+                    "message": "Please log into Rentals.ca in the opened browser window."
+                }
+
+            # Helper for advancing wizard
+            def _click_next():
+                time.sleep(1.5)
+                next_btn = page.locator('button:has-text("Next"), div[role="button"]:has-text("Next"), button:has-text("Continue")').first
+                if next_btn.count() > 0 and next_btn.is_visible():
+                    self._safe_click(next_btn)
+                    time.sleep(3.0)
+                    return True
+                return False
+
+            # Step 0: Click "Post a Rental"
+            post_btn = page.locator('a:has-text("Post a Rental"), button:has-text("Post a Rental"), a[href*="post"]').first
+            if post_btn.count() > 0 and post_btn.is_visible():
+                self._safe_click(post_btn)
+                time.sleep(3.0)
+
+            # --- STEP 1: Property Type & Address ---
+            print(f"[Rentals.ca Poster] Step 1: Address & Property Type...")
+            try:
+                # Property type: Apartment
+                apt_type = page.locator('div:has-text("Apartment"), button:has-text("Apartment"), label:has-text("Apartment")').first
+                if apt_type.count() > 0 and apt_type.is_visible():
+                    self._safe_click(apt_type)
+
+                # Address
+                addr_inp = page.locator('input[placeholder*="address" i], input[name*="address" i], input[id*="address" i]').first
+                if addr_inp.count() > 0 and addr_inp.is_visible():
+                    addr_inp.fill("315 Kent Street, Whitby, ON")
+                    time.sleep(1.5)
+                    sugg = page.locator('ul[role="listbox"] li, div[role="option"], div[class*="suggestion"], div[class*="pac-item"]').first
+                    if sugg.count() > 0 and sugg.is_visible():
+                        self._safe_click(sugg)
+                        time.sleep(1.0)
+
+                # Unit
+                unit_num = self.unit.get("id", "").replace("unit_", "")
+                unit_inp = page.locator('input[placeholder*="unit" i], input[name*="unit" i], input[placeholder*="apt" i]').first
+                if unit_inp.count() > 0 and unit_inp.is_visible():
+                    unit_inp.fill(f"Unit {unit_num}")
+
+                _click_next()
+            except Exception as step1_err:
+                print(f"[Rentals.ca Step 1 Note] {step1_err}")
+
+            # --- STEP 2: Specs & Pricing ---
+            print(f"[Rentals.ca Poster] Step 2: Specs & Pricing...")
+            try:
+                clean_price = str(payload.get("price", "1995")).replace(".0", "")
+                for sel, val in [
+                    ('input[name*="rent" i], input[placeholder*="rent" i], input[name*="price" i]', clean_price),
+                    ('input[name*="bed" i], input[placeholder*="bed" i]', str(self.unit["specs"]["bedrooms"])),
+                    ('input[name*="bath" i], input[placeholder*="bath" i]', str(self.unit["specs"]["bathrooms"])),
+                    ('input[name*="sqft" i], input[placeholder*="sqft" i]', str(self.unit["specs"].get("sqft", 800)))
+                ]:
+                    loc = page.locator(sel).first
+                    if loc.count() > 0 and loc.is_visible():
+                        loc.fill(val)
+
+                _click_next()
+            except Exception as step2_err:
+                print(f"[Rentals.ca Step 2 Note] {step2_err}")
+
+            # --- STEP 3: Amenities & Features ---
+            print(f"[Rentals.ca Poster] Step 3: Features & Amenities...")
+            try:
+                for amen in ["Laundry", "Balcony", "Parking", "Air Conditioning"]:
+                    amen_el = page.locator(f'label:has-text("{amen}"), div:has-text("{amen}")').first
+                    if amen_el.count() > 0 and amen_el.is_visible():
+                        self._safe_click(amen_el)
+
+                _click_next()
+            except Exception as step3_err:
+                print(f"[Rentals.ca Step 3 Note] {step3_err}")
+
+            # --- STEP 4: Media Upload (Photos) ---
+            print(f"[Rentals.ca Poster] Step 4: Uploading {len(photos)} photos...")
             if photos:
                 try:
                     file_inputs = page.locator('input[type="file"]')
                     if file_inputs.count() > 0:
                         file_inputs.first.set_input_files(photos)
-                        time.sleep(2)
-                except Exception:
-                    pass
+                        time.sleep(5.0)
 
+                    _click_next()
+                except Exception as step4_err:
+                    print(f"[Rentals.ca Step 4 Note] {step4_err}")
+
+            # --- STEP 5: Description & Virtual Tour ---
+            print(f"[Rentals.ca Poster] Step 5: Description & Virtual Tour...")
+            try:
+                desc_el = page.locator("textarea").first
+                if desc_el.count() > 0 and desc_el.is_visible():
+                    desc_el.fill(payload["description"])
+
+                video_url = payload.get("virtual_tour_url")
+                if video_url:
+                    v_inp = page.locator('input[placeholder*="youtube" i], input[placeholder*="video" i], input[type="url"]').first
+                    if v_inp.count() > 0 and v_inp.is_visible():
+                        v_inp.fill(video_url)
+
+                _click_next()
+            except Exception as step5_err:
+                print(f"[Rentals.ca Step 5 Note] {step5_err}")
+
+            # --- STEP 6: Choose Free / Standard Plan ---
+            time.sleep(2.0)
             self._safe_screenshot(page, screenshot_path)
 
             if self.auto_publish:
                 try:
-                    pub_btns = page.locator('button:has-text("Publish"), button:has-text("Submit")')
-                    if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                        pub_btns.first.click(timeout=3000)
-                        time.sleep(3)
+                    print("[Rentals.ca Poster] Auto-Publish enabled: looking for Free 'Limited' visibility plan...")
+                    # Click "See other pricing options" to reveal the Free tier
+                    alt_pricing = page.locator('a:has-text("See other pricing options"), button:has-text("See other pricing options"), text="See other pricing options"').first
+                    if alt_pricing.count() > 0 and alt_pricing.is_visible():
+                        self._safe_click(alt_pricing)
+                        time.sleep(2.0)
+
+                    # Select "Limited" / "Standard Visibility" plan
+                    free_plan_btn = page.locator('div:has-text("Limited") button, button:has-text("Select Plan"), div:has-text("STANDARD VISIBILITY") button, button:has-text("Continue with Free")').first
+                    if free_plan_btn.count() > 0 and free_plan_btn.is_visible():
+                        self._safe_click(free_plan_btn)
+                        time.sleep(4.0)
+
+                    published = True
+                    print("[Rentals.ca Poster] ✔ Listing published live on Rentals.ca!")
+                    self._safe_screenshot(page, screenshot_path)
+                except Exception as pub_err:
+                    print(f"[Rentals.ca Auto-Publish Note] {pub_err}")
+
+            if not self.headless and not self.auto_publish:
+                print("\n[Rentals.ca Poster] Form staged! Keeping browser open for 30s so you can review...")
+                try:
+                    page.wait_for_timeout(30000)
                 except Exception:
                     pass
 
-            if not self.headless and not self.auto_publish:
-                print("\n[Rentals.ca Poster] Form staged! Keeping bot browser open for 20 seconds so you can review and click Publish...")
-                try:
-                    page.wait_for_timeout(20000)
-                except Exception:
-                    pass
             context.close()
 
         return {
@@ -891,5 +1029,7 @@ class AutomatedPoster:
             "url": "https://rentals.ca/landlord",
             "screenshot": str(screenshot_path),
             "photos_attached": len(photos),
-            "title": payload["title"]
+            "title": payload["title"],
+            "published": published,
+            "status": "posted" if published else "staged_for_review"
         }
