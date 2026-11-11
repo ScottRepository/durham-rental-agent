@@ -334,6 +334,24 @@ class AutomatedPoster:
                     "message": "Please log into Facebook in the opened browser window. Your login will be saved permanently for future 1-click postings."
                 }
 
+            # Check if Facebook Seller Limit is reached on new accounts
+            time.sleep(2.0)
+            limit_banner = page.locator('div:has-text("Limit reached"), div:has-text("You are not able to create new listings right now")')
+            if limit_banner.count() > 0 and limit_banner.first.is_visible():
+                msg = "Facebook Marketplace daily limit reached for this account (new accounts have strict limits on creating listings). Please edit an existing listing or wait for Facebook's daily limit to lift."
+                print(f"[Facebook Poster] ⚠️ {msg}")
+                self._safe_screenshot(page, screenshot_path)
+                context.close()
+                return {
+                    "platform": "Facebook Marketplace",
+                    "url": page.url,
+                    "screenshot": str(screenshot_path),
+                    "limit_reached": True,
+                    "message": msg,
+                    "published": False,
+                    "status": "draft"
+                }
+
             # 1. Automatically attach suite photos and exterior photo
             photos = self._get_or_download_unit_photos()
             if photos:
@@ -465,7 +483,8 @@ class AutomatedPoster:
         }
 
     def _post_kijiji(self) -> Dict[str, Any]:
-        """Automates Kijiji Ontario rental listing form."""
+        """Automates Kijiji Ontario rental listing form matching the user's demonstrated workflow."""
+        import urllib.parse
         payload = generate_kijiji_listing(self.unit)
         USER_PROFILE_DIR.mkdir(parents=True, exist_ok=True)
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_kijiji.png"
@@ -480,7 +499,9 @@ class AutomatedPoster:
                 args=["--disable-blink-features=AutomationControlled"]
             )
             page = context.new_page()
-            self._safe_goto(page, "https://www.kijiji.ca/p-post-ad.html?categoryId=37")
+            encoded_title = urllib.parse.quote_plus(payload["title"])
+            target_url = f"https://www.kijiji.ca/p-post-ad.html?categoryId=37&adTitle={encoded_title}"
+            self._safe_goto(page, target_url)
 
             # 1. Automatically attach suite photos and exterior photo
             photos = self._get_or_download_unit_photos()
@@ -494,14 +515,57 @@ class AutomatedPoster:
                 except Exception as photo_err:
                     print(f"[Kijiji Photo Upload Note] {photo_err}")
 
-            # 2. Attempt to pre-fill standard Kijiji ad title, description, price, location, and YouTube link
+            # 2. Select rental specs and details matching manual workflow
             try:
+                # Rental type: Apartment / Duplex
+                for sel in ['label:has-text("Apartment")', 'button:has-text("Apartment")', 'input[value*="apartment" i]']:
+                    loc = page.locator(sel).first
+                    if loc.count() > 0 and loc.is_visible():
+                        self._safe_click(loc)
+                        break
+
+                # Bedrooms: 2
+                for sel in ['label:has-text("2"):visible', 'button:has-text("2"):visible']:
+                    loc = page.locator(sel).first
+                    if loc.count() > 0 and loc.is_visible():
+                        self._safe_click(loc)
+                        break
+
+                # Bathrooms: 1
+                for sel in ['label:has-text("1"):visible', 'button:has-text("1"):visible']:
+                    loc = page.locator(sel).first
+                    if loc.count() > 0 and loc.is_visible():
+                        self._safe_click(loc)
+                        break
+
+                # Agreement Type: 1 Year / One-year
+                for sel in ['label:has-text("1 Year")', 'button:has-text("1 Year")', 'label:has-text("One-year")']:
+                    loc = page.locator(sel).first
+                    if loc.count() > 0 and loc.is_visible():
+                        self._safe_click(loc)
+                        break
+
+                # Parking Included: 1
+                parking_sel = page.locator('select[name*="parking" i], input[name*="parking" i]').first
+                if parking_sel.count() > 0 and parking_sel.is_visible():
+                    try:
+                        parking_sel.select_option("1")
+                    except Exception:
+                        parking_sel.fill("1")
+
+                # Additional Features Checkboxes (Online Application, Video Walkthrough, Video Chat)
+                for opt in ["Online Application", "Video Walkthrough", "Video Chat"]:
+                    opt_loc = page.locator(f'label:has-text("{opt}")').first
+                    if opt_loc.count() > 0 and opt_loc.is_visible():
+                        self._safe_click(opt_loc)
+
+                # Pre-fill standard fields: title, description, price, YouTube link
                 clean_price = str(payload["price"]).replace(".0", "")
                 for sel, val in [
                     ("input[name*='postAdForm.title'], #AdTitleForm", payload["title"]),
                     ("textarea[name*='postAdForm.description'], #pstad-descrptn", payload["description"]),
                     ("input[name*='postAdForm.priceAmount'], #PriceAmount", clean_price),
-                    ("input[name*='youtube'], input[id*='youtube']", payload["youtube_video_url"])
+                    ("input[name*='youtube'], input[id*='youtube']", payload.get("youtube_video_url", ""))
                 ]:
                     try:
                         loc = page.locator(sel).first
@@ -531,7 +595,7 @@ class AutomatedPoster:
                     pub_btns = page.locator('button[type="submit"]:has-text("Post Your Ad"), button:has-text("Post Your Ad")')
                     if pub_btns.count() > 0 and pub_btns.first.is_visible():
                         self._safe_click(pub_btns.first)
-                        time.sleep(5.0)
+                        time.sleep(6.0)
                         published = True
                         print("[Kijiji Poster] ✔ Final Post Your Ad button clicked!")
                         self._safe_screenshot(page, screenshot_path)
@@ -552,7 +616,7 @@ class AutomatedPoster:
             "screenshot": str(screenshot_path),
             "photos_attached": len(photos),
             "title": payload["title"],
-            "video_url": payload["youtube_video_url"],
+            "video_url": payload.get("youtube_video_url"),
             "published": published,
             "status": "posted" if published else "staged_for_review"
         }
