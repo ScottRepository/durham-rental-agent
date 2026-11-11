@@ -145,15 +145,17 @@ class AutomatedPoster:
             else:
                 raise ValueError(f"Unsupported platform: {self.platform}")
 
+            is_published = result.get("published", self.auto_publish)
+            status_label = "posted" if is_published else "staged"
             update_posting_status(
                 self.unit_id,
                 self.platform,
-                "posted",
+                status_label,
                 external_url=result.get("url"),
-                log=f"Successfully staged/published on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+                log=f"Successfully {'published' if is_published else 'pre-filled & staged for review'} on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
             )
-            self._sync_analytics_status(self.platform, "live")
-            return {"success": True, "details": result}
+            self._sync_analytics_status(self.platform, "live" if is_published else "pending")
+            return {"success": True, "details": result, "published": is_published, "status": status_label}
 
         except Exception as e:
             error_msg = f"Posting error: {str(e)}"
@@ -270,16 +272,22 @@ class AutomatedPoster:
 
     def _safe_goto(self, page, url: str) -> None:
         """Navigates to URL with resilient timeout handling so slow third-party scripts never crash the bot."""
-        page.set_default_timeout(15000)
+        page.set_default_timeout(20000)
         try:
-            page.goto(url, wait_until="commit", timeout=20000)
-            try:
-                page.wait_for_load_state("domcontentloaded", timeout=10000)
-            except Exception:
-                pass
-            time.sleep(2.5)
+            page.goto(url, wait_until="domcontentloaded", timeout=25000)
+            time.sleep(3.0)
         except Exception as nav_err:
             print(f"[Browser Navigation Note] {url}: {nav_err}")
+
+    def _safe_click(self, loc) -> None:
+        """Clicks an element resiliently, falling back to JavaScript click if animation or layout is shifting."""
+        try:
+            loc.click(timeout=3000, force=True)
+        except Exception:
+            try:
+                loc.evaluate("e => e.click()")
+            except Exception as e:
+                print(f"[Safe Click Note] {e}")
 
     def _safe_screenshot(self, page, screenshot_path: Path) -> None:
         """Captures screenshot without hanging on slow external webfont loads."""
@@ -289,12 +297,13 @@ class AutomatedPoster:
             print(f"[Screenshot Note] {sc_err}")
 
     def _post_facebook(self) -> Dict[str, Any]:
-        """Automates Facebook Marketplace rental listing form."""
+        """Automates Facebook Marketplace rental listing form with robust selector handling."""
         payload = generate_facebook_marketplace_listing(self.unit)
         USER_PROFILE_DIR.mkdir(parents=True, exist_ok=True)
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_facebook.png"
 
         print(f"[Facebook Poster] Opening Facebook Marketplace with profile at {USER_PROFILE_DIR}...")
+        published = False
         with sync_playwright() as p:
             context = p.chromium.launch_persistent_context(
                 user_data_dir=str(USER_PROFILE_DIR),
@@ -303,7 +312,7 @@ class AutomatedPoster:
                 args=["--disable-blink-features=AutomationControlled"]
             )
             page = context.new_page()
-            page.set_default_timeout(15000)
+            page.set_default_timeout(20000)
             self._safe_goto(page, "https://www.facebook.com/marketplace/create/rental")
 
             # Check if login is required
@@ -326,77 +335,117 @@ class AutomatedPoster:
             photos = self._get_or_download_unit_photos()
             if photos:
                 try:
-                    file_input = page.locator('input[type="file"]').first
+                    file_input = page.locator('input[type="file"][accept*="image"], input[type="file"]').first
                     if file_input.count() > 0:
                         print(f"[Facebook Poster] Automatically uploading {len(photos)} photos from Google Drive cache...")
-                        file_input.set_input_files(photos, timeout=15000)
-                        time.sleep(2.5)
+                        file_input.set_input_files(photos)
+                        time.sleep(3.5)
                 except Exception as photo_err:
                     print(f"[Facebook Photo Upload Note] {photo_err}")
 
             # 2. Pre-fill standard Facebook Marketplace rental inputs
             try:
                 clean_price = str(payload["price"]).replace(".0", "")
-                
-                # If "Home for sale or rent" property type dropdown is visible, select Rent
-                rent_type = page.locator('div[aria-label*="Home for sale or rent"], label:has-text("Home for sale or rent")').first
-                if rent_type.is_visible(timeout=1500):
-                    rent_type.click(timeout=1500)
-                    time.sleep(1)
-                    page.locator('div[role="option"]:has-text("Rent"), span:has-text("Rent")').first.click(timeout=1500)
-                    time.sleep(1)
 
-                # Price
-                p_loc = page.locator('label:has-text("Price") input, input[aria-label="Price"]').first
-                if p_loc.is_visible(timeout=1500):
-                    p_loc.fill(clean_price)
-                
-                # Bedrooms
-                bed_loc = page.locator('label:has-text("Number of bedrooms") input, input[aria-label="Number of bedrooms"]').first
-                if bed_loc.is_visible(timeout=1500):
+                # Step A: Select 'Rent' on 'Home for sale or rent'
+                rent_type = page.locator('label:has-text("Home for sale or rent")').first
+                if rent_type.count() > 0 and rent_type.is_visible():
+                    print("[Facebook Poster] Selecting Rent dropdown...")
+                    self._safe_click(rent_type)
+                    time.sleep(0.7)
+                    rent_opt = page.locator('div[role="listbox"] div[role="option"]:has-text("Rent")').first
+                    if rent_opt.count() > 0:
+                        self._safe_click(rent_opt)
+                        time.sleep(1.0)
+
+                # Step B: Select 'Apartment' on 'Rental type' / 'Property type'
+                rental_type = page.locator('label:has-text("Rental type"), label:has-text("Property type")').first
+                if rental_type.count() > 0 and rental_type.is_visible():
+                    print("[Facebook Poster] Selecting Rental Type -> Apartment...")
+                    self._safe_click(rental_type)
+                    time.sleep(0.7)
+                    apt_opt = page.locator('div[role="listbox"] div[role="option"]:has-text("Apartment")').first
+                    if apt_opt.count() > 0:
+                        self._safe_click(apt_opt)
+                        time.sleep(1.0)
+
+                # Step C: Bedrooms
+                bed_loc = page.locator('label:has-text("Number of bedrooms") input').first
+                if bed_loc.count() > 0:
                     bed_loc.fill(str(payload["bedrooms"]))
 
-                # Bathrooms
-                bath_loc = page.locator('label:has-text("Number of bathrooms") input, input[aria-label="Number of bathrooms"]').first
-                if bath_loc.is_visible(timeout=1500):
+                # Step D: Bathrooms
+                bath_loc = page.locator('label:has-text("Number of bathrooms") input').first
+                if bath_loc.count() > 0:
                     bath_loc.fill(str(payload["bathrooms"]))
 
-                # Description
-                desc_loc = page.locator('label:has-text("Property description") textarea, textarea[aria-label*="description"], textarea').first
-                if desc_loc.is_visible(timeout=1500):
+                # Step E: Price per month
+                p_loc = page.locator('label:has-text("Price per month") input, label:has-text("Price") input').first
+                if p_loc.count() > 0:
+                    p_loc.fill(clean_price)
+
+                # Step F: Address (Whitby Central)
+                addr_loc = page.locator('input[aria-label*="Address"]:visible').first
+                if addr_loc.count() > 0:
+                    addr_loc.fill("315 Kent Street, Whitby, ON")
+                    time.sleep(1.5)
+                    # Pick first suggestion from listbox
+                    sugg = page.locator('ul[role="listbox"] li, div[role="option"]').first
+                    if sugg.count() > 0 and sugg.is_visible():
+                        self._safe_click(sugg)
+
+                # Step G: Description
+                desc_loc = page.locator('label:has-text("Rental description") textarea, label:has-text("Property description") textarea').first
+                if desc_loc.count() > 0:
                     desc_loc.fill(payload["description"])
 
-                # Address
-                addr_loc = page.locator('input[aria-label="Address"], input[placeholder*="address"]').first
-                if addr_loc.is_visible(timeout=1500):
-                    addr_loc.fill("315 Kent Street, Whitby, ON")
+                # Step H: Square Footage if available
+                sqft = self.unit.get("specs", {}).get("square_feet")
+                if sqft:
+                    sqft_loc = page.locator('label:has-text("Property square feet") input').first
+                    if sqft_loc.count() > 0:
+                        sqft_loc.fill(str(sqft))
+
             except Exception as fill_err:
                 print(f"[Facebook Auto-Fill Note] {fill_err}")
 
             time.sleep(2.0)
             self._safe_screenshot(page, screenshot_path)
 
-            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            # 3. Optional Auto-Publish (Clicks Next -> Select Groups -> Publish)
             if self.auto_publish:
                 try:
                     print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
-                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
+                    next_btns = page.locator('div[aria-label="Next"][role="button"], button:has-text("Next"), div[role="button"]:has-text("Next")')
                     if next_btns.count() > 0 and next_btns.first.is_visible():
-                        next_btns.first.click(timeout=5000)
-                        time.sleep(3)
+                        self._safe_click(next_btns.first)
+                        time.sleep(3.5)
+
+                        # In Step 2, select groups if available
+                        group_checkboxes = page.locator('div[role="checkbox"]').all()
+                        for cb in group_checkboxes[:5]:
+                            try:
+                                if cb.get_attribute("aria-checked") == "false":
+                                    self._safe_click(cb)
+                                    time.sleep(0.3)
+                            except Exception:
+                                pass
+
                         print("[Facebook Poster] Searching for 'Publish' button...")
-                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
+                        pub_btns = page.locator('div[aria-label="Publish"][role="button"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
                         if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                            pub_btns.first.click(timeout=5000)
-                            time.sleep(4)
-                            print("[Facebook Poster] ✔ Final Publish button clicked!")
+                            self._safe_click(pub_btns.first)
+                            time.sleep(5.0)
+                            published = True
+                            print("[Facebook Poster] ✔ Final Publish button clicked successfully!")
+                            self._safe_screenshot(page, screenshot_path)
                 except Exception as pub_err:
                     print(f"[Facebook Auto-Publish Note] {pub_err}")
 
             if not self.headless and not self.auto_publish:
-                print("\n[Facebook Poster] Form staged! Keeping bot browser open for 20 seconds so you can review and click Publish...")
+                print("\n[Facebook Poster] Form pre-filled & staged! Keeping browser open for 30s so you can review and click Next / Publish...")
                 try:
-                    page.wait_for_timeout(20000)
+                    page.wait_for_timeout(30000)
                 except Exception:
                     pass
             context.close()
@@ -407,7 +456,9 @@ class AutomatedPoster:
             "screenshot": str(screenshot_path),
             "photos_attached": len(photos),
             "title": payload["title"],
-            "price": payload["price"]
+            "price": payload["price"],
+            "published": published,
+            "status": "posted" if published else "staged_for_review"
         }
 
     def _post_kijiji(self) -> Dict[str, Any]:
@@ -417,6 +468,7 @@ class AutomatedPoster:
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_kijiji.png"
 
         print(f"[Kijiji Poster] Opening Kijiji post form...")
+        published = False
         with sync_playwright() as p:
             context = p.chromium.launch_persistent_context(
                 user_data_dir=str(USER_PROFILE_DIR),
@@ -431,15 +483,15 @@ class AutomatedPoster:
             photos = self._get_or_download_unit_photos()
             if photos:
                 try:
-                    file_inputs = page.locator('input[type="file"]')
+                    file_inputs = page.locator('input[type="file"][accept*="image"], input[type="file"]')
                     if file_inputs.count() > 0:
                         print(f"[Kijiji Poster] Automatically uploading {len(photos)} photos from Google Drive cache...")
                         file_inputs.first.set_input_files(photos)
-                        time.sleep(3)
+                        time.sleep(4.0)
                 except Exception as photo_err:
                     print(f"[Kijiji Photo Upload Note] {photo_err}")
 
-            # 2. Attempt to pre-fill standard Kijiji ad title, description, price, and YouTube link if visible
+            # 2. Attempt to pre-fill standard Kijiji ad title, description, price, location, and YouTube link
             try:
                 clean_price = str(payload["price"]).replace(".0", "")
                 for sel, val in [
@@ -454,6 +506,16 @@ class AutomatedPoster:
                             loc.fill(val, timeout=2500)
                     except Exception:
                         pass
+
+                # Location: Target visible postal code / address input
+                loc_input = page.locator('input[placeholder*="Postal code or street address"]:visible, input#pstad-loc-txt:visible').first
+                if loc_input.count() > 0 and loc_input.is_visible():
+                    loc_input.fill("315 Kent Street, Whitby, ON", timeout=2500)
+                    time.sleep(1.5)
+                    suggs = page.locator('.suggestion, .location-suggestion, li[role="option"]').all()
+                    if suggs:
+                        self._safe_click(suggs[0])
+
             except Exception as fill_err:
                 print(f"[Kijiji Auto-Fill Note] {fill_err}")
 
@@ -465,16 +527,18 @@ class AutomatedPoster:
                     print("[Kijiji Poster] Auto-Publish enabled: searching for 'Post Your Ad' button...")
                     pub_btns = page.locator('button[type="submit"]:has-text("Post Your Ad"), button:has-text("Post Your Ad")')
                     if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                        pub_btns.first.click(timeout=3000)
-                        time.sleep(4)
+                        self._safe_click(pub_btns.first)
+                        time.sleep(5.0)
+                        published = True
                         print("[Kijiji Poster] ✔ Final Post Your Ad button clicked!")
+                        self._safe_screenshot(page, screenshot_path)
                 except Exception as pub_err:
                     print(f"[Kijiji Auto-Publish Note] {pub_err}")
 
             if not self.headless and not self.auto_publish:
-                print("\n[Kijiji Poster] Form staged! Keeping bot browser open for 20 seconds so you can review and click Post Your Ad...")
+                print("\n[Kijiji Poster] Form staged! Keeping bot browser open for 30 seconds so you can review and click Post Your Ad...")
                 try:
-                    page.wait_for_timeout(20000)
+                    page.wait_for_timeout(30000)
                 except Exception:
                     pass
             context.close()
@@ -485,7 +549,9 @@ class AutomatedPoster:
             "screenshot": str(screenshot_path),
             "photos_attached": len(photos),
             "title": payload["title"],
-            "video_url": payload["youtube_video_url"]
+            "video_url": payload["youtube_video_url"],
+            "published": published,
+            "status": "posted" if published else "staged_for_review"
         }
 
     def _post_zumper(self) -> Dict[str, Any]:
