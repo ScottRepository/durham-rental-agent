@@ -398,11 +398,16 @@
               <p class="text-[11px] text-slate-600 mt-1">Auto-downloads Google Drive photos, fills price & specs, and stages or submits your ad.</p>
             </div>
             <div class="flex flex-col sm:flex-row gap-2">
-              <button onclick="executeOneClickPost()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition">
-                <i class="fa-solid fa-robot"></i> Auto-Post Current Site
+              <button onclick="executeOneClickPost()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition" title="Launch automated Playwright bot to fill in form and upload photos">
+                <i class="fa-solid fa-robot"></i> Launch Bot Browser
               </button>
-              <button onclick="startPostAllVerificationQueue()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl shadow-sm transition">
+              <button onclick="startPostAllVerificationQueue()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl shadow-sm transition" title="Step-by-step verified posting across Facebook, Kijiji, Zumper, Rentals.ca, Liv.rent">
                 <i class="fa-solid fa-layer-group text-yellow-300"></i> Post All 5 Sites
+              </button>
+            </div>
+            <div class="text-right pt-0.5">
+              <button onclick="assistedOpenInChrome()" class="text-[11px] text-slate-500 hover:text-blue-700 font-medium inline-flex items-center gap-1 transition">
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Or open directly in your personal Chrome (copies ad copy)
               </button>
             </div>
           </div>
@@ -2976,73 +2981,97 @@
       document.getElementById('modalDetailUnit').innerText = unit.name;
 
       icon.className = "fa-solid fa-robot animate-spin";
-      title.innerText = "Launching 1-Click Browser Bot...";
-      desc.innerText = `Connecting Playwright browser automation for ${platform.toUpperCase()}...`;
-      bar.style.width = "25%";
+      title.innerText = "Launching Dedicated Bot Browser...";
+      desc.innerText = `Starting Playwright browser automation for ${platform.toUpperCase()}...`;
+      bar.style.width = "30%";
       modal.classList.remove('hidden');
 
-      // Attempt backend API call
-      const autoPublish = document.getElementById('autoPublishCheckbox')?.checked || false;
-      try {
-        bar.style.width = "65%";
-        desc.innerText = `Navigating to ${platform} and injecting unit details, specs, and photos${autoPublish ? ' + auto-publishing' : ''}...`;
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-        const response = await fetch('/api/post-unit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ unit_id: unitId, platform: platform, headless: false, auto_publish: autoPublish })
-        });
+      if (isLocal) {
+        // Attempt backend API call to launch the local Playwright bot window
+        const autoPublish = document.getElementById('autoPublishCheckbox')?.checked || false;
+        try {
+          bar.style.width = "65%";
+          desc.innerText = `Navigating to ${platform} and injecting unit details, specs, and photos${autoPublish ? ' + auto-publishing' : ''}...`;
 
-        if (response.ok) {
-          const resData = await response.json();
-          bar.style.width = "100%";
-          icon.className = "fa-solid fa-circle-check text-emerald-500 text-3xl";
-          title.innerText = autoPublish ? "Listing Auto-Published via Bot!" : "Listing Form Pre-Filled & Ready!";
-          desc.innerText = autoPublish
-            ? `Your ${platform.toUpperCase()} listing was filled and submitted automatically.`
-            : `Your ${platform.toUpperCase()} listing form was staged. Click Review on the browser window to confirm publication.`;
-          
-          // Update status in local state
-          unit.postings[platform].status = "posted";
-          unit.postings[platform].last_posted = new Date().toISOString();
-          if (typeof liveAnalyticsData !== 'undefined') {
-            liveAnalyticsData.forEach(d => {
-              if (d.unit_id === unitId && d.platform === platform) d.ad_status = 'live';
-            });
+          const response = await fetch('/api/post-unit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ unit_id: unitId, platform: platform, headless: false, auto_publish: autoPublish })
+          });
+
+          if (response.ok) {
+            const resData = await response.json();
+            bar.style.width = "100%";
+
+            if (resData.login_required) {
+              icon.className = "fa-solid fa-key text-amber-500 text-3xl";
+              title.innerText = "Sign In Required in Bot Browser Window";
+              desc.innerText = `Please switch to the opened Bot Browser window and log in to ${platform.toUpperCase()}. Your login session will be saved permanently so future 1-click postings run automatically!`;
+              return;
+            }
+
+            icon.className = "fa-solid fa-circle-check text-emerald-500 text-3xl";
+            title.innerText = autoPublish ? "Listing Auto-Published via Bot!" : "Listing Pre-Filled in Bot Browser!";
+            desc.innerText = autoPublish
+              ? `Your ${platform.toUpperCase()} listing was filled and submitted automatically.`
+              : `Your ${platform.toUpperCase()} listing form was staged with photos, price, and specs in the opened Bot Browser window. Switch to that window to review and confirm!`;
+            
+            // Update status in local state
+            unit.postings[platform].status = "posted";
+            unit.postings[platform].last_posted = new Date().toISOString();
+            if (typeof liveAnalyticsData !== 'undefined') {
+              liveAnalyticsData.forEach(d => {
+                if (d.unit_id === unitId && d.platform === platform) d.ad_status = 'live';
+              });
+            }
+            renderPlatformListing();
+            renderUnitsGrid();
+            if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
+            showToast(`✔ Bot Browser opened for ${unit.name} on ${platform.toUpperCase()}!`);
+            return;
+          } else {
+            const errData = await response.json().catch(() => ({}));
+            bar.style.width = "100%";
+            icon.className = "fa-solid fa-triangle-exclamation text-amber-500 text-3xl";
+            title.innerText = "Bot Notice";
+            desc.innerText = errData.error || `Could not complete automated posting on ${platform.toUpperCase()}.`;
+            return;
           }
-          renderPlatformListing();
-          renderUnitsGrid();
-          if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
-          showToast(`1-Click Post executed for ${unit.name} on ${platform.toUpperCase()}!`);
+        } catch(err) {
+          console.warn("Backend API not reachable:", err);
+          bar.style.width = "100%";
+          icon.className = "fa-solid fa-triangle-exclamation text-rose-500 text-3xl";
+          title.innerText = "Could Not Reach Local Bot Server";
+          desc.innerText = `The backend server at http://localhost:8000 did not respond. Check that 'python server.py' is running.`;
           return;
         }
-      } catch(err) {
-        console.warn("Backend API not reachable (running on static GitHub Pages). Falling back to assisted mode.");
       }
 
-      // Static GitHub Pages fallback
-      setTimeout(() => {
-        bar.style.width = "100%";
-        icon.className = "fa-solid fa-copy text-blue-500 text-3xl";
-        title.innerText = "Payload Prepared & Copied!";
-        desc.innerText = `Description copied to clipboard! Now opening ${platform.toUpperCase()} creation page in a new tab...`;
+      // If running on static GitHub Pages (where no Python backend is hosted)
+      bar.style.width = "100%";
+      icon.className = "fa-solid fa-copy text-blue-500 text-3xl";
+      title.innerText = "Running in Cloud Preview (Assisted Mode)";
+      desc.innerText = `Description copied to clipboard! Opening ${platform.toUpperCase()} in your browser. (To use the automated browser bot that auto-fills forms, run the app locally at http://localhost:8000).`;
+      copyListingText();
+      unit.postings[platform].status = "posted";
+      renderPlatformListing();
+      renderUnitsGrid();
 
-        // Copy text to clipboard automatically
-        copyListingText();
-
-        // Update status
-        unit.postings[platform].status = "posted";
-        renderPlatformListing();
-        renderUnitsGrid();
-
-        // Open target form
-        const targetUrl = document.getElementById('platformDirectPostBtn').href;
-        window.open(targetUrl, '_blank');
-      }, 1200);
+      const targetUrl = document.getElementById('platformDirectPostBtn').href;
+      window.open(targetUrl, '_blank');
     }
 
     function closeAutoPostModal() {
       document.getElementById('autoPostModal').classList.add('hidden');
+    }
+
+    function assistedOpenInChrome() {
+      copyListingText();
+      const targetUrl = document.getElementById('platformDirectPostBtn').href;
+      window.open(targetUrl, '_blank');
+      showToast("Ad description copied to clipboard! Opened listing page in your Chrome browser.");
     }
 
     // Add Media Modal
