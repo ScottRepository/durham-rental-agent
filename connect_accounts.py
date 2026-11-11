@@ -43,6 +43,7 @@ def main():
     parser.add_argument("--facebook", action="store_true", help="Connect Facebook directly")
     parser.add_argument("--kijiji", action="store_true", help="Connect Kijiji directly")
     parser.add_argument("--zumper", action="store_true", help="Connect Zumper directly")
+    parser.add_argument("--rentals", action="store_true", help="Connect Rentals.ca directly")
     args = parser.parse_args()
 
     if args.facebook:
@@ -53,6 +54,9 @@ def main():
         return
     elif args.zumper:
         connect_platform("Zumper Landlord Portal", "https://www.zumper.com/manage")
+        return
+    elif args.rentals:
+        connect_platform("Rentals.ca Landlord Portal", "https://rentals.ca/login")
         return
 
     print("""
@@ -66,10 +70,11 @@ Zero passwords are saved in code or sent over the internet.
     print(" 1) Connect Facebook Marketplace (New Account)")
     print(" 2) Connect Kijiji Ontario")
     print(" 3) Connect Zumper Landlord Portal")
-    print(" 4) Connect All Accounts")
-    print(" 5) Exit")
+    print(" 4) Connect Rentals.ca Landlord Portal")
+    print(" 5) Connect All Accounts")
+    print(" 6) Exit")
 
-    choice = input("\nEnter choice [1-5]: ").strip()
+    choice = input("\nEnter choice [1-6]: ").strip()
 
     if choice == "1":
         connect_platform("Facebook Marketplace", "https://www.facebook.com/login")
@@ -78,9 +83,12 @@ Zero passwords are saved in code or sent over the internet.
     elif choice == "3":
         connect_platform("Zumper Landlord Portal", "https://www.zumper.com/manage")
     elif choice == "4":
+        connect_platform("Rentals.ca Landlord Portal", "https://rentals.ca/login")
+    elif choice == "5":
         connect_platform("Facebook Marketplace", "https://www.facebook.com/login")
         connect_platform("Kijiji Ontario", "https://www.kijiji.ca/t-login.html")
         connect_platform("Zumper Landlord Portal", "https://www.zumper.com/manage")
+        connect_platform("Rentals.ca Landlord Portal", "https://rentals.ca/login")
     else:
         print("Exiting wizard.")
         sys.exit(0)

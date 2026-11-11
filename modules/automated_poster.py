@@ -18,15 +18,14 @@ from modules.content_generator import (
     generate_facebook_marketplace_listing,
     generate_kijiji_listing,
     generate_zumper_listing,
-    generate_rentals_ca_listing,
-    generate_liv_rent_listing
+    generate_rentals_ca_listing
 )
 
 USER_PROFILE_DIR = Path.home() / ".property_agent_browser_profile"
 SCREENSHOTS_DIR = Path(__file__).parent.parent / "reports" / "screenshots"
 SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
 
-ALL_PLATFORMS = ["facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"]
+ALL_PLATFORMS = ["facebook", "kijiji", "zumper", "rentals_ca"]
 
 
 class AutomatedPoster:
@@ -140,8 +139,6 @@ class AutomatedPoster:
                 result = self._post_zumper()
             elif self.platform in ("rentals_ca", "rentals.ca"):
                 result = self._post_rentals_ca()
-            elif self.platform in ("liv_rent", "liv.rent"):
-                result = self._post_liv_rent()
             else:
                 raise ValueError(f"Unsupported platform: {self.platform}")
 
@@ -191,8 +188,7 @@ class AutomatedPoster:
             "facebook": "https://www.facebook.com/marketplace/you/selling",
             "kijiji": "https://www.kijiji.ca/m-my-ads/active",
             "zumper": "https://www.zumper.com/manage",
-            "rentals_ca": "https://rentals.ca/landlord",
-            "liv_rent": "https://liv.rent/landlords"
+            "rentals_ca": "https://rentals.ca/landlord"
         }
         target_url = manage_urls.get(self.platform, "https://www.facebook.com/marketplace/you/selling")
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_{self.platform}_deleted.png"
@@ -223,7 +219,7 @@ class AutomatedPoster:
                         del_btn = page.locator('button:has-text("Delete"), a:has-text("Delete")').first
                         if del_btn.count() > 0 and del_btn.is_visible():
                             del_btn.click(timeout=2500)
-                    elif self.platform in ("zumper", "rentals_ca", "liv_rent"):
+                    elif self.platform in ("zumper", "rentals_ca"):
                         unpub_btn = page.locator('button:has-text("Unpublish"), button:has-text("Deactivate"), button:has-text("Delete")').first
                         if unpub_btn.count() > 0 and unpub_btn.is_visible():
                             unpub_btn.click(timeout=2500)
@@ -657,60 +653,6 @@ class AutomatedPoster:
         return {
             "platform": "Rentals.ca",
             "url": "https://rentals.ca/landlord",
-            "screenshot": str(screenshot_path),
-            "photos_attached": len(photos),
-            "title": payload["title"]
-        }
-
-    def _post_liv_rent(self) -> Dict[str, Any]:
-        """Automates Liv.rent landlord listing portal."""
-        payload = generate_liv_rent_listing(self.unit)
-        USER_PROFILE_DIR.mkdir(parents=True, exist_ok=True)
-        screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_liv_rent.png"
-
-        print(f"[Liv.rent Poster] Opening Liv.rent portal...")
-        photos = self._get_or_download_unit_photos()
-        with sync_playwright() as p:
-            context = p.chromium.launch_persistent_context(
-                user_data_dir=str(USER_PROFILE_DIR),
-                headless=self.headless,
-                viewport={"width": 1366, "height": 850},
-                args=["--disable-blink-features=AutomationControlled"]
-            )
-            page = context.new_page()
-            self._safe_goto(page, "https://liv.rent/landlords")
-
-            if photos:
-                try:
-                    file_inputs = page.locator('input[type="file"]')
-                    if file_inputs.count() > 0:
-                        file_inputs.first.set_input_files(photos)
-                        time.sleep(2)
-                except Exception:
-                    pass
-
-            self._safe_screenshot(page, screenshot_path)
-
-            if self.auto_publish:
-                try:
-                    pub_btns = page.locator('button:has-text("Publish"), button:has-text("Submit")')
-                    if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                        pub_btns.first.click(timeout=3000)
-                        time.sleep(3)
-                except Exception:
-                    pass
-
-            if not self.headless and not self.auto_publish:
-                print("\n[Liv.rent Poster] Form staged! Keeping bot browser open for 20 seconds so you can review and click Publish...")
-                try:
-                    page.wait_for_timeout(20000)
-                except Exception:
-                    pass
-            context.close()
-
-        return {
-            "platform": "Liv.rent",
-            "url": "https://liv.rent/landlords",
             "screenshot": str(screenshot_path),
             "photos_attached": len(photos),
             "title": payload["title"]

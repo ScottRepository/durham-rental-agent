@@ -249,6 +249,5 @@ def package_all_listings_for_unit(unit: Dict[str, Any]) -> Dict[str, Any]:
         "facebook_marketplace": generate_facebook_marketplace_listing(unit),
         "kijiji": generate_kijiji_listing(unit),
         "zumper": generate_zumper_listing(unit),
-        "rentals_ca": generate_rentals_ca_listing(unit),
-        "liv_rent": generate_liv_rent_listing(unit)
+        "rentals_ca": generate_rentals_ca_listing(unit)
     }

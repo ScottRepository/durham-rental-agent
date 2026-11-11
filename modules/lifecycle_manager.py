@@ -21,8 +21,7 @@ from modules.content_generator import (
     generate_facebook_marketplace_listing,
     generate_kijiji_listing,
     generate_zumper_listing,
-    generate_rentals_ca_listing,
-    generate_liv_rent_listing
+    generate_rentals_ca_listing
 )
 
 REFRESH_CYCLE_DAYS = 7
@@ -101,7 +100,7 @@ def toggle_posting_active(unit_id: str, is_active: bool, db_path: Path = DB_PATH
         WHERE id = ?
         """, (now.isoformat(), next_refresh.isoformat(), now.isoformat(), unit_id))
 
-        for plat in ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent']:
+        for plat in ['facebook', 'kijiji', 'zumper', 'rentals_ca']:
             cur.execute("""
             UPDATE posting_history
             SET status = 'posted',
@@ -125,7 +124,7 @@ def toggle_posting_active(unit_id: str, is_active: bool, db_path: Path = DB_PATH
         WHERE id = ?
         """, (now.isoformat(), unit_id))
 
-        for plat in ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent']:
+        for plat in ['facebook', 'kijiji', 'zumper', 'rentals_ca']:
             cur.execute("""
             UPDATE posting_history
             SET status = 'inactive',
@@ -169,7 +168,7 @@ def delete_unit_posting(
     platform_clean = platform.lower().replace(".", "_")
 
     platforms_to_delete = (
-        ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent']
+        ['facebook', 'kijiji', 'zumper', 'rentals_ca']
         if platform_clean == "all"
         else [platform_clean]
     )
@@ -243,7 +242,7 @@ def execute_7day_refresh(
 
     platform_clean = platform.lower().replace(".", "_")
     platforms_to_refresh = (
-        ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent']
+        ['facebook', 'kijiji', 'zumper', 'rentals_ca']
         if platform_clean == "all"
         else [platform_clean]
     )

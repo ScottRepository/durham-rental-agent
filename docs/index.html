@@ -401,8 +401,8 @@
               <button onclick="executeOneClickPost()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition" title="Launch automated Playwright bot to fill in form and upload photos">
                 <i class="fa-solid fa-robot"></i> Launch Bot Browser
               </button>
-              <button onclick="startPostAllVerificationQueue()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl shadow-sm transition" title="Step-by-step verified posting across Facebook, Kijiji, Zumper, Rentals.ca, Liv.rent">
-                <i class="fa-solid fa-layer-group text-yellow-300"></i> Post All 5 Sites
+              <button onclick="startPostAllVerificationQueue()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl shadow-sm transition" title="Step-by-step verified posting across Facebook, Kijiji, Zumper, Rentals.ca">
+                <i class="fa-solid fa-layer-group text-yellow-300"></i> Post All 4 Sites
               </button>
             </div>
             <div class="text-right pt-0.5">
@@ -482,10 +482,9 @@
               <option value="kijiji">Kijiji Ontario (YouTube Embed Badge)</option>
               <option value="zumper">Zumper & PadMapper (Virtual Tour Link)</option>
               <option value="rentals_ca">Rentals.ca (Top Google Rank)</option>
-              <option value="liv_rent">Liv.rent (Digital Verification & Contracts)</option>
             </select>
             <!-- Friendly Visual Website Pills -->
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <button onclick="switchPreviewPlatform('facebook')" id="prevTab-facebook" class="px-3 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition flex items-center justify-center gap-1.5">
                 <i class="fa-brands fa-facebook"></i> Facebook
               </button>
@@ -497,9 +496,6 @@
               </button>
               <button onclick="switchPreviewPlatform('rentals_ca')" id="prevTab-rentals_ca" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
                 <i class="fa-solid fa-house-chimney"></i> Rentals.ca
-              </button>
-              <button onclick="switchPreviewPlatform('liv_rent')" id="prevTab-liv_rent" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-shield-heart"></i> Liv.rent
               </button>
             </div>
           </div>
@@ -521,11 +517,11 @@
               <div class="flex items-center gap-2">
                 <h4 class="text-xs font-bold text-slate-900">Master Ad Content (Single Source of Truth)</h4>
                 <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">
-                  Synced Across 5 Sites
+                  Synced Across 4 Sites
                 </span>
               </div>
               <p class="text-[11px] text-slate-600 leading-snug">
-                One change to price, headline, or description automatically updates Facebook, Kijiji, Rentals.ca, Liv.rent & Zumper. For Zumper, the form link is automatically adapted to bypass URL filters!
+                One change to price, headline, or description automatically updates Facebook, Kijiji, Rentals.ca & Zumper. For Zumper, the form link is automatically adapted to bypass URL filters!
               </p>
             </div>
           </div>
@@ -1492,7 +1488,6 @@
             <option value="kijiji">Kijiji Ontario</option>
             <option value="zumper">Zumper & PadMapper</option>
             <option value="rentals_ca">Rentals.ca</option>
-            <option value="liv_rent">Liv.rent</option>
           </select>
         </div>
 
@@ -1756,7 +1751,7 @@
               <option value="Zumper">Zumper Lead</option>
               <option value="Facebook">FB Marketplace</option>
               <option value="Kijiji">Kijiji</option>
-              <option value="Liv.rent">Liv.rent</option>
+              <option value="Rentals.ca">Rentals.ca</option>
             </select>
           </div>
         </div>
@@ -2749,7 +2744,6 @@
         const kjStatus = u.postings.kijiji.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
         const zmStatus = u.postings.zumper.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
         const rcStatus = (u.postings.rentals_ca && u.postings.rentals_ca.status === "posted") ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
-        const lrStatus = (u.postings.liv_rent && u.postings.liv_rent.status === "posted") ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
         const availBadge = u.financials.available_date || "Immediate";
 
         const vacancyBadgeHtml = vacant
@@ -2806,7 +2800,6 @@
                 <span class="px-2 py-0.5 rounded ${kjStatus}">Kijiji: ${u.postings.kijiji.status}</span>
                 <span class="px-2 py-0.5 rounded ${zmStatus}">Zumper: ${u.postings.zumper.status}</span>
                 <span class="px-2 py-0.5 rounded ${rcStatus}">Rentals.ca: ${u.postings.rentals_ca ? u.postings.rentals_ca.status : 'draft'}</span>
-                <span class="px-2 py-0.5 rounded ${lrStatus}">Liv.rent: ${u.postings.liv_rent ? u.postings.liv_rent.status : 'draft'}</span>
               </div>
 
               <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 text-center text-xs">
@@ -3281,7 +3274,7 @@
         return;
       }
 
-      ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent'].forEach(p => {
+      ['facebook', 'kijiji', 'zumper', 'rentals_ca'].forEach(p => {
         const btn = document.getElementById(`prevTab-${p}`);
         if (!btn) return;
         if (p === plat) {
@@ -3370,7 +3363,7 @@
       const formattedDesc = formatTextWithClickableLinks(description);
 
       // Synchronize preview tabs styling
-      ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent'].forEach(p => {
+      ['facebook', 'kijiji', 'zumper', 'rentals_ca'].forEach(p => {
         const btn = document.getElementById(`prevTab-${p}`);
         if (!btn) return;
         if (p === platform) {
@@ -3630,35 +3623,6 @@
                 <p class="text-xs text-slate-500">315 Kent Street, Whitby, Ontario</p>
               </div>
               <div class="text-2xl font-black text-red-600">${price} <span class="text-xs font-normal text-slate-500">/month</span></div>
-            </div>
-            <div class="text-xs text-slate-700 whitespace-pre-line leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200">
-              ${formattedDesc}
-            </div>
-          </div>
-        `;
-      } else if (platform === "liv_rent") {
-        container.innerHTML = `
-          <!-- Liv.rent Header Bar -->
-          <div class="bg-[#0f766e] px-4 py-2.5 flex items-center justify-between text-white text-xs">
-            <div class="flex items-center gap-2">
-              <span class="font-extrabold text-base tracking-wider">liv.rent</span>
-              <span class="text-teal-200 text-xs">| Trust Score™ Verified</span>
-            </div>
-            <span class="bg-teal-400 text-teal-950 font-bold px-2 py-0.5 rounded text-[10px]">Digital Lease Ready</span>
-          </div>
-
-          <div class="p-5 bg-white space-y-4">
-            <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-5 text-white flex flex-col justify-between min-h-[180px] border border-slate-800">
-              <div class="absolute top-3 left-3 bg-teal-800 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow">
-                Move-in: ${availDate}
-              </div>
-            </div>
-            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-              <div>
-                <h2 class="text-lg font-bold text-slate-900">${title}</h2>
-                <p class="text-xs text-slate-500">315 Kent Street, Whitby, Ontario</p>
-              </div>
-              <div class="text-2xl font-black text-[#0f766e]">${price} <span class="text-xs font-normal text-slate-500">/month</span></div>
             </div>
             <div class="text-xs text-slate-700 whitespace-pre-line leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200">
               ${formattedDesc}
@@ -4140,16 +4104,6 @@ We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM P
             <li>Ranks #1 organically on Google in Canada for rental queries in Durham Region.</li>
           </ul>
         `;
-      } else if (platform === "liv_rent") {
-        platformName = "Liv.rent";
-        postUrl = "https://liv.rent/landlords";
-        rulesHtml = `
-          <strong>Liv.rent Features:</strong>
-          <ul class="list-disc ml-4 mt-1 space-y-1">
-            <li>Free Standard Landlord Tier.</li>
-            <li>Built-in Trust Score tenant verification and digital applications.</li>
-          </ul>
-        `;
       }
 
       // Populate Inputs with Master Content
@@ -4432,8 +4386,7 @@ function renderPlatformsDirectory() {
         { id: 'facebook', name: 'Facebook Marketplace', icon: 'fa-facebook', color: 'bg-blue-600' },
         { id: 'kijiji', name: 'Kijiji Canada', icon: 'fa-k', color: 'bg-orange-600' },
         { id: 'zumper', name: 'Zumper / PadMapper', icon: 'fa-z', color: 'bg-red-600' },
-        { id: 'rentals_ca', name: 'Rentals.ca Network', icon: 'fa-house-chimney', color: 'bg-emerald-600' },
-        { id: 'liv_rent', name: 'Liv.rent Verified', icon: 'fa-shield-halved', color: 'bg-purple-600' }
+        { id: 'rentals_ca', name: 'Rentals.ca Network', icon: 'fa-house-chimney', color: 'bg-emerald-600' }
       ];
       const tbody = document.getElementById('analyticsTableBody');
       if (tbody) {
@@ -4520,8 +4473,7 @@ function renderPlatformsDirectory() {
         facebook: { name: 'Facebook', views: 0, inquiries: 0, color: 'rgba(59, 130, 246, 0.85)' },
         kijiji: { name: 'Kijiji', views: 0, inquiries: 0, color: 'rgba(234, 88, 12, 0.85)' },
         zumper: { name: 'Zumper', views: 0, inquiries: 0, color: 'rgba(239, 68, 68, 0.85)' },
-        rentals_ca: { name: 'Rentals.ca', views: 0, inquiries: 0, color: 'rgba(16, 185, 129, 0.85)' },
-        liv_rent: { name: 'Liv.rent', views: 0, inquiries: 0, color: 'rgba(168, 85, 247, 0.85)' }
+        rentals_ca: { name: 'Rentals.ca', views: 0, inquiries: 0, color: 'rgba(16, 185, 129, 0.85)' }
       };
 
       data.forEach(d => {
@@ -4711,8 +4663,7 @@ function renderPlatformsDirectory() {
       { id: 'facebook', name: 'Facebook Marketplace & Groups', icon: 'fa-facebook-f', color: 'bg-[#1877f2]', url: 'https://www.facebook.com/marketplace/create/rental', tip: 'Pre-fills Rental Apartment, photos, rent, Whitby address, description & cross-posts to Durham groups.' },
       { id: 'kijiji', name: 'Kijiji Ontario', icon: 'fa-tag', color: 'bg-[#373373]', url: 'https://www.kijiji.ca/p-post-ad.html?categoryId=37', tip: 'Pre-fills title, description, rent, Whitby location, photos & YouTube tour badge.' },
       { id: 'zumper', name: 'Zumper & PadMapper', icon: 'fa-z', color: 'bg-[#17222b]', url: 'https://www.zumper.com/manage', tip: 'Method 1 Filter-Safe format active (spaced link bypasses bot filter).' },
-      { id: 'rentals_ca', name: 'Rentals.ca', icon: 'fa-house-user', color: 'bg-[#d32f2f]', url: 'https://rentals.ca/landlord', tip: "Canada's #1 organic Google search rank. (Requires manual account login — click 'Copy & Open Form' or Skip)." },
-      { id: 'liv_rent', name: 'Liv.rent', icon: 'fa-shield-halved', color: 'bg-[#0f766e]', url: 'https://liv.rent/landlords', tip: "Digital contracts & verified score. (Requires manual account login — click 'Copy & Open Form' or Skip)." }
+      { id: 'rentals_ca', name: 'Rentals.ca', icon: 'fa-house-user', color: 'bg-[#d32f2f]', url: 'https://rentals.ca/landlord', tip: "Canada's #1 organic Google search rank for Durham rentals. Pre-fills property details & photo cache." }
     ];
 
     let currentQueueIdx = 0;

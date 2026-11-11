@@ -79,23 +79,6 @@ DURHAM_PLATFORMS = [
         ]
     },
     {
-        "id": "liv_rent",
-        "name": "Liv.rent",
-        "category": "Rental Platform & Tenant Verification",
-        "cost": "Free plan (Up to 2 active listings simultaneously)",
-        "local_strength": "Medium-High (Rapidly growing in the GTA, built-in digital lease & vetting)",
-        "durham_focus": "Attracts verified renters who want a secure, scam-free leasing process.",
-        "media_support": {
-            "max_photos": 20,
-            "video_walkthrough": "Virtual tour link & video link integration",
-            "recommended_dimensions": "Standard landscape"
-        },
-        "url": "https://liv.rent/landlord",
-        "key_tips": [
-            "Pre-screens tenants with Trust Score (credit report and income verification built-in)."
-        ]
-    },
-    {
         "id": "places4students",
         "name": "Places4Students (Oshawa / Durham College & Ontario Tech)",
         "category": "Student Housing Portal",

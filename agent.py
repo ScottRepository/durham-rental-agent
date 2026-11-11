@@ -246,14 +246,14 @@ def main():
     # refresh
     ref_p = subparsers.add_parser("refresh", help="Take down old post and re-post fresh (resets 7-day cycle)")
     ref_p.add_argument("--unit", type=str, help="Unit ID to refresh, or omit to check all due units")
-    ref_p.add_argument("--platform", type=str, default="all", choices=["all", "facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"], help="Platform to refresh")
+    ref_p.add_argument("--platform", type=str, default="all", choices=["all", "facebook", "kijiji", "zumper", "rentals_ca"], help="Platform to refresh")
     ref_p.add_argument("--bot", action="store_true", help="Launch Playwright bot to remove old post and stage fresh ad")
     ref_p.add_argument("--headless", action="store_true", help="Run browser in background")
 
     # delete
     del_p = subparsers.add_parser("delete", help="Take down / delete listing on a platform or all platforms")
     del_p.add_argument("--unit", type=str, required=True, help="Unit ID (e.g. unit_3)")
-    del_p.add_argument("--platform", type=str, default="all", choices=["all", "facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"], help="Platform to delete from")
+    del_p.add_argument("--platform", type=str, default="all", choices=["all", "facebook", "kijiji", "zumper", "rentals_ca"], help="Platform to delete from")
     del_p.add_argument("--bot", action="store_true", help="Launch Playwright bot to delete listing on external site")
     del_p.add_argument("--headless", action="store_true", help="Run browser in background")
 
@@ -265,7 +265,7 @@ def main():
     # post
     post_p = subparsers.add_parser("post", help="Launch Playwright browser bot to auto-fill listing on Facebook, Kijiji, etc.")
     post_p.add_argument("--unit", type=str, required=True, help="Unit ID (e.g. unit_1)")
-    post_p.add_argument("--platform", type=str, default="facebook", choices=["all", "facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"], help="Target platform")
+    post_p.add_argument("--platform", type=str, default="facebook", choices=["all", "facebook", "kijiji", "zumper", "rentals_ca"], help="Target platform")
     post_p.add_argument("--headless", action="store_true", help="Run browser in background")
     post_p.add_argument("--auto-publish", action="store_true", help="Automatically click 'Publish' / 'Post Your Ad' on target platform")
 
