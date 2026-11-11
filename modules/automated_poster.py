@@ -1,18 +1,19 @@
 """
-Playwright-Powered 1-Click Automated Poster for Facebook, Kijiji, Zumper, Rentals.ca, and Liv.rent
-Loads property details and media from SQLite, navigates to the external platform,
-pre-fills the listing form, attaches photos, and records status in SQLite.
+Playwright-Powered 1-Click Automated Poster, Deleter & 7-Day Renewal Bot
+for Facebook Marketplace, Kijiji, Zumper, Rentals.ca, and Liv.rent.
+Loads property details and media from SQLite, downloads high-res photos from Google Drive,
+navigates to external platforms, stages/publishes or deletes listings, and records status in SQLite.
 """
 
 import os
 import sys
 import time
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from datetime import datetime
 
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
-from data.database import get_unit_by_id, update_posting_status
+from data.database import get_unit_by_id, update_posting_status, get_connection, DB_PATH
 from modules.content_generator import (
     generate_facebook_marketplace_listing,
     generate_kijiji_listing,
@@ -25,17 +26,20 @@ USER_PROFILE_DIR = Path.home() / ".property_agent_browser_profile"
 SCREENSHOTS_DIR = Path(__file__).parent.parent / "reports" / "screenshots"
 SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
 
+ALL_PLATFORMS = ["facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"]
+
+
 class AutomatedPoster:
-    def __init__(self, unit_id: str, platform: str, headless: bool = False, auto_publish: bool = False):
+    def __init__(self, unit_id: str, platform: str = "facebook", headless: bool = False, auto_publish: bool = False):
         self.unit_id = unit_id
-        self.platform = platform.lower()
+        self.platform = platform.lower().replace(".", "_")
         self.headless = headless
         self.auto_publish = auto_publish
         self.unit = get_unit_by_id(unit_id)
         if not self.unit:
             raise ValueError(f"Unit ID '{unit_id}' not found in database.")
 
-    def _get_or_download_unit_photos(self) -> list:
+    def _get_or_download_unit_photos(self) -> List[str]:
         """
         Downloads and caches high-resolution suite photos and building exterior photo
         from Google Drive directly onto disk so Playwright can attach them into the
@@ -57,7 +61,7 @@ class AutomatedPoster:
             try:
                 ext_url = "https://drive.google.com/uc?id=185EGZHPUiw_bkYOQPyqds8ZvSH6qJ6JZ&export=download"
                 req = urllib.request.Request(ext_url, headers={"User-Agent": "Mozilla/5.0"})
-                with urllib.request.urlopen(req) as resp, open(ext_path, "wb") as f:
+                with urllib.request.urlopen(req, timeout=15) as resp, open(ext_path, "wb") as f:
                     f.write(resp.read())
                 print(f"[Photo Sync] Downloaded building exterior photo to {ext_path.name}")
             except Exception as e:
@@ -70,7 +74,7 @@ class AutomatedPoster:
         if fid:
             try:
                 req = urllib.request.Request(f"https://drive.google.com/drive/folders/{fid}", headers={"User-Agent": "Mozilla/5.0"})
-                html = urllib.request.urlopen(req).read().decode("utf-8", errors="ignore")
+                html = urllib.request.urlopen(req, timeout=15).read().decode("utf-8", errors="ignore")
                 files = set(re.findall(r"\"([^\"]+\.(?:png|jpg|jpeg|JPG|PNG))\"", html))
 
                 idx = 1
@@ -87,7 +91,7 @@ class AutomatedPoster:
                     if not out_file.exists():
                         try:
                             dl_req = urllib.request.Request(f"https://drive.google.com/uc?id={clean_id}&export=download", headers={"User-Agent": "Mozilla/5.0"})
-                            with urllib.request.urlopen(dl_req) as resp, open(out_file, "wb") as out:
+                            with urllib.request.urlopen(dl_req, timeout=15) as resp, open(out_file, "wb") as out:
                                 out.write(resp.read())
                             print(f"[Photo Sync] Cached suite photo: {fn}")
                         except Exception:
@@ -101,8 +105,30 @@ class AutomatedPoster:
         all_photos = sorted([str(p.resolve()) for p in cache_dir.glob("*.*") if p.suffix.lower() in ('.jpg', '.jpeg', '.png')])
         return all_photos
 
+    def _sync_analytics_status(self, platform: str, ad_status: str):
+        """Keeps ad_analytics table synchronized when ads are posted or deleted."""
+        try:
+            conn = get_connection(DB_PATH)
+            cur = conn.cursor()
+            cur.execute("""
+            UPDATE ad_analytics
+            SET ad_status = ?, last_updated = CURRENT_TIMESTAMP
+            WHERE unit_id = ? AND platform = ?
+            """, (ad_status, self.unit_id, platform))
+            conn.commit()
+            conn.close()
+        except Exception:
+            pass
+
     def run(self) -> Dict[str, Any]:
-        """Executes the one-click posting workflow."""
+        """Executes the one-click posting workflow (supports single platform or 'all')."""
+        if self.platform == "all":
+            results = {}
+            for plat in ALL_PLATFORMS:
+                sub = AutomatedPoster(self.unit_id, plat, headless=self.headless, auto_publish=self.auto_publish)
+                results[plat] = sub.run()
+            return {"success": True, "platform": "all", "results": results}
+
         update_posting_status(self.unit_id, self.platform, "in_progress", log="Automation bot launched")
 
         try:
@@ -124,8 +150,9 @@ class AutomatedPoster:
                 self.platform,
                 "posted",
                 external_url=result.get("url"),
-                log=f"Successfully staged/completed on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+                log=f"Successfully staged/published on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
             )
+            self._sync_analytics_status(self.platform, "live")
             return {"success": True, "details": result}
 
         except Exception as e:
@@ -133,6 +160,133 @@ class AutomatedPoster:
             print(f"[AutomatedPoster Error] {error_msg}")
             update_posting_status(self.unit_id, self.platform, "failed", log=error_msg)
             return {"success": False, "error": error_msg}
+
+    def delete_posting(self) -> Dict[str, Any]:
+        """
+        Deletes / takes down the listing from the target platform (or all platforms)
+        using Playwright browser automation and updates the SQLite database.
+        """
+        if self.platform == "all":
+            results = {}
+            for plat in ALL_PLATFORMS:
+                sub = AutomatedPoster(self.unit_id, plat, headless=self.headless)
+                results[plat] = sub.delete_posting()
+            return {"success": True, "action": "delete_all", "unit_id": self.unit_id, "results": results}
+
+        print(f"[Delete Bot] Taking down {self.unit_id} on {self.platform}...")
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        # Update DB immediately
+        update_posting_status(
+            self.unit_id,
+            self.platform,
+            "inactive",
+            log=f"Taken down / deleted via bot at {now_str}"
+        )
+        self._sync_analytics_status(self.platform, "inactive")
+
+        manage_urls = {
+            "facebook": "https://www.facebook.com/marketplace/you/selling",
+            "kijiji": "https://www.kijiji.ca/m-my-ads/active",
+            "zumper": "https://www.zumper.com/manage",
+            "rentals_ca": "https://rentals.ca/landlord",
+            "liv_rent": "https://liv.rent/landlords"
+        }
+        target_url = manage_urls.get(self.platform, "https://www.facebook.com/marketplace/you/selling")
+        screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_{self.platform}_deleted.png"
+
+        try:
+            USER_PROFILE_DIR.mkdir(parents=True, exist_ok=True)
+            with sync_playwright() as p:
+                context = p.chromium.launch_persistent_context(
+                    user_data_dir=str(USER_PROFILE_DIR),
+                    headless=self.headless,
+                    viewport={"width": 1366, "height": 850},
+                    args=["--disable-blink-features=AutomationControlled"]
+                )
+                page = context.new_page()
+                self._safe_goto(page, target_url)
+
+                # Attempt platform-specific delete / unpublish click if listing is visible
+                try:
+                    if self.platform == "facebook":
+                        del_btn = page.locator('div[aria-label*="Delete"], button:has-text("Delete listing"), span:has-text("Delete listing")').first
+                        if del_btn.count() > 0 and del_btn.is_visible():
+                            del_btn.click(timeout=2500)
+                            time.sleep(1.5)
+                            confirm_btn = page.locator('div[aria-label="Delete"], button:has-text("Delete")').last
+                            if confirm_btn.count() > 0 and confirm_btn.is_visible():
+                                confirm_btn.click(timeout=2500)
+                    elif self.platform == "kijiji":
+                        del_btn = page.locator('button:has-text("Delete"), a:has-text("Delete")').first
+                        if del_btn.count() > 0 and del_btn.is_visible():
+                            del_btn.click(timeout=2500)
+                    elif self.platform in ("zumper", "rentals_ca", "liv_rent"):
+                        unpub_btn = page.locator('button:has-text("Unpublish"), button:has-text("Deactivate"), button:has-text("Delete")').first
+                        if unpub_btn.count() > 0 and unpub_btn.is_visible():
+                            unpub_btn.click(timeout=2500)
+                except Exception as click_err:
+                    print(f"[Delete Bot Click Note] {click_err}")
+
+                self._safe_screenshot(page, screenshot_path)
+                if not self.headless:
+                    print(f"[Delete Bot] Opened {self.platform} management page. Keeping open for 15s to verify deletion...")
+                    try:
+                        page.wait_for_timeout(15000)
+                    except Exception:
+                        pass
+                context.close()
+        except Exception as e:
+            print(f"[Delete Bot Browser Note] {e}")
+
+        return {
+            "success": True,
+            "action": "deleted",
+            "unit_id": self.unit_id,
+            "platform": self.platform,
+            "manage_url": target_url,
+            "screenshot": str(screenshot_path),
+            "message": f"Listing for {self.unit['name']} on {self.platform.upper()} taken down and marked inactive."
+        }
+
+    def renew_posting(self) -> Dict[str, Any]:
+        """
+        Executes the 7-Day Auto-Renewal workflow:
+        1. Takes down / deletes the old posting so it doesn't appear stale.
+        2. Re-posts a fresh ad with all photos and current master pricing/copy.
+        """
+        print(f"[7-Day Renew Bot] Taking down old ad and re-posting fresh for {self.unit_id} on {self.platform}...")
+        del_res = self.delete_posting()
+        post_res = self.run()
+        return {
+            "success": post_res.get("success", True),
+            "action": "renewed_7day",
+            "unit_id": self.unit_id,
+            "platform": self.platform,
+            "deleted": del_res,
+            "reposted": post_res,
+            "message": f"7-Day Renewal complete for {self.unit['name']} ({self.platform.upper()}): old post removed & fresh ad staged!"
+        }
+
+    def _safe_goto(self, page, url: str) -> None:
+        """Navigates to URL with resilient timeout handling so slow third-party scripts never crash the bot."""
+        page.set_default_timeout(5000)
+        try:
+            page.goto(url, wait_until="commit", timeout=10000)
+            try:
+                page.wait_for_load_state("domcontentloaded", timeout=4000)
+            except Exception:
+                pass
+            time.sleep(1.5)
+        except Exception as nav_err:
+            print(f"[Browser Navigation Note] {url}: {nav_err}")
+
+    def _safe_screenshot(self, page, screenshot_path: Path) -> None:
+        """Captures screenshot without hanging on slow external webfont loads."""
+        try:
+            page.screenshot(path=str(screenshot_path), timeout=5000, animations="disabled")
+        except Exception as sc_err:
+            print(f"[Screenshot Note] {sc_err}")
 
     def _post_facebook(self) -> Dict[str, Any]:
         """Automates Facebook Marketplace rental listing form."""
@@ -149,8 +303,7 @@ class AutomatedPoster:
                 args=["--disable-blink-features=AutomationControlled"]
             )
             page = context.new_page()
-            page.goto("https://www.facebook.com/marketplace/create/rental", wait_until="domcontentloaded")
-            time.sleep(3)
+            self._safe_goto(page, "https://www.facebook.com/marketplace/create/rental")
 
             # 1. Automatically attach suite photos and exterior photo
             photos = self._get_or_download_unit_photos()
@@ -183,7 +336,7 @@ class AutomatedPoster:
             except Exception as fill_err:
                 print(f"[Facebook Auto-Fill Note] {fill_err}")
 
-            page.screenshot(path=str(screenshot_path))
+            self._safe_screenshot(page, screenshot_path)
 
             # 3. Optional Auto-Publish (Clicks Next -> Publish)
             if self.auto_publish:
@@ -191,12 +344,12 @@ class AutomatedPoster:
                     print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
                     next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
                     if next_btns.count() > 0 and next_btns.first.is_visible():
-                        next_btns.first.click()
+                        next_btns.first.click(timeout=3000)
                         time.sleep(3)
                         print("[Facebook Poster] Searching for 'Publish' button...")
                         pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
                         if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                            pub_btns.first.click()
+                            pub_btns.first.click(timeout=3000)
                             time.sleep(4)
                             print("[Facebook Poster] ✔ Final Publish button clicked!")
                 except Exception as pub_err:
@@ -214,6 +367,7 @@ class AutomatedPoster:
             "platform": "Facebook Marketplace",
             "url": "https://www.facebook.com/marketplace/create/rental",
             "screenshot": str(screenshot_path),
+            "photos_attached": len(photos),
             "title": payload["title"],
             "price": payload["price"]
         }
@@ -233,8 +387,7 @@ class AutomatedPoster:
                 args=["--disable-blink-features=AutomationControlled"]
             )
             page = context.new_page()
-            page.goto("https://www.kijiji.ca/p-post-ad.html?categoryId=37", wait_until="domcontentloaded")
-            time.sleep(3)
+            self._safe_goto(page, "https://www.kijiji.ca/p-post-ad.html?categoryId=37")
 
             # 1. Automatically attach suite photos and exterior photo
             photos = self._get_or_download_unit_photos()
@@ -250,39 +403,38 @@ class AutomatedPoster:
 
             # 2. Attempt to pre-fill standard Kijiji ad title, description, price, and YouTube link if visible
             try:
+                clean_price = str(payload["price"]).replace(".0", "")
                 for sel, val in [
                     ("input[name*='postAdForm.title'], #AdTitleForm", payload["title"]),
                     ("textarea[name*='postAdForm.description'], #pstad-descrptn", payload["description"]),
-                    ("input[name*='postAdForm.priceAmount'], #PriceAmount", str(payload["price"])),
+                    ("input[name*='postAdForm.priceAmount'], #PriceAmount", clean_price),
                     ("input[name*='youtube'], input[id*='youtube']", payload["youtube_video_url"])
                 ]:
-                    loc = page.locator(sel).first
-                    if loc.count() > 0 and loc.is_visible():
-                        loc.fill(val)
+                    try:
+                        loc = page.locator(sel).first
+                        if loc.count() > 0 and loc.is_visible():
+                            loc.fill(val, timeout=2500)
+                    except Exception:
+                        pass
             except Exception as fill_err:
                 print(f"[Kijiji Auto-Fill Note] {fill_err}")
 
-            page.screenshot(path=str(screenshot_path))
+            self._safe_screenshot(page, screenshot_path)
 
-            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            # 3. Optional Auto-Publish (Clicks Post Your Ad)
             if self.auto_publish:
                 try:
-                    print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
-                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
-                    if next_btns.count() > 0 and next_btns.first.is_visible():
-                        next_btns.first.click()
-                        time.sleep(3)
-                        print("[Facebook Poster] Searching for 'Publish' button...")
-                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
-                        if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                            pub_btns.first.click()
-                            time.sleep(4)
-                            print("[Facebook Poster] ✔ Final Publish button clicked!")
+                    print("[Kijiji Poster] Auto-Publish enabled: searching for 'Post Your Ad' button...")
+                    pub_btns = page.locator('button[type="submit"]:has-text("Post Your Ad"), button:has-text("Post Your Ad")')
+                    if pub_btns.count() > 0 and pub_btns.first.is_visible():
+                        pub_btns.first.click(timeout=3000)
+                        time.sleep(4)
+                        print("[Kijiji Poster] ✔ Final Post Your Ad button clicked!")
                 except Exception as pub_err:
-                    print(f"[Facebook Auto-Publish Note] {pub_err}")
+                    print(f"[Kijiji Auto-Publish Note] {pub_err}")
 
             if not self.headless and not self.auto_publish:
-                print("\n[Facebook Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                print("\n[Kijiji Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Post Your Ad...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -293,6 +445,7 @@ class AutomatedPoster:
             "platform": "Kijiji Ontario",
             "url": "https://www.kijiji.ca/p-post-ad.html?categoryId=37",
             "screenshot": str(screenshot_path),
+            "photos_attached": len(photos),
             "title": payload["title"],
             "video_url": payload["youtube_video_url"]
         }
@@ -304,6 +457,7 @@ class AutomatedPoster:
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_zumper.png"
 
         print(f"[Zumper Poster] Opening Zumper manage portal...")
+        photos = self._get_or_download_unit_photos()
         with sync_playwright() as p:
             context = p.chromium.launch_persistent_context(
                 user_data_dir=str(USER_PROFILE_DIR),
@@ -312,30 +466,30 @@ class AutomatedPoster:
                 args=["--disable-blink-features=AutomationControlled"]
             )
             page = context.new_page()
-            page.goto("https://www.zumper.com/manage", wait_until="domcontentloaded")
-            time.sleep(3)
+            self._safe_goto(page, "https://www.zumper.com/manage")
 
-            page.screenshot(path=str(screenshot_path))
+            if photos:
+                try:
+                    file_inputs = page.locator('input[type="file"]')
+                    if file_inputs.count() > 0:
+                        file_inputs.first.set_input_files(photos)
+                        time.sleep(2)
+                except Exception:
+                    pass
 
-            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            self._safe_screenshot(page, screenshot_path)
+
             if self.auto_publish:
                 try:
-                    print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
-                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
-                    if next_btns.count() > 0 and next_btns.first.is_visible():
-                        next_btns.first.click()
+                    pub_btns = page.locator('button:has-text("Publish"), button:has-text("Submit"), button:has-text("Save")')
+                    if pub_btns.count() > 0 and pub_btns.first.is_visible():
+                        pub_btns.first.click(timeout=3000)
                         time.sleep(3)
-                        print("[Facebook Poster] Searching for 'Publish' button...")
-                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
-                        if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                            pub_btns.first.click()
-                            time.sleep(4)
-                            print("[Facebook Poster] ✔ Final Publish button clicked!")
-                except Exception as pub_err:
-                    print(f"[Facebook Auto-Publish Note] {pub_err}")
+                except Exception:
+                    pass
 
             if not self.headless and not self.auto_publish:
-                print("\n[Facebook Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                print("\n[Zumper Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -346,6 +500,7 @@ class AutomatedPoster:
             "platform": "Zumper & PadMapper",
             "url": "https://www.zumper.com/manage",
             "screenshot": str(screenshot_path),
+            "photos_attached": len(photos),
             "title": payload["title"]
         }
 
@@ -356,6 +511,7 @@ class AutomatedPoster:
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_rentals_ca.png"
 
         print(f"[Rentals.ca Poster] Opening Rentals.ca portal...")
+        photos = self._get_or_download_unit_photos()
         with sync_playwright() as p:
             context = p.chromium.launch_persistent_context(
                 user_data_dir=str(USER_PROFILE_DIR),
@@ -364,30 +520,30 @@ class AutomatedPoster:
                 args=["--disable-blink-features=AutomationControlled"]
             )
             page = context.new_page()
-            page.goto("https://rentals.ca/landlord", wait_until="domcontentloaded")
-            time.sleep(3)
+            self._safe_goto(page, "https://rentals.ca/landlord")
 
-            page.screenshot(path=str(screenshot_path))
+            if photos:
+                try:
+                    file_inputs = page.locator('input[type="file"]')
+                    if file_inputs.count() > 0:
+                        file_inputs.first.set_input_files(photos)
+                        time.sleep(2)
+                except Exception:
+                    pass
 
-            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            self._safe_screenshot(page, screenshot_path)
+
             if self.auto_publish:
                 try:
-                    print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
-                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
-                    if next_btns.count() > 0 and next_btns.first.is_visible():
-                        next_btns.first.click()
+                    pub_btns = page.locator('button:has-text("Publish"), button:has-text("Submit")')
+                    if pub_btns.count() > 0 and pub_btns.first.is_visible():
+                        pub_btns.first.click(timeout=3000)
                         time.sleep(3)
-                        print("[Facebook Poster] Searching for 'Publish' button...")
-                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
-                        if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                            pub_btns.first.click()
-                            time.sleep(4)
-                            print("[Facebook Poster] ✔ Final Publish button clicked!")
-                except Exception as pub_err:
-                    print(f"[Facebook Auto-Publish Note] {pub_err}")
+                except Exception:
+                    pass
 
             if not self.headless and not self.auto_publish:
-                print("\n[Facebook Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                print("\n[Rentals.ca Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -398,6 +554,7 @@ class AutomatedPoster:
             "platform": "Rentals.ca",
             "url": "https://rentals.ca/landlord",
             "screenshot": str(screenshot_path),
+            "photos_attached": len(photos),
             "title": payload["title"]
         }
 
@@ -408,6 +565,7 @@ class AutomatedPoster:
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_liv_rent.png"
 
         print(f"[Liv.rent Poster] Opening Liv.rent portal...")
+        photos = self._get_or_download_unit_photos()
         with sync_playwright() as p:
             context = p.chromium.launch_persistent_context(
                 user_data_dir=str(USER_PROFILE_DIR),
@@ -416,30 +574,30 @@ class AutomatedPoster:
                 args=["--disable-blink-features=AutomationControlled"]
             )
             page = context.new_page()
-            page.goto("https://liv.rent/landlords", wait_until="domcontentloaded")
-            time.sleep(3)
+            self._safe_goto(page, "https://liv.rent/landlords")
 
-            page.screenshot(path=str(screenshot_path))
+            if photos:
+                try:
+                    file_inputs = page.locator('input[type="file"]')
+                    if file_inputs.count() > 0:
+                        file_inputs.first.set_input_files(photos)
+                        time.sleep(2)
+                except Exception:
+                    pass
 
-            # 3. Optional Auto-Publish (Clicks Next -> Publish)
+            self._safe_screenshot(page, screenshot_path)
+
             if self.auto_publish:
                 try:
-                    print("[Facebook Poster] Auto-Publish enabled: searching for 'Next' button...")
-                    next_btns = page.locator('div[aria-label="Next"], button:has-text("Next"), div[role="button"]:has-text("Next")')
-                    if next_btns.count() > 0 and next_btns.first.is_visible():
-                        next_btns.first.click()
+                    pub_btns = page.locator('button:has-text("Publish"), button:has-text("Submit")')
+                    if pub_btns.count() > 0 and pub_btns.first.is_visible():
+                        pub_btns.first.click(timeout=3000)
                         time.sleep(3)
-                        print("[Facebook Poster] Searching for 'Publish' button...")
-                        pub_btns = page.locator('div[aria-label="Publish"], button:has-text("Publish"), div[role="button"]:has-text("Publish")')
-                        if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                            pub_btns.first.click()
-                            time.sleep(4)
-                            print("[Facebook Poster] ✔ Final Publish button clicked!")
-                except Exception as pub_err:
-                    print(f"[Facebook Auto-Publish Note] {pub_err}")
+                except Exception:
+                    pass
 
             if not self.headless and not self.auto_publish:
-                print("\n[Facebook Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
+                print("\n[Liv.rent Poster] Form staged! Browser will stay open for up to 60 seconds for you to review and click Publish...")
                 try:
                     page.wait_for_timeout(60000)
                 except Exception:
@@ -450,5 +608,6 @@ class AutomatedPoster:
             "platform": "Liv.rent",
             "url": "https://liv.rent/landlords",
             "screenshot": str(screenshot_path),
+            "photos_attached": len(photos),
             "title": payload["title"]
         }

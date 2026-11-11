@@ -3,8 +3,17 @@ name: Cloud Auto-Poster & Listing Bot
 on:
   workflow_dispatch:
     inputs:
+      action:
+        description: 'Bot Action to Perform'
+        required: true
+        default: 'post'
+        type: choice
+        options:
+          - post
+          - renew_7day
+          - delete
       unit_id:
-        description: 'Unit to Post (e.g. unit_3, unit_1, or all)'
+        description: 'Unit ID (e.g. unit_3, unit_1, or all)'
         required: true
         default: 'unit_3'
         type: choice
@@ -73,10 +82,13 @@ jobs:
             echo "ℹ No session secret found. Running fresh browser session."
           fi
 
-      - name: Run Auto-Posting Bot
+      - name: Execute Bot Workflow (Post / Delete / 7-Day Renew)
         env:
           HEADLESS: "true"
         run: |
+          ACTION="${{ github.event.inputs.action }}"
+          if [ -z "$ACTION" ]; then ACTION="post"; fi
+
           AUTO_PUB_FLAG=""
           if [ "${{ github.event.inputs.auto_publish }}" = "true" ]; then
             AUTO_PUB_FLAG="--auto-publish"
@@ -85,20 +97,26 @@ jobs:
           if [ "${{ github.event_name }}" = "schedule" ]; then
             echo "Running scheduled 7-day auto-refresh check..."
             python agent.py refresh
-          elif [ "${{ github.event.inputs.unit_id }}" = "all" ]; then
-            for u in unit_1 unit_2 unit_3 unit_4 unit_5 unit_6; do
-              if [ "${{ github.event.inputs.platform }}" = "all" ]; then
-                for p in facebook kijiji zumper rentals_ca liv_rent; do
-                  python agent.py post --unit $u --platform $p --headless $AUTO_PUB_FLAG || true
-                done
-              else
-                python agent.py post --unit $u --platform ${{ github.event.inputs.platform }} --headless $AUTO_PUB_FLAG || true
-              fi
-            done
+          elif [ "$ACTION" = "delete" ]; then
+            if [ "${{ github.event.inputs.unit_id }}" = "all" ]; then
+              for u in unit_1 unit_2 unit_3 unit_4 unit_5 unit_6; do
+                python agent.py delete --unit $u --platform ${{ github.event.inputs.platform }} --bot --headless || true
+              done
+            else
+              python agent.py delete --unit ${{ github.event.inputs.unit_id }} --platform ${{ github.event.inputs.platform }} --bot --headless || true
+            fi
+          elif [ "$ACTION" = "renew_7day" ]; then
+            if [ "${{ github.event.inputs.unit_id }}" = "all" ]; then
+              for u in unit_1 unit_2 unit_3 unit_4 unit_5 unit_6; do
+                python agent.py refresh --unit $u --platform ${{ github.event.inputs.platform }} --bot --headless || true
+              done
+            else
+              python agent.py refresh --unit ${{ github.event.inputs.unit_id }} --platform ${{ github.event.inputs.platform }} --bot --headless || true
+            fi
           else
-            if [ "${{ github.event.inputs.platform }}" = "all" ]; then
-              for p in facebook kijiji zumper rentals_ca liv_rent; do
-                python agent.py post --unit ${{ github.event.inputs.unit_id }} --platform $p --headless $AUTO_PUB_FLAG || true
+            if [ "${{ github.event.inputs.unit_id }}" = "all" ]; then
+              for u in unit_1 unit_2 unit_3 unit_4 unit_5 unit_6; do
+                python agent.py post --unit $u --platform ${{ github.event.inputs.platform }} --headless $AUTO_PUB_FLAG || true
               done
             else
               python agent.py post --unit ${{ github.event.inputs.unit_id }} --platform ${{ github.event.inputs.platform }} --headless $AUTO_PUB_FLAG || true

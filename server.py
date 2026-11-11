@@ -32,6 +32,7 @@ from modules.tenant_screening import analyze_tenant_application, generate_gmail_
 from modules.lifecycle_manager import (
     get_lifecycle_overview,
     toggle_posting_active,
+    delete_unit_posting,
     execute_7day_refresh,
     check_and_run_all_due_refreshes
 )
@@ -224,9 +225,12 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps(result).encode("utf-8"))
             return
 
-        # 7-Day Auto-Refresh Lifecycle: Take Down & Re-Post Fresh Now
-        elif path == "/api/postings/refresh":
+        # 1-Click Delete / Take Down Posting Endpoint
+        elif path in ("/api/delete-posting", "/api/postings/delete"):
             unit_id = data.get("unit_id")
+            platform = data.get("platform", "all")
+            run_bot = data.get("run_bot", False)
+            headless = data.get("headless", False)
             if not unit_id:
                 self.send_response(400)
                 self.send_header("Content-Type", "application/json")
@@ -234,7 +238,28 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({"success": False, "error": "unit_id required"}).encode("utf-8"))
                 return
-            result = execute_7day_refresh(unit_id)
+            result = delete_unit_posting(unit_id=unit_id, platform=platform, run_bot=run_bot, headless=headless)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps(result).encode("utf-8"))
+            return
+
+        # 7-Day Auto-Refresh Lifecycle: Take Down & Re-Post Fresh Now
+        elif path == "/api/postings/refresh":
+            unit_id = data.get("unit_id")
+            platform = data.get("platform", "all")
+            run_bot = data.get("run_bot", False)
+            headless = data.get("headless", False)
+            if not unit_id:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self._set_cors_headers()
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "unit_id required"}).encode("utf-8"))
+                return
+            result = execute_7day_refresh(unit_id=unit_id, platform=platform, run_bot=run_bot, headless=headless)
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self._set_cors_headers()

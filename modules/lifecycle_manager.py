@@ -109,8 +109,13 @@ def toggle_posting_active(unit_id: str, is_active: bool, db_path: Path = DB_PATH
                 log_output = ?
             WHERE unit_id = ? AND platform = ?
             """, (now.isoformat(), f"Active: 7-day refresh scheduled for {next_refresh.strftime('%b %d')}", unit_id, plat))
+            cur.execute("""
+            UPDATE ad_analytics
+            SET ad_status = 'live', last_updated = CURRENT_TIMESTAMP
+            WHERE unit_id = ? AND platform = ?
+            """, (unit_id, plat))
 
-        action_msg = f"Unit {unit_id} postings activated and fresh ads published! Next 7-day auto-refresh on {next_refresh.strftime('%b %d, %Y')}."
+        action_msg = f"Unit {unit_id} postings activated and 7-day auto-renewal scheduled! Next refresh on {next_refresh.strftime('%b %d, %Y')}."
     else:
         # Deactivate and take down listings
         cur.execute("""
@@ -127,6 +132,11 @@ def toggle_posting_active(unit_id: str, is_active: bool, db_path: Path = DB_PATH
                 log_output = ?
             WHERE unit_id = ? AND platform = ?
             """, (f"Taken down by landlord at {now.strftime('%b %d, %Y %I:%M %p')}", unit_id, plat))
+            cur.execute("""
+            UPDATE ad_analytics
+            SET ad_status = 'inactive', last_updated = CURRENT_TIMESTAMP
+            WHERE unit_id = ? AND platform = ?
+            """, (unit_id, plat))
 
         action_msg = f"Unit {unit_id} postings deactivated and taken down from all platforms. Auto-refresh paused."
 
@@ -141,7 +151,72 @@ def toggle_posting_active(unit_id: str, is_active: bool, db_path: Path = DB_PATH
         "next_refresh_at": next_refresh.isoformat() if is_active else None
     }
 
-def execute_7day_refresh(unit_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
+
+def delete_unit_posting(
+    unit_id: str,
+    platform: str = "all",
+    run_bot: bool = False,
+    headless: bool = False,
+    db_path: Path = DB_PATH
+) -> Dict[str, Any]:
+    """
+    Deletes / takes down a specific platform's posting or all postings for a unit.
+    Optionally launches the Playwright browser bot to remove the ad on the external site.
+    """
+    conn = get_connection(db_path)
+    cur = conn.cursor()
+    now = datetime.now()
+    platform_clean = platform.lower().replace(".", "_")
+
+    platforms_to_delete = (
+        ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent']
+        if platform_clean == "all"
+        else [platform_clean]
+    )
+
+    if platform_clean == "all":
+        cur.execute("UPDATE units SET ad_active = 0, updated_at = ? WHERE id = ?", (now.isoformat(), unit_id))
+
+    for plat in platforms_to_delete:
+        cur.execute("""
+        UPDATE posting_history
+        SET status = 'inactive',
+            log_output = ?
+        WHERE unit_id = ? AND platform = ?
+        """, (f"Deleted / taken down on {now.strftime('%b %d, %Y %I:%M %p')}", unit_id, plat))
+        cur.execute("""
+        UPDATE ad_analytics
+        SET ad_status = 'inactive', last_updated = CURRENT_TIMESTAMP
+        WHERE unit_id = ? AND platform = ?
+        """, (unit_id, plat))
+
+    conn.commit()
+    conn.close()
+
+    bot_result = None
+    if run_bot:
+        from modules.automated_poster import AutomatedPoster
+        poster = AutomatedPoster(unit_id=unit_id, platform=platform_clean, headless=headless)
+        bot_result = poster.delete_posting()
+
+    target_label = "ALL 5 platforms" if platform_clean == "all" else platform_clean.upper()
+    return {
+        "success": True,
+        "unit_id": unit_id,
+        "platform": platform_clean,
+        "bot_executed": run_bot,
+        "bot_details": bot_result,
+        "message": f"Posting for {unit_id} on {target_label} has been deleted / taken down."
+    }
+
+
+def execute_7day_refresh(
+    unit_id: str,
+    platform: str = "all",
+    run_bot: bool = False,
+    headless: bool = False,
+    db_path: Path = DB_PATH
+) -> Dict[str, Any]:
     """
     Takes the current ad down and immediately re-posts it fresh to gain top ranking/new views.
     Resets the 7-day timer.
@@ -166,8 +241,14 @@ def execute_7day_refresh(unit_id: str, db_path: Path = DB_PATH) -> Dict[str, Any
     WHERE id = ?
     """, (now.isoformat(), next_refresh.isoformat(), now.isoformat(), unit_id))
 
-    # Mark postings as refreshed
-    for plat in ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent']:
+    platform_clean = platform.lower().replace(".", "_")
+    platforms_to_refresh = (
+        ['facebook', 'kijiji', 'zumper', 'rentals_ca', 'liv_rent']
+        if platform_clean == "all"
+        else [platform_clean]
+    )
+
+    for plat in platforms_to_refresh:
         cur.execute("""
         UPDATE posting_history
         SET status = 'posted',
@@ -175,16 +256,31 @@ def execute_7day_refresh(unit_id: str, db_path: Path = DB_PATH) -> Dict[str, Any
             log_output = ?
         WHERE unit_id = ? AND platform = ?
         """, (now.isoformat(), f"7-Day Auto-Refresh: Previous post archived & fresh ad published on {now.strftime('%b %d')}", unit_id, plat))
+        cur.execute("""
+        UPDATE ad_analytics
+        SET ad_status = 'live', last_updated = CURRENT_TIMESTAMP
+        WHERE unit_id = ? AND platform = ?
+        """, (unit_id, plat))
 
     conn.commit()
     conn.close()
 
+    bot_result = None
+    if run_bot:
+        from modules.automated_poster import AutomatedPoster
+        poster = AutomatedPoster(unit_id=unit_id, platform=platform_clean, headless=headless)
+        bot_result = poster.renew_posting()
+
     return {
         "success": True,
         "unit_id": unit_id,
-        "message": f"Successfully took down previous ad and re-posted fresh for {unit['name']}. Next refresh scheduled in 7 days ({next_refresh.strftime('%b %d, %Y')}).",
+        "platform": platform_clean,
+        "bot_executed": run_bot,
+        "bot_details": bot_result,
+        "message": f"Successfully took down previous ad and re-posted fresh for {unit['name']}. Next 7-day auto-renewal scheduled for {next_refresh.strftime('%b %d, %Y')}.",
         "last_refreshed_at": now.isoformat(),
-        "next_refresh_at": next_refresh.isoformat()
+        "next_refresh_at": next_refresh.isoformat(),
+        "next_refresh_display": next_refresh.strftime("%b %d, %Y")
     }
 
 def check_and_run_all_due_refreshes(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:

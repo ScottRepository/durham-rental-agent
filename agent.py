@@ -175,7 +175,12 @@ def cmd_lifecycle(args):
 def cmd_refresh(args):
     from modules.lifecycle_manager import execute_7day_refresh, check_and_run_all_due_refreshes
     if args.unit:
-        res = execute_7day_refresh(args.unit)
+        res = execute_7day_refresh(
+            unit_id=args.unit,
+            platform=getattr(args, "platform", "all") or "all",
+            run_bot=getattr(args, "bot", False),
+            headless=getattr(args, "headless", False)
+        )
         console.print(f"[bold green]✔ {res['message']}[/bold green]")
     else:
         results = check_and_run_all_due_refreshes()
@@ -183,6 +188,20 @@ def cmd_refresh(args):
             console.print("[bold yellow]No active postings are currently due for 7-day refresh.[/bold yellow]")
         for r in results:
             console.print(f"[bold green]✔ {r['message']}[/bold green]")
+
+def cmd_delete(args):
+    from modules.lifecycle_manager import delete_unit_posting
+    console.print(f"[bold yellow]Taking down / deleting posting for {args.unit} on {args.platform}...[/bold yellow]")
+    res = delete_unit_posting(
+        unit_id=args.unit,
+        platform=args.platform,
+        run_bot=args.bot,
+        headless=args.headless
+    )
+    if res.get("success"):
+        console.print(f"[bold green]✔ {res['message']}[/bold green]")
+    else:
+        console.print(f"[bold red]❌ Delete failed: {res.get('error')}[/bold red]")
 
 def cmd_toggle(args):
     from modules.lifecycle_manager import toggle_posting_active
@@ -227,6 +246,16 @@ def main():
     # refresh
     ref_p = subparsers.add_parser("refresh", help="Take down old post and re-post fresh (resets 7-day cycle)")
     ref_p.add_argument("--unit", type=str, help="Unit ID to refresh, or omit to check all due units")
+    ref_p.add_argument("--platform", type=str, default="all", choices=["all", "facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"], help="Platform to refresh")
+    ref_p.add_argument("--bot", action="store_true", help="Launch Playwright bot to remove old post and stage fresh ad")
+    ref_p.add_argument("--headless", action="store_true", help="Run browser in background")
+
+    # delete
+    del_p = subparsers.add_parser("delete", help="Take down / delete listing on a platform or all platforms")
+    del_p.add_argument("--unit", type=str, required=True, help="Unit ID (e.g. unit_3)")
+    del_p.add_argument("--platform", type=str, default="all", choices=["all", "facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"], help="Platform to delete from")
+    del_p.add_argument("--bot", action="store_true", help="Launch Playwright bot to delete listing on external site")
+    del_p.add_argument("--headless", action="store_true", help="Run browser in background")
 
     # toggle
     tog_p = subparsers.add_parser("toggle", help="Activate or deactivate a unit listing campaign")
@@ -236,7 +265,7 @@ def main():
     # post
     post_p = subparsers.add_parser("post", help="Launch Playwright browser bot to auto-fill listing on Facebook, Kijiji, etc.")
     post_p.add_argument("--unit", type=str, required=True, help="Unit ID (e.g. unit_1)")
-    post_p.add_argument("--platform", type=str, default="facebook", choices=["facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"], help="Target platform")
+    post_p.add_argument("--platform", type=str, default="facebook", choices=["all", "facebook", "kijiji", "zumper", "rentals_ca", "liv_rent"], help="Target platform")
     post_p.add_argument("--headless", action="store_true", help="Run browser in background")
     post_p.add_argument("--auto-publish", action="store_true", help="Automatically click 'Publish' / 'Post Your Ad' on target platform")
 
@@ -257,6 +286,8 @@ def main():
         cmd_lifecycle(args)
     elif args.command == "refresh":
         cmd_refresh(args)
+    elif args.command == "delete":
+        cmd_delete(args)
     elif args.command == "toggle":
         cmd_toggle(args)
     elif args.command == "post":

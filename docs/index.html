@@ -9,7 +9,7 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -102,14 +102,38 @@
     </div>
   </header>
 
-  <!-- Bot Server Connection Banner -->
-  <div id="botConnectionBanner" class="bg-slate-900 text-white px-4 sm:px-6 py-2.5 text-xs flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 shadow-inner">
-    <div class="flex items-center gap-2.5">
-      <span id="botStatusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-      <span id="botStatusText" class="font-medium text-slate-200">Connecting to Local Bot Engine...</span>
-    </div>
-    <div id="botStatusAction" class="flex items-center gap-2">
-      <!-- Populated by checkBotServerStatus() -->
+  <!-- Bot Server Connection & Global 1-Click Command Bar -->
+  <div id="botConnectionBanner" class="bg-slate-900 text-white px-4 sm:px-6 py-2.5 text-xs border-b border-slate-800 shadow-inner">
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-2.5">
+      <div class="flex items-center gap-2.5">
+        <span id="botStatusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+        <span id="botStatusText" class="font-medium text-slate-200">Connecting to Local Bot Engine...</span>
+        <div id="botStatusAction" class="flex items-center gap-2">
+          <!-- Populated by checkBotServerStatus() -->
+        </div>
+      </div>
+
+      <!-- Global Quick-Action Bar: Post, 7-Day Renew, Delete -->
+      <div class="flex flex-wrap items-center gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700">
+        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1"><i class="fa-solid fa-bolt text-amber-400 mr-1"></i>Quick Bot Control:</span>
+        <select id="globalQuickUnitSelect" class="bg-slate-900 text-white border border-slate-600 rounded-lg px-2 py-1 text-xs font-bold focus:outline-none focus:ring-1 focus:ring-blue-400">
+          <option value="unit_3">Unit 3 ($2,075/mo • 2 Bed)</option>
+          <option value="unit_1">Unit 1 ($1,895/mo • 1 Bed)</option>
+          <option value="unit_2">Unit 2 ($1,750/mo • 1 Bed)</option>
+          <option value="unit_4">Unit 4 ($1,895/mo • 1 Bed)</option>
+          <option value="unit_5">Unit 5 ($1,995/mo • 2 Bed)</option>
+          <option value="unit_6">Unit 6 ($2,050/mo • 2 Bed)</option>
+        </select>
+        <button onclick="globalQuickAction('post')" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition flex items-center gap-1 shadow-sm" title="Launch Bot to Post this Unit">
+          <i class="fa-solid fa-paper-plane text-[10px]"></i> Post Ad
+        </button>
+        <button onclick="globalQuickAction('renew')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition flex items-center gap-1 shadow-sm" title="Schedule or Trigger 7-Day Auto-Renewal (Delete Old + Re-Post Fresh)">
+          <i class="fa-solid fa-arrows-rotate text-[10px]"></i> 7-Day Renew
+        </button>
+        <button onclick="globalQuickAction('delete')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg transition flex items-center gap-1 shadow-sm" title="Delete / Take Down Postings for this Unit">
+          <i class="fa-solid fa-trash-can text-[10px]"></i> Delete Posting
+        </button>
+      </div>
     </div>
   </div>
 
@@ -334,67 +358,99 @@
           <div>
             <div class="flex items-center gap-2">
               <span class="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full flex items-center gap-1.5">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Visual Ad Studio
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Visual Ad Studio & Bot Control
               </span>
               <span id="platformBadge" class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full shadow-sm"></span>
               <span id="postingStatusPill" class="px-2.5 py-0.5 bg-slate-200 text-slate-700 text-xs font-semibold rounded-full">Draft</span>
             </div>
-            <h2 class="text-xl font-bold text-slate-900 mt-1.5">Customize Your Rental Ad & Preview Live</h2>
-            <p class="text-sm text-slate-500">Adjust your headline, price, move-in date, or description on the left and see how your ad looks on each website on the right.</p>
+            <h2 class="text-xl font-bold text-slate-900 mt-1.5">1-Click Bot Posting, Deletion & 7-Day Auto-Renewal</h2>
+            <p class="text-sm text-slate-500">Use the 3 action pods below to post ads via the bot, schedule 7-day auto-renewals, or take down listings at the click of a button.</p>
           </div>
 
-          <!-- Primary Action Buttons -->
-          <div class="flex flex-wrap items-center gap-2.5">
-            <button onclick="startPostAllVerificationQueue()" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-xl hover:from-blue-700 hover:to-purple-700 shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5">
-              <i class="fa-solid fa-paper-plane text-yellow-300"></i>
-              <span>Post to All 5 Sites (Review Each First)</span>
-            </button>
-            <button onclick="executeOneClickPost()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-800 bg-amber-50 border border-amber-300 rounded-xl hover:bg-amber-100 shadow-sm transition">
-              <i class="fa-solid fa-bolt text-amber-600"></i> Auto-Post Current Site
-            </button>
-            <button onclick="copyListingText()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 shadow-sm transition">
+          <!-- Utility Links -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="copyListingText()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 shadow-sm transition">
               <i class="fa-solid fa-copy text-blue-600"></i> Copy Ad Text
             </button>
-            <button onclick="copyLeadReplySnippet()" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 shadow-sm transition" title="Copy a friendly reply with your Google Form link for tenants who message you">
+            <button onclick="copyLeadReplySnippet()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 shadow-sm transition" title="Copy a friendly reply with your Google Form link for tenants who message you">
               <i class="fa-solid fa-comment-dots text-purple-600"></i> Copy Reply for Inquiries
             </button>
-            <a id="platformDirectPostBtn" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-semibold text-blue-700 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 shadow-sm transition">
+            <a id="platformDirectPostBtn" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-blue-700 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 shadow-sm transition">
               <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Website
             </a>
           </div>
         </div>
 
-        <!-- 7-Day Auto-Refresh Lifecycle & Active / Inactive Control Bar -->
-        <div class="p-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl text-white flex flex-col md:flex-row md:items-center justify-between gap-4 border border-indigo-800/40 shadow-sm">
-          <div class="flex items-center gap-3.5">
-            <div id="lifecycleIconBox" class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg shadow-inner shrink-0">
-              <i id="lifecycleIcon" class="fa-solid fa-arrows-rotate animate-spin" style="animation-duration: 9s;"></i>
-            </div>
+        <!-- 3-Pod Command Center: 1. POST | 2. SCHEDULE 7-DAY RENEW | 3. DELETE POSTING -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <!-- POD 1: POST AD (BOT) -->
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-blue-50 via-indigo-50/60 to-white border border-blue-200 flex flex-col justify-between space-y-3 shadow-sm">
             <div>
-              <div class="flex items-center gap-2 flex-wrap">
-                <span id="lifecycleStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500 text-white shadow-xs">
-                  ● ACTIVE LISTING
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-blue-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-paper-plane text-blue-600"></i> 1. Post Listing (Bot)
                 </span>
-                <span id="lifecycleCountdownLabel" class="text-xs font-bold text-emerald-300">
-                  Auto-refreshes in 6 days
-                </span>
-                <span class="text-[10px] bg-white/10 text-slate-300 px-2 py-0.5 rounded-md">
-                  7-Day Refresh Cycle
-                </span>
+                <label class="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-900 cursor-pointer bg-blue-100/80 px-2 py-0.5 rounded-full">
+                  <input id="autoPublishCheckbox" type="checkbox" class="rounded text-blue-600 focus:ring-0">
+                  <span>Auto-Click Publish</span>
+                </label>
               </div>
-              <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                Automatically takes down and re-posts every 7 days to get new views & top algorithm ranking until you mark it Inactive.
-              </p>
+              <p class="text-[11px] text-slate-600 mt-1">Auto-downloads Google Drive photos, fills price & specs, and stages or submits your ad.</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <button onclick="executeOneClickPost()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition">
+                <i class="fa-solid fa-robot"></i> Auto-Post Current Site
+              </button>
+              <button onclick="startPostAllVerificationQueue()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl shadow-sm transition">
+                <i class="fa-solid fa-layer-group text-yellow-300"></i> Post All 5 Sites
+              </button>
             </div>
           </div>
 
-          <div class="flex items-center gap-2 shrink-0">
-            <button id="lifecycleToggleBtn" onclick="toggleCurrentUnitActive()" class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm bg-amber-500 hover:bg-amber-400 text-slate-950">
-              <i class="fa-solid fa-power-off"></i> <span id="lifecycleToggleText">Take Down / Deactivate</span>
-            </button>
-            <button onclick="refreshCurrentUnitNow()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white transition flex items-center gap-1.5 shadow-sm" title="Take down old posting and immediately re-post fresh to bump back to #1 in search">
-              <i class="fa-solid fa-arrows-rotate"></i> Re-post Fresh Now
-            </button>
+          <!-- POD 2: SCHEDULE 7-DAY AUTO-RENEW -->
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-800/50 flex flex-col justify-between space-y-3 shadow-sm">
+            <div class="flex items-start gap-3">
+              <div id="lifecycleIconBox" class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-sm shadow-inner shrink-0">
+                <i id="lifecycleIcon" class="fa-solid fa-arrows-rotate animate-spin" style="animation-duration: 9s;"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-300">2. 7-Day Auto-Renew</span>
+                  <span id="lifecycleStatusBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500 text-white">● ACTIVE</span>
+                </div>
+                <p id="lifecycleCountdownLabel" class="text-[11px] font-bold text-emerald-200 mt-0.5">Auto-refreshes in 6 days</p>
+                <p class="text-[10px] text-slate-300 mt-0.5">Takes down old ad & re-posts fresh every 7 days for top ranking.</p>
+              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <button onclick="refreshCurrentUnitNow(false)" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow-sm" title="Schedule 7-day cycle & refresh status immediately">
+                <i class="fa-solid fa-calendar-check"></i> Schedule / Renew Now
+              </button>
+              <button onclick="refreshCurrentUnitNow(true)" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm" title="Run Bot to delete old post & re-post fresh ad">
+                <i class="fa-solid fa-robot"></i> Bot Renew (Take Down + Post)
+              </button>
+            </div>
+          </div>
+
+          <!-- POD 3: DELETE / TAKE DOWN POSTINGS -->
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-rose-50 via-amber-50/40 to-white border border-rose-200 flex flex-col justify-between space-y-3 shadow-sm">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-rose-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-trash-can text-rose-600"></i> 3. Delete / Take Down Ad
+                </span>
+                <span class="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full">1-Click Removal</span>
+              </div>
+              <p class="text-[11px] text-slate-600 mt-1">Remove active listings on the current platform or take down all 5 sites and pause auto-renewal.</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <button onclick="deleteCurrentPlatformAd(true)" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition shadow-sm" title="Launch Bot to delete listing on selected platform">
+                <i class="fa-solid fa-trash-can"></i> Delete Current Site (Bot)
+              </button>
+              <button id="lifecycleToggleBtn" onclick="toggleCurrentUnitActive()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition shadow-sm bg-amber-500 hover:bg-amber-400 text-slate-950">
+                <i class="fa-solid fa-power-off"></i> <span id="lifecycleToggleText">Take Down All 5</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -2758,17 +2814,35 @@
             </div>
           </div>
 
-          <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
-            <button onclick="openVideoModal('${u.id}')" class="inline-flex items-center gap-1 text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg transition">
-              <i class="fa-solid fa-play"></i> Video
-            </button>
-            <div class="flex items-center gap-1.5">
-              <button onclick="switchTab('screening')" class="inline-flex items-center gap-1 text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-2.5 py-1.5 rounded-lg transition">
-                <i class="fa-solid fa-user-check"></i> Screen Leads
+          <div class="p-3.5 bg-slate-50 border-t border-slate-100 space-y-2">
+            <!-- Row 1: 1-Click Bot & Lifecycle Actions -->
+            <div class="grid grid-cols-3 gap-1.5">
+              <button onclick="quickBotPostFromCard('${u.id}')" class="inline-flex items-center justify-center gap-1 text-[11px] font-bold text-white bg-blue-600 hover:bg-blue-700 py-1.5 px-2 rounded-lg shadow-xs transition" title="Launch Bot / Post Queue for ${u.name}">
+                <i class="fa-solid fa-paper-plane text-[10px]"></i> Post Ad
               </button>
-              <button onclick="goToPosting('${u.id}')" class="inline-flex items-center gap-1 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-lg shadow-sm transition">
-                <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i> Edit & Post Ad
+              <button onclick="schedule7DayRenew('${u.id}', 'all', false)" class="inline-flex items-center justify-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 py-1.5 px-2 rounded-lg transition" title="Schedule or Trigger 7-Day Auto-Renewal">
+                <i class="fa-solid fa-arrows-rotate text-[10px]"></i> 7d Renew
               </button>
+              <button onclick="deleteUnitPosting('${u.id}', 'all', false)" class="inline-flex items-center justify-center gap-1 text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 py-1.5 px-2 rounded-lg transition" title="Delete / Take Down Postings for ${u.name}">
+                <i class="fa-solid fa-trash-can text-[10px]"></i> Delete Ad
+              </button>
+            </div>
+            <!-- Row 2: Studio, Analytics, Screening & Video -->
+            <div class="flex items-center justify-between gap-1 pt-1 border-t border-slate-200/70">
+              <button onclick="openVideoModal('${u.id}')" class="inline-flex items-center gap-1 text-[11px] font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2 py-1 rounded-lg transition">
+                <i class="fa-solid fa-play text-[10px]"></i> Video
+              </button>
+              <div class="flex items-center gap-1">
+                <button onclick="goToUnitAnalytics('${u.id}')" class="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-2 py-1 rounded-lg transition" title="View Ad Views & Funnel">
+                  <i class="fa-solid fa-chart-pie text-[10px]"></i> Analytics
+                </button>
+                <button onclick="switchTab('screening')" class="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-2 py-1 rounded-lg transition">
+                  <i class="fa-solid fa-user-check text-[10px]"></i> Screen
+                </button>
+                <button onclick="goToPosting('${u.id}')" class="inline-flex items-center gap-1 text-[11px] font-bold text-slate-800 bg-amber-100 hover:bg-amber-200 border border-amber-300 px-2.5 py-1 rounded-lg transition">
+                  <i class="fa-solid fa-wand-magic-sparkles text-amber-700 text-[10px]"></i> Edit Ad
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -2908,29 +2982,38 @@
       modal.classList.remove('hidden');
 
       // Attempt backend API call
+      const autoPublish = document.getElementById('autoPublishCheckbox')?.checked || false;
       try {
         bar.style.width = "65%";
-        desc.innerText = `Navigating to ${platform} and injecting unit details, specs, and photos...`;
+        desc.innerText = `Navigating to ${platform} and injecting unit details, specs, and photos${autoPublish ? ' + auto-publishing' : ''}...`;
 
         const response = await fetch('/api/post-unit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ unit_id: unitId, platform: platform, headless: false })
+          body: JSON.stringify({ unit_id: unitId, platform: platform, headless: false, auto_publish: autoPublish })
         });
 
         if (response.ok) {
           const resData = await response.json();
           bar.style.width = "100%";
           icon.className = "fa-solid fa-circle-check text-emerald-500 text-3xl";
-          title.innerText = "Listing Form Pre-Filled & Ready!";
-          desc.innerText = `Your ${platform.toUpperCase()} listing form was staged. Click Review on the browser window to confirm publication.`;
+          title.innerText = autoPublish ? "Listing Auto-Published via Bot!" : "Listing Form Pre-Filled & Ready!";
+          desc.innerText = autoPublish
+            ? `Your ${platform.toUpperCase()} listing was filled and submitted automatically.`
+            : `Your ${platform.toUpperCase()} listing form was staged. Click Review on the browser window to confirm publication.`;
           
           // Update status in local state
           unit.postings[platform].status = "posted";
           unit.postings[platform].last_posted = new Date().toISOString();
+          if (typeof liveAnalyticsData !== 'undefined') {
+            liveAnalyticsData.forEach(d => {
+              if (d.unit_id === unitId && d.platform === platform) d.ad_status = 'live';
+            });
+          }
           renderPlatformListing();
           renderUnitsGrid();
-          showToast(`1-Click Post executed for ${unit.name}!`);
+          if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
+          showToast(`1-Click Post executed for ${unit.name} on ${platform.toUpperCase()}!`);
           return;
         }
       } catch(err) {
@@ -3672,8 +3755,13 @@
       }
     }
 
-    function refreshCurrentUnitNow() {
+    function refreshCurrentUnitNow(runBot = false) {
       const unitId = document.getElementById('postingUnitSelect').value;
+      const platform = document.getElementById('postingPlatformSelect')?.value || 'all';
+      schedule7DayRenew(unitId, runBot ? platform : 'all', runBot);
+    }
+
+    async function schedule7DayRenew(unitId, platform = 'all', runBot = false) {
       const unit = portfolioData.find(u => u.id === unitId);
       const now = new Date();
       const next = new Date(now.getTime() + 7 * 24 * 3600 * 1000);
@@ -3685,24 +3773,139 @@
       };
       saveUnitLifecycle(unitId, updated);
 
+      if (runBot) {
+        showToast(`Bot 7-Day Renew started for ${unit ? unit.name : unitId}: taking down old ad & re-posting fresh listing...`);
+      }
+
       try {
         fetch('/api/postings/refresh', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ unit_id: unitId })
+          body: JSON.stringify({ unit_id: unitId, platform: platform, run_bot: runBot, headless: false })
         }).catch(() => {});
       } catch(e) {}
 
       if (unit && unit.postings) {
-        Object.keys(unit.postings).forEach(plat => {
-          unit.postings[plat].status = 'posted';
+        const plats = platform === 'all' ? Object.keys(unit.postings) : [platform];
+        plats.forEach(plat => {
+          if (unit.postings[plat]) {
+            unit.postings[plat].status = 'posted';
+            unit.postings[plat].last_posted = now.toISOString();
+          }
         });
       }
 
-      showToast(`7-Day Refresh Triggered! Old post taken down and fresh ad re-posted to bump ${unit ? unit.name : unitId} to #1 search ranking.`);
+      if (typeof liveAnalyticsData !== 'undefined') {
+        liveAnalyticsData.forEach(d => {
+          if (d.unit_id === unitId && (platform === 'all' || d.platform === platform)) {
+            d.ad_status = 'live';
+          }
+        });
+      }
+
+      showToast(`7-Day Auto-Renew Active for ${unit ? unit.name : unitId}! Next auto-repost scheduled for ${next.toLocaleDateString()}.`);
       renderUnitsGrid();
       updateLifecycleUI(unitId);
       renderPlatformListing();
+      if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
+    }
+
+    function triggerLifecycleRefresh(unitId, platform = 'all') {
+      schedule7DayRenew(unitId, platform, true);
+    }
+
+    function deleteCurrentPlatformAd(runBot = true) {
+      const unitId = document.getElementById('postingUnitSelect').value;
+      const platform = document.getElementById('postingPlatformSelect').value;
+      deleteUnitPosting(unitId, platform, runBot);
+    }
+
+    async function deleteUnitPosting(unitId, platform = 'all', runBot = false) {
+      const unit = portfolioData.find(u => u.id === unitId);
+      const now = new Date();
+
+      if (platform === 'all') {
+        const updated = {
+          is_active: false,
+          last_refreshed: now.toISOString(),
+          next_refresh: null
+        };
+        saveUnitLifecycle(unitId, updated);
+      }
+
+      if (runBot) {
+        showToast(`Launching Browser Bot to delete ${platform.toUpperCase()} posting for ${unit ? unit.name : unitId}...`);
+      }
+
+      try {
+        fetch('/api/delete-posting', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ unit_id: unitId, platform: platform, run_bot: runBot, headless: false })
+        }).catch(() => {});
+      } catch(e) {}
+
+      if (unit && unit.postings) {
+        const targetPlats = platform === 'all' ? Object.keys(unit.postings) : [platform];
+        targetPlats.forEach(plat => {
+          if (unit.postings[plat]) {
+            unit.postings[plat].status = 'inactive';
+          }
+        });
+      }
+
+      if (typeof liveAnalyticsData !== 'undefined') {
+        liveAnalyticsData.forEach(d => {
+          if (d.unit_id === unitId && (platform === 'all' || d.platform === platform)) {
+            d.ad_status = 'inactive';
+          }
+        });
+      }
+
+      const label = platform === 'all' ? 'All Platform Ads' : `${platform.toUpperCase()} Ad`;
+      showToast(`${label} deleted/taken down for ${unit ? unit.name : unitId}. Status marked Inactive.`);
+      renderUnitsGrid();
+      updateLifecycleUI(unitId);
+      renderPlatformListing();
+      if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
+    }
+
+    function globalQuickAction(action) {
+      const select = document.getElementById('globalQuickUnitSelect');
+      const unitId = select ? select.value : 'unit_3';
+      if (action === 'post') {
+        quickBotPostFromCard(unitId);
+      } else if (action === 'renew') {
+        schedule7DayRenew(unitId, 'all', true);
+      } else if (action === 'delete') {
+        deleteUnitPosting(unitId, 'all', true);
+      }
+    }
+
+    function quickBotPostFromCard(unitId) {
+      const unitSelect = document.getElementById('postingUnitSelect');
+      if (unitSelect) unitSelect.value = unitId;
+      switchTab('posting');
+      onUnitChange();
+      executeOneClickPost();
+    }
+
+    function goToUnitAnalytics(unitId) {
+      switchTab('analytics');
+      const filterEl = document.getElementById('analyticsUnitFilter');
+      if (filterEl) {
+        filterEl.value = unitId;
+        renderAnalyticsDashboard();
+      }
+    }
+
+    async function postUnitWithBot(unitId, platform = 'facebook') {
+      const unitSelect = document.getElementById('postingUnitSelect');
+      const platSelect = document.getElementById('postingPlatformSelect');
+      if (unitSelect) unitSelect.value = unitId;
+      if (platSelect) platSelect.value = platform;
+      onUnitChange();
+      await executeOneClickPost();
     }
 
     // =========================================================================
@@ -4189,6 +4392,13 @@ function renderPlatformsDirectory() {
       if (fApps) fApps.innerText = `${totalApps} (${convRate}%)`;
 
       // Render Table
+      const analyticsPlatformsMeta = [
+        { id: 'facebook', name: 'Facebook Marketplace', icon: 'fa-facebook', color: 'bg-blue-600' },
+        { id: 'kijiji', name: 'Kijiji Canada', icon: 'fa-k', color: 'bg-orange-600' },
+        { id: 'zumper', name: 'Zumper / PadMapper', icon: 'fa-z', color: 'bg-red-600' },
+        { id: 'rentals_ca', name: 'Rentals.ca Network', icon: 'fa-house-chimney', color: 'bg-emerald-600' },
+        { id: 'liv_rent', name: 'Liv.rent Verified', icon: 'fa-shield-halved', color: 'bg-purple-600' }
+      ];
       const tbody = document.getElementById('analyticsTableBody');
       if (tbody) {
         tbody.innerHTML = '';
@@ -4197,9 +4407,18 @@ function renderPlatformsDirectory() {
         } else {
           filtered.forEach(row => {
             const unit = portfolioData.find(u => u.id === row.unit_id) || { name: row.unit_id, financials: { target_rent: 2000 } };
-            const pInfo = platformsConfig.find(p => p.id === row.platform) || { name: row.platform, icon: 'fa-globe', color: 'bg-slate-700' };
+            const pInfo = analyticsPlatformsMeta.find(p => p.id === row.platform) || { name: row.platform, icon: 'fa-globe', color: 'bg-slate-700' };
             const inqRate = row.views_count > 0 ? ((row.inquiries_count / row.views_count) * 100).toFixed(1) : 0;
             const appRate = row.inquiries_count > 0 ? ((row.applications_count / row.inquiries_count) * 100).toFixed(1) : 0;
+
+            let statusBadge = '';
+            if (row.ad_status === 'live') {
+              statusBadge = `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live & Active</span>`;
+            } else if (row.ad_status === 'inactive') {
+              statusBadge = `<span class="px-2 py-0.5 bg-rose-100 text-rose-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1"><i class="fa-solid fa-ban text-[9px]"></i> Deleted / Inactive</span>`;
+            } else {
+              statusBadge = `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold rounded-full text-[10px]">Refresh Due</span>`;
+            }
 
             const tr = document.createElement('tr');
             tr.className = "hover:bg-slate-50/80 transition";
@@ -4222,9 +4441,7 @@ function renderPlatformsDirectory() {
                 <span class="text-[11px] text-emerald-700 font-extrabold block">$${unit.financials.target_rent}/mo</span>
               </td>
               <td class="py-3 px-4">
-                ${row.ad_status === 'live' 
-                  ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded-full text-[10px] inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live & Active</span>`
-                  : `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold rounded-full text-[10px]">Refresh Due</span>`}
+                ${statusBadge}
               </td>
               <td class="py-3 px-4 font-bold text-purple-900">${Number(row.views_count).toLocaleString()}</td>
               <td class="py-3 px-4 font-bold text-cyan-900">${row.inquiries_count} <span class="text-[10px] text-slate-400 font-normal">(${inqRate}%)</span></td>
@@ -4234,12 +4451,18 @@ function renderPlatformsDirectory() {
                 <span class="text-[10px] text-slate-400 block">Inquiry-to-App</span>
               </td>
               <td class="py-3 px-4 text-right">
-                <div class="inline-flex items-center gap-1.5">
-                  <button onclick="quickEditStats('${row.unit_id}', '${row.platform}', ${row.views_count}, ${row.inquiries_count}, ${row.applications_count}, '${row.listing_url || ''}')" class="px-2.5 py-1 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-semibold rounded text-[11px] transition" title="Update Views Count">
-                    <i class="fa-solid fa-pen-to-square"></i>
+                <div class="inline-flex items-center gap-1">
+                  <button onclick="postUnitWithBot('${row.unit_id}', '${row.platform}')" class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold rounded text-[10px] transition border border-emerald-200" title="Post Ad with Browser Bot">
+                    <i class="fa-solid fa-robot mr-0.5"></i> Post
                   </button>
-                  <button onclick="triggerLifecycleRefresh('${row.unit_id}')" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold rounded text-[11px] transition border border-purple-200" title="Refresh listing on external site">
-                    <i class="fa-solid fa-rotate mr-1"></i> Refresh
+                  <button onclick="triggerLifecycleRefresh('${row.unit_id}', '${row.platform}')" class="px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold rounded text-[10px] transition border border-purple-200" title="Take down & Re-Post (7-Day Renew)">
+                    <i class="fa-solid fa-rotate mr-0.5"></i> 7d Renew
+                  </button>
+                  <button onclick="deleteUnitPosting('${row.unit_id}', '${row.platform}', true)" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold rounded text-[10px] transition border border-rose-200" title="Delete / Take Down Ad">
+                    <i class="fa-solid fa-trash-can mr-0.5"></i> Delete
+                  </button>
+                  <button onclick="quickEditStats('${row.unit_id}', '${row.platform}', ${row.views_count}, ${row.inquiries_count}, ${row.applications_count}, '${row.listing_url || ''}')" class="px-2 py-1 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-semibold rounded text-[10px] transition" title="Update Views Count">
+                    <i class="fa-solid fa-pen-to-square"></i>
                   </button>
                 </div>
               </td>
@@ -4255,7 +4478,7 @@ function renderPlatformsDirectory() {
 
     function renderViewsChart(data) {
       const canvas = document.getElementById('viewsPlatformChart');
-      if (!canvas) return;
+      if (!canvas || typeof Chart === 'undefined') return;
 
       const platformMap = {
         facebook: { name: 'Facebook', views: 0, inquiries: 0, color: 'rgba(59, 130, 246, 0.85)' },
@@ -4440,6 +4663,10 @@ function renderPlatformsDirectory() {
     }
 
     document.addEventListener('DOMContentLoaded', initApp);
+    setTimeout(() => {
+      const grid = document.getElementById('unitsGrid');
+      if (grid && grid.children.length === 0) initApp();
+    }, 50);
   
     // ==========================================
     // POST ALL VERIFICATION QUEUE CONTROLLER
