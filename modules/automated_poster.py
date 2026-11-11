@@ -558,13 +558,24 @@ class AutomatedPoster:
         }
 
     def _post_zumper(self) -> Dict[str, Any]:
-        """Automates Zumper Landlord listing portal."""
+        """
+        Automates Zumper Landlord listing portal through every step demonstrated in the manual workflow:
+        1. Address & Unit
+        2. Listing Details (Beds, Baths, Sqft)
+        3. Description & Amenities
+        4. Monthly Rent
+        5. Media (Photo gallery upload from Drive cache)
+        6. Video (YouTube walkthrough tour)
+        7. Review & Publish / Bypass boost modal
+        """
         payload = generate_zumper_listing(self.unit)
         USER_PROFILE_DIR.mkdir(parents=True, exist_ok=True)
         screenshot_path = SCREENSHOTS_DIR / f"{self.unit_id}_zumper.png"
 
         print(f"[Zumper Poster] Opening Zumper manage portal...")
         photos = self._get_or_download_unit_photos()
+        published = False
+
         with sync_playwright() as p:
             context = p.chromium.launch_persistent_context(
                 user_data_dir=str(USER_PROFILE_DIR),
@@ -573,34 +584,185 @@ class AutomatedPoster:
                 args=["--disable-blink-features=AutomationControlled"]
             )
             page = context.new_page()
+            page.set_default_timeout(20000)
+
+            # Navigate to Zumper manage or create listing directly
             self._safe_goto(page, "https://www.zumper.com/manage")
 
+            # Check if login required
+            if "login" in page.url.lower():
+                print("[Zumper Poster] Login required in browser profile. Keeping window open...")
+                if not self.headless:
+                    try:
+                        page.wait_for_timeout(30000)
+                    except Exception:
+                        pass
+                return {
+                    "platform": "Zumper & PadMapper",
+                    "url": page.url,
+                    "screenshot": str(screenshot_path),
+                    "login_required": True,
+                    "message": "Please log into Zumper in the opened browser window."
+                }
+
+            # Step 0: Click "Create a new listing" or navigate to create URL
+            create_btn = page.locator('a:has-text("Create a new listing"), button:has-text("Create a new listing"), a:has-text("Create a Listing"), button:has-text("Create a Listing")')
+            if create_btn.count() > 0 and create_btn.first.is_visible():
+                self._safe_click(create_btn.first)
+                time.sleep(3.0)
+            elif "/manage/create" not in page.url:
+                self._safe_goto(page, "https://www.zumper.com/manage/create")
+
+            # Helper to click Next
+            def _click_next():
+                time.sleep(1.5)
+                next_btn = page.locator('button:has-text("Next"), div[role="button"]:has-text("Next")').first
+                if next_btn.count() > 0 and next_btn.is_visible():
+                    self._safe_click(next_btn)
+                    time.sleep(3.0)
+                    return True
+                return False
+
+            # --- STEP 1: Address & Property Type ---
+            print(f"[Zumper Poster] Step 1: Address & Unit for {payload['street_address']}...")
+            try:
+                addr_inp = page.locator('input[placeholder*="address" i], input[name*="address" i], input[id*="address" i]').first
+                if addr_inp.count() > 0 and addr_inp.is_visible():
+                    addr_inp.fill("315 Kent Street, Whitby, ON")
+                    time.sleep(1.5)
+                    sugg = page.locator('ul[role="listbox"] li, div[role="option"], div[class*="suggestion"], div[class*="pac-item"]').first
+                    if sugg.count() > 0 and sugg.is_visible():
+                        self._safe_click(sugg)
+                        time.sleep(1.0)
+
+                unit_num = self.unit.get("id", "").replace("unit_", "")
+                unit_inp = page.locator('input[placeholder*="unit" i], input[placeholder*="apt" i], input[name*="unit" i], input[name*="apt" i]').first
+                if unit_inp.count() > 0 and unit_inp.is_visible():
+                    unit_inp.fill(f"Unit {unit_num}")
+
+                _click_next()
+            except Exception as step1_err:
+                print(f"[Zumper Step 1 Note] {step1_err}")
+
+            # --- STEP 2: Listing Details (Beds, Baths, Sqft) ---
+            print(f"[Zumper Poster] Step 2: Beds ({payload['bedrooms']}), Baths ({payload['bathrooms']}), Sqft ({payload['sqft']})...")
+            try:
+                # Bedrooms
+                beds_btn = page.locator(f'button:has-text("{payload["bedrooms"]}"), div[role="button"]:has-text("{payload["bedrooms"]}")').first
+                if beds_btn.count() > 0 and beds_btn.is_visible():
+                    self._safe_click(beds_btn)
+                else:
+                    beds_inp = page.locator('input[name*="bed" i]').first
+                    if beds_inp.count() > 0 and beds_inp.is_visible():
+                        beds_inp.fill(payload["bedrooms"])
+
+                # Bathrooms
+                baths_btn = page.locator(f'button:has-text("{payload["bathrooms"]}"), div[role="button"]:has-text("{payload["bathrooms"]}")').first
+                if baths_btn.count() > 0 and baths_btn.is_visible():
+                    self._safe_click(baths_btn)
+                else:
+                    baths_inp = page.locator('input[name*="bath" i]').first
+                    if baths_inp.count() > 0 and baths_inp.is_visible():
+                        baths_inp.fill(payload["bathrooms"])
+
+                # Sqft
+                sqft_inp = page.locator('input[placeholder*="sq" i], input[name*="sqft" i], input[name*="size" i]').first
+                if sqft_inp.count() > 0 and sqft_inp.is_visible():
+                    sqft_inp.fill(payload["sqft"])
+
+                _click_next()
+            except Exception as step2_err:
+                print(f"[Zumper Step 2 Note] {step2_err}")
+
+            # --- STEP 3: Description & Amenities ---
+            print(f"[Zumper Poster] Step 3: Description & Amenities...")
+            try:
+                desc_inp = page.locator('textarea').first
+                if desc_inp.count() > 0 and desc_inp.is_visible():
+                    desc_inp.fill(payload["description"])
+
+                # Click common amenities if shown
+                for amen in ["In-unit laundry", "Assigned parking", "Central heat", "Hardwood floor", "Air conditioning"]:
+                    amen_el = page.locator(f'label:has-text("{amen}"), button:has-text("{amen}")').first
+                    if amen_el.count() > 0 and amen_el.is_visible():
+                        self._safe_click(amen_el)
+
+                _click_next()
+            except Exception as step3_err:
+                print(f"[Zumper Step 3 Note] {step3_err}")
+
+            # --- STEP 4: Monthly Rent & Move-In Date ---
+            print(f"[Zumper Poster] Step 4: Monthly Rent (${payload['price']})...")
+            try:
+                rent_inp = page.locator('input[name*="rent" i], input[placeholder*="rent" i], input[name*="price" i], input[type="number"]').first
+                if rent_inp.count() > 0 and rent_inp.is_visible():
+                    clean_price = "".join(filter(str.isdigit, str(payload["price"])))
+                    rent_inp.fill(clean_price)
+
+                _click_next()
+            except Exception as step4_err:
+                print(f"[Zumper Step 4 Note] {step4_err}")
+
+            # --- STEP 5: Media / Photos Upload ---
+            print(f"[Zumper Poster] Step 5: Uploading {len(photos)} photos from Drive cache...")
             if photos:
                 try:
-                    file_inputs = page.locator('input[type="file"]')
-                    if file_inputs.count() > 0:
-                        file_inputs.first.set_input_files(photos)
-                        time.sleep(2)
-                except Exception:
-                    pass
+                    file_input = page.locator('input[type="file"]').first
+                    if file_input.count() > 0:
+                        file_input.set_input_files(photos)
+                        print("[Zumper Poster] Photos attached, waiting for upload progress...")
+                        time.sleep(6.0)
 
+                    _click_next()
+                except Exception as step5_err:
+                    print(f"[Zumper Step 5 Note] {step5_err}")
+
+            # --- STEP 6: Video Walkthrough Link ---
+            video_url = payload.get("virtual_tour_url")
+            if video_url:
+                print(f"[Zumper Poster] Step 6: Attaching YouTube Tour {video_url}...")
+                try:
+                    video_inp = page.locator('input[placeholder*="youtube" i], input[placeholder*="video" i], input[placeholder*="vimeo" i], input[type="url"], input[name*="video" i]').first
+                    if video_inp.count() > 0 and video_inp.is_visible():
+                        video_inp.fill(video_url)
+                        time.sleep(1.5)
+
+                    _click_next()
+                except Exception as step6_err:
+                    print(f"[Zumper Step 6 Note] {step6_err}")
+
+            # --- STEP 7: Review & Auto-Publish / Skip Boost ---
+            time.sleep(2.0)
             self._safe_screenshot(page, screenshot_path)
 
             if self.auto_publish:
                 try:
-                    pub_btns = page.locator('button:has-text("Publish"), button:has-text("Submit"), button:has-text("Save")')
+                    print("[Zumper Poster] Auto-Publish enabled: searching for 'Publish' or 'Submit' button...")
+                    pub_btns = page.locator('button:has-text("Publish"), button:has-text("Submit listing"), button:has-text("Save and Publish")')
                     if pub_btns.count() > 0 and pub_btns.first.is_visible():
-                        pub_btns.first.click(timeout=3000)
-                        time.sleep(3)
+                        self._safe_click(pub_btns.first)
+                        time.sleep(4.0)
+
+                        # Bypass Boost / Upsell Modal ($30 boost vs Free)
+                        print("[Zumper Poster] Checking for 'Continue without boost' or 'Free' option...")
+                        skip_boost = page.locator('button:has-text("Continue without boost"), button:has-text("Post without boost"), button:has-text("Skip"), button:has-text("No thanks"), a:has-text("Continue without boost"), div[role="button"]:has-text("Continue without boost")').first
+                        if skip_boost.count() > 0 and skip_boost.is_visible():
+                            self._safe_click(skip_boost)
+                            time.sleep(3.5)
+
+                        published = True
+                        print("[Zumper Poster] ✔ Final listing published live to Zumper & PadMapper!")
+                        self._safe_screenshot(page, screenshot_path)
+                except Exception as pub_err:
+                    print(f"[Zumper Auto-Publish Note] {pub_err}")
+
+            if not self.headless and not self.auto_publish:
+                print("\n[Zumper Poster] Form staged through all steps! Keeping browser open for 30s so you can review...")
+                try:
+                    page.wait_for_timeout(30000)
                 except Exception:
                     pass
 
-            if not self.headless and not self.auto_publish:
-                print("\n[Zumper Poster] Form staged! Keeping bot browser open for 20 seconds so you can review and click Publish...")
-                try:
-                    page.wait_for_timeout(20000)
-                except Exception:
-                    pass
             context.close()
 
         return {
@@ -608,7 +770,10 @@ class AutomatedPoster:
             "url": "https://www.zumper.com/manage",
             "screenshot": str(screenshot_path),
             "photos_attached": len(photos),
-            "title": payload["title"]
+            "title": payload["title"],
+            "video_url": payload.get("virtual_tour_url"),
+            "published": published,
+            "status": "posted" if published else "staged_for_review"
         }
 
     def _post_rentals_ca(self) -> Dict[str, Any]:
