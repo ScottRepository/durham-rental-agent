@@ -13,7 +13,7 @@ DB_PATH = Path(__file__).parent / "rental_portfolio.db"
 SAMPLE_JSON_PATH = Path(__file__).parent / "units" / "sample_units.json"
 
 def get_connection(db_path: Path = DB_PATH) -> sqlite3.Connection:
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(db_path, timeout=30.0)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -330,17 +330,28 @@ def get_unit_by_id(unit_id: str, db_path: Path = DB_PATH) -> Optional[Dict[str, 
     return None
 
 def update_posting_status(unit_id: str, platform: str, status: str, external_url: str = None, log: str = "", db_path: Path = DB_PATH):
-    """Updates the status of a posting (e.g. 'in_progress', 'posted', 'failed', 'inactive')."""
+    """Updates the status of a posting (e.g. 'in_progress', 'posted', 'failed', 'inactive', 'draft')."""
+    valid_statuses = ('draft', 'in_progress', 'posted', 'failed', 'inactive')
+    # Map 'staged' or unknown status to 'draft' to satisfy SQLite CHECK constraint
+    normalized_status = status
+    if status in ("staged", "staged_for_review") or status not in valid_statuses:
+        normalized_status = "draft"
+
     conn = get_connection(db_path)
     cur = conn.cursor()
     now = datetime.now().isoformat()
-    cur.execute("""
-    UPDATE posting_history
-    SET status = ?, external_url = COALESCE(?, external_url), last_posted_at = ?, log_output = ?
-    WHERE unit_id = ? AND platform = ?
-    """, (status, external_url, now, log, unit_id, platform))
-    conn.commit()
-    conn.close()
+    try:
+        cur.execute("""
+        UPDATE posting_history
+        SET status = ?, external_url = COALESCE(?, external_url), last_posted_at = ?, log_output = ?
+        WHERE unit_id = ? AND platform = ?
+        """, (normalized_status, external_url, now, log, unit_id, platform))
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print(f"[DB Error] update_posting_status failed for {unit_id} on {platform}: {e}")
+    finally:
+        conn.close()
 
 def update_unit_master_content(unit_id: str, title: str = None, price: float = None, avail_date: str = None, description: str = None, db_path: Path = DB_PATH) -> bool:
     """Updates the unit's master listing copy so all platforms pull from the same single source of truth."""

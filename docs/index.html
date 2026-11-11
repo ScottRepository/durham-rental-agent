@@ -4817,29 +4817,26 @@ function renderPlatformsDirectory() {
             renderQueueCurrentStep();
           }, 800);
           return;
+        } else {
+          const errData = await response.json().catch(() => ({}));
+          const errMsg = errData.error || response.statusText || "Poster failed";
+          alert(`⚠️ Automated Bot encountered an issue on ${pInfo.name}:\n\n${errMsg}\n\nYou can review or complete it directly in the opened browser window.`);
+          return;
         }
       } catch(err) {
-        console.warn("Backend API not reachable (running on static GitHub Pages). Falling back to browser tab.", err);
+        console.warn("Backend API error or running on static host:", err);
+        if (window.location.hostname.includes("github.io")) {
+          alert(`Local bot server is not reachable directly from ${window.location.hostname}.\n\nOpening ${pInfo.name} in a new tab. Ad text has been copied to your clipboard!\n\nTo use the 1-Click Automated Browser Bot with auto-photo uploads, run the dashboard at http://localhost:8000.`);
+          window.open(pInfo.url, '_blank');
+        } else {
+          alert(`⚠️ Could not reach local bot server: ${err.message || err}\n\nMake sure server.py is running at http://localhost:8000.`);
+        }
       } finally {
         if (botBtn) {
           botBtn.disabled = false;
           botBtn.innerHTML = origHtml;
         }
       }
-
-      // Fallback for static GitHub Pages or unreachable backend
-      alert(`Local bot server is not reachable directly from ${window.location.hostname}.\n\nOpening ${pInfo.name} in a new tab. Ad text has been copied to your clipboard!\n\nTo use the 1-Click Automated Browser Bot with auto-photo uploads, run the dashboard at http://localhost:8000.`);
-      queueApprovedStatuses[pInfo.id] = true;
-      if (queueUnitData.postings && queueUnitData.postings[pInfo.id]) {
-        queueUnitData.postings[pInfo.id].status = "posted";
-      }
-      renderUnitsGrid();
-      renderPlatformListing();
-      window.open(pInfo.url, '_blank');
-      currentQueueIdx++;
-      setTimeout(() => {
-        renderQueueCurrentStep();
-      }, 600);
     }
 
     function skipQueuePlatform() {

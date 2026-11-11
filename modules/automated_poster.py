@@ -143,7 +143,7 @@ class AutomatedPoster:
                 raise ValueError(f"Unsupported platform: {self.platform}")
 
             is_published = result.get("published", self.auto_publish)
-            status_label = "posted" if is_published else "staged"
+            status_label = "posted" if is_published else "draft"
             update_posting_status(
                 self.unit_id,
                 self.platform,
@@ -152,12 +152,15 @@ class AutomatedPoster:
                 log=f"Successfully {'published' if is_published else 'pre-filled & staged for review'} on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
             )
             self._sync_analytics_status(self.platform, "live" if is_published else "pending")
-            return {"success": True, "details": result, "published": is_published, "status": status_label}
+            return {"success": True, "details": result, "published": is_published, "status": "posted" if is_published else "staged"}
 
         except Exception as e:
             error_msg = f"Posting error: {str(e)}"
             print(f"[AutomatedPoster Error] {error_msg}")
-            update_posting_status(self.unit_id, self.platform, "failed", log=error_msg)
+            try:
+                update_posting_status(self.unit_id, self.platform, "failed", log=error_msg)
+            except Exception:
+                pass
             return {"success": False, "error": error_msg}
 
     def delete_posting(self) -> Dict[str, Any]:
@@ -267,10 +270,14 @@ class AutomatedPoster:
         }
 
     def _safe_goto(self, page, url: str) -> None:
-        """Navigates to URL with resilient timeout handling so slow third-party scripts never crash the bot."""
-        page.set_default_timeout(20000)
+        """Navigates to URL with resilient timeout handling so slow third-party scripts never hang the bot."""
+        page.set_default_timeout(25000)
         try:
-            page.goto(url, wait_until="domcontentloaded", timeout=25000)
+            page.goto(url, wait_until="commit", timeout=25000)
+            try:
+                page.wait_for_load_state("domcontentloaded", timeout=12000)
+            except Exception:
+                pass
             time.sleep(3.0)
         except Exception as nav_err:
             print(f"[Browser Navigation Note] {url}: {nav_err}")

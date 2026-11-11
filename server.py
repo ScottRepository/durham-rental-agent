@@ -149,10 +149,14 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
                 return
 
             print(f"\n[API 1-Click Trigger] Running automated poster for {unit_id} -> {platform} (auto_publish={auto_publish})...")
-            poster = AutomatedPoster(unit_id=unit_id, platform=platform, headless=headless, auto_publish=auto_publish)
-            result = poster.run()
+            try:
+                poster = AutomatedPoster(unit_id=unit_id, platform=platform, headless=headless, auto_publish=auto_publish)
+                result = poster.run()
+            except Exception as e:
+                print(f"[API Poster Exception] {e}")
+                result = {"success": False, "error": str(e)}
 
-            self.send_response(200)
+            self.send_response(200 if result.get("success", False) else 500)
             self.send_header("Content-Type", "application/json")
             self._set_cors_headers()
             self.end_headers()
