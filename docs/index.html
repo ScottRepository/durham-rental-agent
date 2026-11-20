@@ -1582,7 +1582,7 @@
       </div>
 
       <!-- Verification Body -->
-      <div class="p-6 space-y-6 flex-1" id="queueMainBody">
+      <div class="p-6 space-y-5 flex-1" id="queueMainBody">
         <!-- Verified Platform Card -->
         <div class="p-4 bg-blue-50/60 rounded-xl border border-blue-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="flex items-center gap-3">
@@ -1590,53 +1590,67 @@
             <div>
               <div class="flex items-center gap-2">
                 <h4 id="queuePlatformName" class="font-bold text-slate-900 text-sm"></h4>
-                <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Verify Before Post
+                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Co-Pilot Assisted Mode
                 </span>
               </div>
               <p id="queuePlatformTip" class="text-xs text-slate-600 mt-0.5"></p>
             </div>
           </div>
-          <a id="queuePlatformDirectLink" href="#" target="_blank" class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5 self-start sm:self-auto">
-            <i class="fa-solid fa-arrow-up-right-from-square text-blue-600"></i> Open Site
+          <a id="queuePlatformDirectLink" href="#" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-1.5 self-start sm:self-auto">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Posting Form
           </a>
         </div>
 
-        <!-- Pre-Flight Links & Media Verification Badges -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-            <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
-              <span><i class="fa-solid fa-clipboard-question text-purple-600 mr-1"></i> Tenant Intake Form</span>
-              <span class="text-emerald-600 font-bold text-[11px]"><i class="fa-solid fa-check"></i> Verified (200 OK)</span>
-            </div>
-            <a href="https://forms.gle/UZSrP8PUSh9GsdLX8" target="_blank" class="text-[11px] text-purple-700 hover:underline truncate block font-medium">forms.gle/UZSrP8PUSh9GsdLX8</a>
+        <!-- Platform Specific Posting Checklist & Tips -->
+        <div id="queuePlatformChecklistCard" class="p-3.5 bg-amber-50/80 rounded-xl border border-amber-200 space-y-1.5">
+          <div class="flex items-center justify-between text-xs font-bold text-amber-900">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-list-check text-amber-600"></i> Platform Posting Checklist:</span>
+            <span class="text-[10px] text-amber-700 font-normal">Follow these steps on the form</span>
           </div>
+          <ul id="queuePlatformChecklist" class="text-xs text-amber-950 space-y-1 list-disc list-inside"></ul>
+        </div>
 
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-            <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
-              <span><i class="fa-brands fa-youtube text-red-600 mr-1"></i> YouTube Video</span>
-              <span class="text-emerald-600 font-bold text-[11px]"><i class="fa-solid fa-check"></i> Verified (200 OK)</span>
-            </div>
-            <a id="queueVerifyVideoLink" href="#" target="_blank" class="text-[11px] text-blue-600 hover:underline truncate block font-medium">Test Walkthrough Video &rarr;</a>
-          </div>
-
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-            <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
-              <span><i class="fa-brands fa-google-drive text-amber-600 mr-1"></i> Drive Photos</span>
-              <span class="text-emerald-600 font-bold text-[11px]"><i class="fa-solid fa-check"></i> Verified (200 OK)</span>
-            </div>
-            <a href="https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing" target="_blank" class="text-[11px] text-blue-600 hover:underline truncate block font-medium">Open Google Drive Photos &rarr;</a>
+        <!-- Quick 1-Click Copy Assets Bar -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Quick 1-Click Assets:</span>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="copyToClipboard('315 Kent Street, Whitby, ON', this)" class="px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1.5 shadow-2xs transition">
+              <i class="fa-solid fa-location-dot text-rose-500"></i> <span>Copy Address</span>
+            </button>
+            <button id="queueCopyPriceBtn" onclick="copyToClipboard(document.getElementById('queueVerifyRent').value, this)" class="px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1.5 shadow-2xs transition">
+              <i class="fa-solid fa-dollar-sign text-emerald-600"></i> <span>Copy Rent</span>
+            </button>
+            <button id="queueCopyVideoBtn" onclick="copyToClipboard(document.getElementById('queueVerifyVideoLink').href, this)" class="px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1.5 shadow-2xs transition">
+              <i class="fa-brands fa-youtube text-red-600"></i> <span>Copy YouTube Tour</span>
+            </button>
+            <button onclick="copyToClipboard('https://forms.gle/UZSrP8PUSh9GsdLX8', this)" class="px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1.5 shadow-2xs transition">
+              <i class="fa-solid fa-clipboard-question text-purple-600"></i> <span>Copy Intake Form</span>
+            </button>
+            <a href="https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt?usp=sharing" target="_blank" class="px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-blue-600 flex items-center gap-1.5 shadow-2xs transition">
+              <i class="fa-brands fa-google-drive text-amber-500"></i> <span>Open Photos Drive &rarr;</span>
+            </a>
           </div>
         </div>
 
         <!-- Editable Inputs for Verification -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="md:col-span-2">
-            <label class="text-xs font-bold text-slate-700 block mb-1">Ad Headline to Publish:</label>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-bold text-slate-700">Ad Headline:</label>
+              <button onclick="copyToClipboard(document.getElementById('queueVerifyTitle').value, this)" class="text-[11px] text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-copy"></i> <span>Copy Headline</span>
+              </button>
+            </div>
             <input id="queueVerifyTitle" type="text" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
-            <label class="text-xs font-bold text-slate-700 block mb-1">Monthly Rent & Move-In:</label>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-bold text-slate-700">Rent & Move-In:</label>
+              <button onclick="copyToClipboard(document.getElementById('queueVerifyRent').value, this)" class="text-[11px] text-emerald-700 hover:text-emerald-900 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-copy"></i> <span>Copy Rent</span>
+              </button>
+            </div>
             <div class="flex items-center gap-2">
               <input id="queueVerifyRent" type="text" class="w-1/2 bg-emerald-50 border border-emerald-300 rounded-xl p-2.5 text-sm font-extrabold text-emerald-800">
               <input id="queueVerifyAvail" type="text" class="w-1/2 bg-white border border-slate-300 rounded-xl p-2.5 text-sm font-semibold text-slate-800">
@@ -1644,13 +1658,21 @@
           </div>
         </div>
 
+        <!-- Hidden anchor for JS references -->
+        <a id="queueVerifyVideoLink" href="#" target="_blank" class="hidden"></a>
+
         <!-- Description Verification -->
         <div>
           <div class="flex items-center justify-between mb-1">
-            <label class="text-xs font-bold text-slate-700">Ad Description to Publish (Editable):</label>
-            <span class="text-[11px] text-slate-500" id="queueCharCount">0 chars</span>
+            <label class="text-xs font-bold text-slate-700">Ad Description to Post:</label>
+            <div class="flex items-center gap-3">
+              <span class="text-[11px] text-slate-500" id="queueCharCount">0 chars</span>
+              <button onclick="copyToClipboard(document.getElementById('queueVerifyDesc').value, this)" class="px-2.5 py-1 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs font-bold border border-blue-200 flex items-center gap-1 transition">
+                <i class="fa-solid fa-copy"></i> <span>Copy Description</span>
+              </button>
+            </div>
           </div>
-          <textarea id="queueVerifyDesc" rows="10" class="w-full p-3.5 font-sans text-sm bg-slate-50 focus:bg-white text-slate-800 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"></textarea>
+          <textarea id="queueVerifyDesc" rows="9" class="w-full p-3.5 font-sans text-sm bg-slate-50 focus:bg-white text-slate-800 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"></textarea>
         </div>
       </div>
 
@@ -1671,26 +1693,25 @@
       <!-- Modal Footer Action Bar -->
       <div id="queueFooterBar" class="p-4 bg-slate-50 border-t border-slate-200 rounded-b-2xl flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-          <button onclick="closePostAllModal()" class="px-4 py-2 border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-semibold rounded-lg transition">
+          <button onclick="closePostAllModal()" class="px-3.5 py-2 border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-semibold rounded-lg transition">
             Exit Queue
           </button>
-          <label class="flex items-center gap-2 text-xs text-slate-700 font-medium cursor-pointer bg-white px-3 py-1.5 rounded-lg border border-slate-300 hover:border-emerald-500 shadow-sm transition">
-            <input type="checkbox" id="queueAutoPublishToggle" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
-            <span class="font-semibold text-emerald-700">Auto-Publish to Site</span>
-            <span class="text-[10px] text-slate-400 font-normal">(uncheck to review form in browser first)</span>
-          </label>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="skipQueuePlatform()" class="px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1" title="Skip this platform for now">
+          <button onclick="skipQueuePlatform()" class="px-3 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1" title="Skip to next platform">
             <span>Skip</span> <i class="fa-solid fa-arrow-right text-slate-400"></i>
           </button>
-          <button onclick="approveAndDispatchCurrentQueueItem('manual')" class="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1.5" title="Copy ad text to clipboard and open listing site in a new tab">
-            <i class="fa-solid fa-copy text-slate-500"></i>
-            <span>Copy & Open Form</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="approveAndDispatchCurrentQueueItem('mark_only')" class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold rounded-lg transition flex items-center gap-1.5" title="Record this listing as posted without opening site">
+            <i class="fa-solid fa-check text-emerald-600"></i>
+            <span>Mark as Posted</span>
           </button>
-          <button id="queueBotBtn" onclick="approveAndDispatchCurrentQueueItem('bot')" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white text-xs font-bold rounded-lg shadow-md transition flex items-center gap-2">
-            <i class="fa-solid fa-robot text-sm"></i>
-            <span id="queueApproveBtnText">Approve & Auto-Post (Bot)</span>
+          <button id="queueManualBtn" onclick="approveAndDispatchCurrentQueueItem('manual')" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white text-xs font-bold rounded-lg shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            <span id="queueOpenBtnText">Open Site & Copy Details</span>
+          </button>
+          <button id="queueBotBtn" onclick="approveAndDispatchCurrentQueueItem('bot')" class="px-3 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-600 text-xs font-medium rounded-lg transition flex items-center gap-1.5" title="Attempt experimental automated browser bot">
+            <i class="fa-solid fa-robot text-slate-400 text-xs"></i>
+            <span>Try Bot</span>
           </button>
         </div>
       </div>
@@ -4666,6 +4687,56 @@ function renderPlatformsDirectory() {
       { id: 'rentals_ca', name: 'Rentals.ca', icon: 'fa-house-user', color: 'bg-[#d32f2f]', url: 'https://rentals.ca/landlord', tip: "Canada's #1 organic Google search rank for Durham rentals. Pre-fills property details & photo cache." }
     ];
 
+    const platformChecklists = {
+      facebook: [
+        "Select <b>Apartment</b> • <b>2 Beds</b> • <b>1 Bath</b> • <b>$1,995/month</b> • <b>800 sqft</b>",
+        "Address: <b>315 Kent Street, Whitby, ON</b> (Select dropdown suggestion)",
+        "Laundry: <b>Laundry in building</b> • Parking: <b>Parking available</b>",
+        "⚠️ <i>If Facebook shows 'Limit reached' on new listing, open your existing listing and click <b>Edit</b> instead!</i>"
+      ],
+      kijiji: [
+        "Category 37 (Apartments & Condos for Rent) pre-loaded",
+        "Select <b>Apartment</b> • <b>2 Bedrooms</b> • <b>1 Bathroom</b> • <b>1-Year Term</b>",
+        "Utilities: <b>Heat & Water Included</b> • Parking: <b>1 Included</b> • Move-In: <b>Immediate</b>",
+        "Check badges: <b>Online Application</b>, <b>Video Walkthrough</b>, <b>Video Chat</b>",
+        "Paste YouTube walkthrough URL into the dedicated YouTube Video field"
+      ],
+      zumper: [
+        "Step 1: Enter <b>315 Kent Street, Whitby, ON</b> and <b>Unit 3</b> (Click Next)",
+        "Step 2: Select <b>2 Beds</b>, <b>1 Bath</b>, <b>800 sqft</b> • Step 3: Paste Description",
+        "Step 4: Monthly Rent <b>$1,995</b> • Step 5: Upload 6 Photos from Downloads/Drive",
+        "Step 6: Paste YouTube walkthrough URL in the video field",
+        "Step 7: When the $30 Boost popup appears, click <b>'Continue without boost'</b> (Free)!"
+      ],
+      rentals_ca: [
+        "Step 1: Select <b>Apartment</b> • Address <b>315 Kent Street</b> • <b>Unit 3</b>",
+        "Step 2: <b>2 Beds</b>, <b>1 Bath</b>, <b>800 sqft</b>, Monthly Rent <b>$1,995</b>",
+        "Step 3: Select Amenities (Balcony, Parking, Laundry in building, Central Heat)",
+        "Step 4: Upload photos & paste YouTube walkthrough tour",
+        "Step 5: On plans page, click <b>'See other pricing options'</b> → select <b>'Limited' (Free)</b>!"
+      ]
+    };
+
+    function copyToClipboard(text, btnElem) {
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("✔ Copied to clipboard!");
+        if (btnElem) {
+          const orig = btnElem.innerHTML;
+          btnElem.innerHTML = `<i class="fa-solid fa-check text-emerald-600"></i> <span class="text-emerald-700 font-bold">Copied!</span>`;
+          setTimeout(() => { btnElem.innerHTML = orig; }, 1500);
+        }
+      }).catch(err => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast("✔ Copied to clipboard!");
+      });
+    }
+
     let currentQueueIdx = 0;
     let queueUnitData = null;
     let queueApprovedStatuses = {};
@@ -4729,11 +4800,19 @@ function renderPlatformsDirectory() {
       document.getElementById('queuePlatformTip').innerText = pInfo.tip;
       document.getElementById('queuePlatformDirectLink').href = pInfo.url;
 
+      // Render Platform Checklist
+      const checklistElem = document.getElementById('queuePlatformChecklist');
+      if (checklistElem) {
+        const items = platformChecklists[pInfo.id] || ["Review form and post live."];
+        checklistElem.innerHTML = items.map(it => `<li>${it}</li>`).join('');
+      }
+
       // Media Links
-      const videoUrl = (queueUnitData.cloud_media && queueUnitData.cloud_media.youtube_video_url) || "https://www.youtube.com/playlist?list=PLLwTe84kfw7U";
+      const videoUrl = (queueUnitData.cloud_media && queueUnitData.cloud_media.youtube_video_url) || "https://www.youtube.com/watch?v=Y4_7Kd_KESA";
       const videoLinkElem = document.getElementById('queueVerifyVideoLink');
-      videoLinkElem.href = videoUrl;
-      videoLinkElem.innerText = `Test Walkthrough Video (${queueUnitData.specs.bedrooms} Bed) →`;
+      if (videoLinkElem) {
+        videoLinkElem.href = videoUrl;
+      }
 
       // Set Platform in select & load description
       document.getElementById('postingPlatformSelect').value = pInfo.id;
@@ -4748,10 +4827,13 @@ function renderPlatformsDirectory() {
       document.getElementById('queueVerifyDesc').value = descVal;
       document.getElementById('queueCharCount').innerText = `${descVal.length} characters`;
 
-      document.getElementById('queueApproveBtnText').innerText = `Approve & Auto-Post to ${pInfo.name}`;
+      const openBtnText = document.getElementById('queueOpenBtnText');
+      if (openBtnText) {
+        openBtnText.innerText = `Open ${pInfo.name.split(' ')[0]} & Copy Description`;
+      }
     }
 
-    async function approveAndDispatchCurrentQueueItem(mode = 'bot') {
+    async function approveAndDispatchCurrentQueueItem(mode = 'manual') {
       const pInfo = queuePlatformsList[currentQueueIdx];
       const verifiedDesc = document.getElementById('queueVerifyDesc').value;
       const verifiedTitle = document.getElementById('queueVerifyTitle').value;
@@ -4762,7 +4844,7 @@ function renderPlatformsDirectory() {
         await navigator.clipboard.writeText(verifiedDesc);
       } catch(e) {}
 
-      if (mode === 'manual') {
+      if (mode === 'manual' || mode === 'mark_only') {
         queueApprovedStatuses[pInfo.id] = true;
         if (queueUnitData.postings && queueUnitData.postings[pInfo.id]) {
           queueUnitData.postings[pInfo.id].status = "posted";
@@ -4770,8 +4852,21 @@ function renderPlatformsDirectory() {
         }
         renderUnitsGrid();
         renderPlatformListing();
-        window.open(pInfo.url, '_blank');
-        showToast(`✔ Approved for ${pInfo.name}! Text copied to clipboard.`);
+
+        // Record post status in local database
+        fetch('/api/postings/mark-posted', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ unit_id: queueUnitData.id, platform: pInfo.id })
+        }).catch(e => console.log("DB sync note:", e));
+
+        if (mode === 'manual') {
+          window.open(pInfo.url, '_blank');
+          showToast(`🚀 Opening ${pInfo.name}! Description copied.`);
+        } else {
+          showToast(`✔ Marked as posted on ${pInfo.name}!`);
+        }
+
         currentQueueIdx++;
         setTimeout(() => {
           renderQueueCurrentStep();

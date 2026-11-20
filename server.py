@@ -10,6 +10,7 @@ import socketserver
 import json
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
@@ -248,6 +249,27 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             self._set_cors_headers()
             self.end_headers()
             self.wfile.write(json.dumps(result).encode("utf-8"))
+            return
+
+        # Mark Posting as Posted (Assisted Posting Assistant Mode)
+        elif path == "/api/postings/mark-posted":
+            unit_id = data.get("unit_id")
+            platform = data.get("platform")
+            external_url = data.get("external_url")
+            if not unit_id or not platform:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self._set_cors_headers()
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "unit_id and platform required"}).encode("utf-8"))
+                return
+            now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+            update_posting_status(unit_id, platform, "posted", external_url=external_url, log=f"Manual Assisted Post on {now_str}")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "status": "posted"}).encode("utf-8"))
             return
 
         # 7-Day Auto-Refresh Lifecycle: Take Down & Re-Post Fresh Now
