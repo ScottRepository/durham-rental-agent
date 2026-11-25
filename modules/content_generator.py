@@ -98,13 +98,23 @@ FILL OUT FORM TO SET SHOWING DATE/TIME:
 We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE."""
     return desc.strip()
 
+def _fmt_num(val: Any) -> str:
+    try:
+        f = float(val)
+        return str(int(f)) if f.is_integer() else str(f)
+    except Exception:
+        return str(val)
+
 def generate_facebook_marketplace_listing(unit: Dict[str, Any]) -> Dict[str, str]:
     specs = unit["specs"]
     financials = unit["financials"]
     address = unit["address"]
     media_info = _get_media(unit)
 
-    title = f"{specs['bedrooms']} Bed {specs['bathrooms']} Bath - {unit['name']} | Whitby Central"
+    beds = _fmt_num(specs['bedrooms'])
+    baths = _fmt_num(specs['bathrooms'])
+    price = _fmt_num(financials['target_rent'])
+    title = f"{beds} Bed {baths} Bath - {unit['name']} | Whitby Central"
     if len(title) > 100:
         title = title[:97] + "..."
 
@@ -113,11 +123,13 @@ def generate_facebook_marketplace_listing(unit: Dict[str, Any]) -> Dict[str, str
     return {
         "platform": "Facebook Marketplace",
         "title": title,
-        "price": str(financials['target_rent']),
+        "price": price,
         "category": "Property Rentals",
         "rental_type": unit['type'],
-        "bedrooms": str(specs['bedrooms']),
-        "bathrooms": str(specs['bathrooms']),
+        "bedrooms": beds,
+        "bathrooms": baths,
+        "sqft": _fmt_num(specs.get('sqft', 800)),
+        "street_address": "315 Kent Street, Whitby, ON",
         "description": description,
         "video_link": media_info['video_url'],
         "drive_folder": media_info['drive_folder'],
@@ -130,20 +142,23 @@ def generate_kijiji_listing(unit: Dict[str, Any]) -> Dict[str, str]:
     address = unit["address"]
     media_info = _get_media(unit)
 
+    beds = _fmt_num(specs['bedrooms'])
+    baths = _fmt_num(specs['bathrooms'])
+    price = _fmt_num(financials['target_rent'])
     unit_label = unit.get("name", f"Unit {unit['id']}")
-    title = f"Whitby Central Renovated 2-Bed Apt ({unit_label}) - Most Utilities"
+    title = f"{beds} Bed {baths} Bath - {unit_label} | Whitby Central"
     if len(title) > 70:
-        title = f"Whitby Central 2-Bed Apt - Most Utilities ({unit['id']})"
+        title = f"Whitby Central {beds}-Bed Apt - Most Utilities ({unit['id']})"
 
     description = generate_standard_description(unit, include_emojis=False)
 
     return {
         "platform": "Kijiji Ontario",
         "title": title,
-        "price": str(financials['target_rent']),
+        "price": price,
         "category": "Apartments & Condos for Rent",
-        "bedrooms": str(specs['bedrooms']),
-        "bathrooms": str(specs['bathrooms']),
+        "bedrooms": beds,
+        "bathrooms": baths,
         "youtube_video_url": media_info['video_url'],
         "description": description,
         "drive_folder": media_info['drive_folder'],
@@ -177,13 +192,13 @@ def generate_zumper_listing(unit: Dict[str, Any]) -> Dict[str, str]:
     return {
         "platform": "Zumper & PadMapper",
         "title": title,
-        "price": str(financials['target_rent']),
+        "price": _fmt_num(financials['target_rent']),
         "street_address": address['street'],
         "city": address['city'],
         "postal_code": address['postal_code'],
-        "bedrooms": str(specs['bedrooms']),
-        "bathrooms": str(specs['bathrooms']),
-        "sqft": str(specs['sqft']),
+        "bedrooms": _fmt_num(specs['bedrooms']),
+        "bathrooms": _fmt_num(specs['bathrooms']),
+        "sqft": _fmt_num(specs['sqft']),
         "virtual_tour_url": media_info['video_url'],
         "virtual_tour_field_instruction": "Paste the virtual_tour_url into Zumper's dedicated Virtual Tour/Video field so Zumper creates the '1 Video / Tour 315 Kent Street' tab.",
         "description": zumper_desc,
@@ -208,10 +223,10 @@ def generate_rentals_ca_listing(unit: Dict[str, Any]) -> Dict[str, str]:
     return {
         "platform": "Rentals.ca",
         "title": title,
-        "price": str(financials['target_rent']),
-        "bedrooms": str(specs['bedrooms']),
-        "bathrooms": str(specs['bathrooms']),
-        "sqft": str(specs['sqft']),
+        "price": _fmt_num(financials['target_rent']),
+        "bedrooms": _fmt_num(specs['bedrooms']),
+        "bathrooms": _fmt_num(specs['bathrooms']),
+        "sqft": _fmt_num(specs['sqft']),
         "virtual_tour_url": media_info['video_url'],
         "description": description,
         "drive_folder": media_info['drive_folder'],

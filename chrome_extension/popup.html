@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>315 Kent St Co-Pilot</title>
+  <style>
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { width: 340px; margin: 0; padding: 14px; background: #f8fafc; color: #0f172a; }
+    .hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .title { font-size: 14px; font-weight: 700; color: #0f172a; }
+    .badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 99px; background: #dcfce7; color: #166534; }
+    label { display: block; font-size: 11px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    select { width: 100%; padding: 7px 9px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+    .btn-primary { width: 100%; padding: 10px; border: none; border-radius: 9px; background: #2563eb; color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; margin-bottom: 8px; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+    .btn-sec { padding: 7px 8px; border: 1px solid #cbd5e1; border-radius: 7px; background: #fff; color: #334155; font-size: 11px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: block; }
+    .btn-sec:hover { background: #f1f5f9; }
+    .btn-done { width: 100%; padding: 8px; border: 1px solid #86efac; border-radius: 8px; background: #f0fdf4; color: #166534; font-weight: 700; font-size: 12px; cursor: pointer; }
+    .status { font-size: 11px; color: #475569; margin-top: 8px; min-height: 16px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="hdr">
+    <span class="title">315 Kent St Co-Pilot</span>
+    <span id="siteBadge" class="badge">Ready</span>
+  </div>
+
+  <label for="unitSelect">Active Apartment Unit</label>
+  <select id="unitSelect">
+    <option value="unit_3">Unit 3 — $1,995/mo (2 Bed • Balcony)</option>
+    <option value="unit_2">Unit 2 — $1,895/mo (2 Bed • Lower)</option>
+    <option value="unit_1">Unit 1 — $1,925/mo (2 Bed • Lower)</option>
+    <option value="unit_4">Unit 4 — $2,050/mo (2 Bed)</option>
+    <option value="unit_5">Unit 5 — $2,075/mo (2 Bed)</option>
+    <option value="unit_6">Unit 6 — $2,075/mo (2 Bed)</option>
+  </select>
+
+  <button id="autofillBtn" class="btn-primary">⚡ Auto-Fill Visible Fields on Tab</button>
+
+  <div class="grid">
+    <button id="copyTitleBtn" class="btn-sec">📋 Copy Title</button>
+    <button id="copyPriceBtn" class="btn-sec">💵 Copy Price</button>
+    <button id="copyDescBtn" class="btn-sec">📝 Copy Description</button>
+    <button id="copyVideoBtn" class="btn-sec">🎥 Copy Video URL</button>
+    <button id="copyAddrBtn" class="btn-sec">📍 Copy Address</button>
+    <a id="zipBtn" href="http://localhost:8000/api/units/unit_3/photos.zip" target="_blank" class="btn-sec">📦 Photo Pack (.zip)</a>
+  </div>
+
+  <button id="markPostedBtn" class="btn-done">✔ Mark Current Site as Posted</button>
+  <div id="statusMsg" class="status">Connected to localhost:8000</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "315 Kent St — Rental Posting Co-Pilot",
+  "version": "1.0.0",
+  "description": "1-Click form auto-filler and clipboard assistant for Facebook Marketplace, Kijiji, Zumper, and Rentals.ca using your real Chrome session.",
+  "permissions": ["activeTab", "scripting", "storage", "clipboardWrite"],
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "https://*.facebook.com/*",
+    "https://*.kijiji.ca/*",
+    "https://*.zumper.com/*",
+    "https://*.rentals.ca/*"
+  ],
+  "action": {
+    "default_title": "315 Kent St Co-Pilot",
+    "default_popup": "popup.html"
+  }
+}

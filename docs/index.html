@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Durham Region Rental Agent & 1-Click Auto Poster</title>
+  <title>315 Kent St — Property Management & Posting Co-Pilot</title>
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
@@ -15,6 +19,9 @@
       darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']
+          },
           colors: {
             brand: {
               50: '#eff6ff',
@@ -32,140 +39,149 @@
   </script>
   <style>
     .tab-active {
-      border-color: #3b82f6;
-      color: #2563eb;
-      background-color: #eff6ff;
+      background-color: #2563eb !important;
+      color: #ffffff !important;
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.35);
+    }
+    .tab-active i {
+      color: #ffffff !important;
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen antialiased">
 
-  <!-- Header -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md">
-          <i class="fa-solid fa-building-user text-lg"></i>
-        </div>
-        <div>
-          <h1 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-            Durham Rental Agent
-            <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 1-Click Auto Poster
-            </span>
-          </h1>
-          <p class="text-xs text-slate-500">6-Unit Portfolio • Media Database (Photos & Videos) • Auto-Posting to FB, Kijiji & Zumper</p>
-        </div>
+  <!-- Mobile Top Header (Visible on < lg screens) -->
+  <header class="lg:hidden bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-slate-800">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
+        <i class="fa-solid fa-building"></i>
       </div>
-      <div class="flex flex-wrap items-center gap-2">
-        <button onclick="switchTab('screening')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 shadow-sm transition" title="Manage Tenant Emails & Screening via 315kentstreet@gmail.com">
-          <i class="fa-solid fa-envelope-circle-check text-emerald-600"></i> 315kentstreet@gmail.com
-        </button>
-        <a href="https://forms.gle/UZSrP8PUSh9GsdLX8" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 shadow-sm transition">
-          <i class="fa-solid fa-clipboard-question text-purple-600"></i> Tenant Intake Form
-        </a>
-        <button onclick="exportCurrentJSON()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 shadow-sm transition">
-          <i class="fa-solid fa-download text-slate-500"></i> Export DB
-        </button>
-        <a href="https://github.com/ScottRepository/durham-rental-agent/actions" target="_blank" id="ghRepoLink" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-slate-900 rounded-lg hover:bg-slate-800 shadow-sm transition">
-          <i class="fa-brands fa-github"></i> GitHub Actions
-        </a>
+      <div>
+        <span class="font-bold text-sm block leading-tight">315 Kent Street</span>
+        <span class="text-[11px] text-slate-400 block">Whitby Rental Co-Pilot</span>
       </div>
     </div>
-
-    <!-- Navigation Tabs -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-3 border-t border-slate-100 pt-1 overflow-x-auto">
-      <button onclick="switchTab('units')" id="tabBtn-units" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 tab-active transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-building"></i> 6 Units Portfolio
-      </button>
-      <button onclick="switchTab('posting')" id="tabBtn-posting" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Ad Builder & Auto-Poster
-      </button>
-      <button onclick="switchTab('analytics')" id="tabBtn-analytics" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-chart-pie text-purple-600"></i> Ad Performance & Analytics
-      </button>
-      <button onclick="switchTab('screening')" id="tabBtn-screening" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-user-shield text-emerald-600"></i> Tenant Screening, AI Credit & Email
-      </button>
-      <button onclick="switchTab('comps')" id="tabBtn-comps" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-chart-line"></i> Market Comps
-      </button>
-      <button onclick="switchTab('media')" id="tabBtn-media" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-photo-film"></i> Photos & Videos
-      </button>
-      <button onclick="switchTab('platforms')" id="tabBtn-platforms" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-map-location-dot"></i> Durham Channels
-      </button>
-      <button onclick="switchTab('github')" id="tabBtn-github" class="tab-btn px-3.5 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-robot"></i> Automation
-      </button>
-    </div>
+    <button onclick="document.getElementById('appSidebar').classList.toggle('hidden')" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-700">
+      <i class="fa-solid fa-bars mr-1"></i> Menu
+    </button>
   </header>
 
-  <!-- Bot Server Connection & Global 1-Click Command Bar -->
-  <div id="botConnectionBanner" class="bg-slate-900 text-white px-4 sm:px-6 py-2.5 text-xs border-b border-slate-800 shadow-inner">
-    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-2.5">
-      <div class="flex items-center gap-2.5">
-        <span id="botStatusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-        <span id="botStatusText" class="font-medium text-slate-200">Connecting to Local Bot Engine...</span>
-        <div id="botStatusAction" class="flex items-center gap-2">
-          <!-- Populated by checkBotServerStatus() -->
-        </div>
-      </div>
-
-      <!-- Global Quick-Action Bar: Post, 7-Day Renew, Delete -->
-      <div class="flex flex-wrap items-center gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700">
-        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1"><i class="fa-solid fa-bolt text-amber-400 mr-1"></i>Quick Bot Control:</span>
-        <select id="globalQuickUnitSelect" class="bg-slate-900 text-white border border-slate-600 rounded-lg px-2 py-1 text-xs font-bold focus:outline-none focus:ring-1 focus:ring-blue-400">
-          <option value="unit_3">Unit 3 ($2,075/mo • 2 Bed)</option>
-          <option value="unit_1">Unit 1 ($1,895/mo • 1 Bed)</option>
-          <option value="unit_2">Unit 2 ($1,750/mo • 1 Bed)</option>
-          <option value="unit_4">Unit 4 ($1,895/mo • 1 Bed)</option>
-          <option value="unit_5">Unit 5 ($1,995/mo • 2 Bed)</option>
-          <option value="unit_6">Unit 6 ($2,050/mo • 2 Bed)</option>
-        </select>
-        <button onclick="globalQuickAction('post')" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition flex items-center gap-1 shadow-sm" title="Launch Bot to Post this Unit">
-          <i class="fa-solid fa-paper-plane text-[10px]"></i> Post Ad
-        </button>
-        <button onclick="globalQuickAction('renew')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition flex items-center gap-1 shadow-sm" title="Schedule or Trigger 7-Day Auto-Renewal (Delete Old + Re-Post Fresh)">
-          <i class="fa-solid fa-arrows-rotate text-[10px]"></i> 7-Day Renew
-        </button>
-        <button onclick="globalQuickAction('delete')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg transition flex items-center gap-1 shadow-sm" title="Delete / Take Down Postings for this Unit">
-          <i class="fa-solid fa-trash-can text-[10px]"></i> Delete Posting
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Content Container -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-    <!-- TAB 1: 6 UNITS PORTFOLIO -->
-    <section id="tab-units" class="space-y-6">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-        <div>
-          <h2 class="text-lg font-bold text-slate-900">315 Kent Street — 6-Unit Portfolio & Vacancy Tracker</h2>
-          <p class="text-sm text-slate-500">Toggle units between <strong>Available to Rent</strong> and <strong>Occupied</strong>, preview ads, or jump directly to tenant screening.</p>
-        </div>
-        <div class="flex flex-wrap items-center gap-4">
-          <!-- Vacancy Filter Pills -->
-          <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
-            <button onclick="setUnitFilter('all')" id="unitFilter-all" class="px-3 py-1.5 rounded-lg bg-white text-blue-600 shadow-sm transition">All 6 Units</button>
-            <button onclick="setUnitFilter('vacant')" id="unitFilter-vacant" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">Available to Rent (<span id="vacantCountLabel">2</span>)</button>
-            <button onclick="setUnitFilter('occupied')" id="unitFilter-occupied" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">Occupied (<span id="occupiedCountLabel">4</span>)</button>
+  <div class="flex min-h-screen">
+    <!-- Clean Left Sidebar Navigation -->
+    <aside id="appSidebar" class="hidden lg:flex flex-col w-64 shrink-0 bg-slate-900 text-slate-300 border-r border-slate-800 lg:sticky lg:top-0 lg:h-screen z-30 justify-between p-4 overflow-y-auto fixed inset-y-0 left-0">
+      <div class="space-y-6">
+        <!-- Brand Identity -->
+        <div class="flex items-center justify-between px-2 pt-1">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md">
+              <i class="fa-solid fa-building-user text-sm"></i>
+            </div>
+            <div>
+              <h1 class="text-sm font-bold text-white leading-tight">315 Kent Street</h1>
+              <p class="text-[11px] text-slate-400">Whitby • 6-Unit Portfolio</p>
+            </div>
           </div>
-          <div class="text-right pl-2 border-l border-slate-200">
-            <span class="text-xs text-slate-500 uppercase tracking-wider block">Total Projected Revenue</span>
-            <span id="totalMonthlyRent" class="text-xl font-extrabold text-blue-600">$11,665 CAD/mo</span>
-          </div>
+          <button onclick="document.getElementById('appSidebar').classList.add('hidden')" class="lg:hidden text-slate-400 hover:text-white">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Primary Navigation -->
+        <div class="space-y-1">
+          <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Operations</p>
+          <button onclick="switchTab('units')" id="tabBtn-units" class="tab-btn w-full px-3 py-2.5 rounded-xl text-xs font-semibold tab-active transition flex items-center gap-3 text-left">
+            <i class="fa-solid fa-grip w-4 text-center text-slate-400"></i>
+            <span>Units & Vacancy</span>
+          </button>
+          <button onclick="switchTab('posting')" id="tabBtn-posting" class="tab-btn w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition flex items-center gap-3 text-left">
+            <i class="fa-solid fa-paper-plane w-4 text-center text-blue-400"></i>
+            <span>Posting Co-Pilot</span>
+          </button>
+          <button onclick="switchTab('screening')" id="tabBtn-screening" class="tab-btn w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition flex items-center gap-3 text-left">
+            <i class="fa-solid fa-user-check w-4 text-center text-emerald-400"></i>
+            <span>Tenant Screening</span>
+          </button>
+          <button onclick="switchTab('analytics')" id="tabBtn-analytics" class="tab-btn w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition flex items-center gap-3 text-left">
+            <i class="fa-solid fa-arrows-rotate w-4 text-center text-purple-400"></i>
+            <span>7-Day Renewals & Stats</span>
+          </button>
+        </div>
+
+        <!-- Secondary Assets & Tools -->
+        <div class="space-y-1 pt-2 border-t border-slate-800/80">
+          <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Assets & Market</p>
+          <button onclick="switchTab('media')" id="tabBtn-media" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center gap-3 text-left">
+            <i class="fa-solid fa-photo-film w-4 text-center"></i>
+            <span>Photos & Videos</span>
+          </button>
+          <button onclick="switchTab('comps')" id="tabBtn-comps" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center gap-3 text-left">
+            <i class="fa-solid fa-chart-line w-4 text-center"></i>
+            <span>Durham Market Comps</span>
+          </button>
+          <button onclick="switchTab('platforms')" id="tabBtn-platforms" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center gap-3 text-left">
+            <i class="fa-solid fa-puzzle-piece w-4 text-center"></i>
+            <span>Channels & Extension</span>
+          </button>
+          <button onclick="switchTab('github')" id="tabBtn-github" class="tab-btn w-full px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center gap-3 text-left">
+            <i class="fa-solid fa-server w-4 text-center"></i>
+            <span>System & Backups</span>
+          </button>
         </div>
       </div>
 
-      <!-- Unit Grid -->
-      <div id="unitsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Rendered dynamically by JS -->
+      <!-- Sidebar Footer: Quick Links & Server Sync Status -->
+      <div class="space-y-2.5 pt-4 border-t border-slate-800 text-xs">
+        <a href="https://forms.gle/UZSrP8PUSh9GsdLX8" target="_blank" class="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-slate-200 transition">
+          <span class="flex items-center gap-2 font-medium"><i class="fa-solid fa-clipboard-question text-purple-400"></i> Intake Form</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+        </a>
+        <div class="flex items-center gap-1.5">
+          <button onclick="exportCurrentJSON()" class="flex-1 px-2.5 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-slate-300 text-[11px] font-medium transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-download text-slate-400"></i> Backup JSON
+          </button>
+          <a href="https://mail.google.com/mail/?authuser=315kentstreet@gmail.com" target="_blank" class="flex-1 px-2.5 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-slate-300 text-[11px] font-medium transition flex items-center justify-center gap-1.5" title="Open 315kentstreet@gmail.com">
+            <i class="fa-solid fa-envelope text-emerald-400"></i> Gmail
+          </a>
+        </div>
+        <div id="botConnectionBanner" class="px-3 py-2 rounded-lg bg-slate-950/70 border border-slate-800/90 space-y-1">
+          <div class="flex items-center gap-2">
+            <span id="botStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+            <span id="botStatusText" class="text-[11px] text-slate-300 font-medium leading-tight">Syncing database...</span>
+          </div>
+          <div id="botStatusAction" class="hidden"></div>
+        </div>
       </div>
-    </section>
+    </aside>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 min-w-0 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+
+      <!-- TAB 1: 6 UNITS PORTFOLIO -->
+      <section id="tab-units" class="space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 tracking-tight">Portfolio & Vacancy Overview</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Click <strong>Post Co-Pilot</strong> on any vacant unit to step through Facebook, Kijiji, Zumper & Rentals.ca with 1-click copy.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-4">
+            <!-- Vacancy Filter Pills -->
+            <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+              <button onclick="setUnitFilter('all')" id="unitFilter-all" class="px-3 py-1.5 rounded-lg bg-white text-blue-600 shadow-xs transition">All (6)</button>
+              <button onclick="setUnitFilter('vacant')" id="unitFilter-vacant" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">Vacant (<span id="vacantCountLabel">2</span>)</button>
+              <button onclick="setUnitFilter('occupied')" id="unitFilter-occupied" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">Occupied (<span id="occupiedCountLabel">4</span>)</button>
+            </div>
+            <div class="text-right pl-3 border-l border-slate-200">
+              <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Gross Rent Roll</span>
+              <span id="totalMonthlyRent" class="text-lg font-extrabold text-slate-900">$12,015/mo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unit Grid -->
+        <div id="unitsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          <!-- Rendered dynamically by JS -->
+        </div>
+      </section>
 
     <!-- TAB 2: PHOTOS & VIDEOS DATABASE -->
     <section id="tab-media" class="hidden space-y-6">
@@ -350,142 +366,57 @@
       </div>
     </section>
 
-    <!-- TAB 4: USER-FRIENDLY AD BUILDER & 1-CLICK AUTO POSTING STUDIO -->
+    <!-- TAB 4: POSTING CO-PILOT & AD STUDIO -->
     <section id="tab-posting" class="hidden space-y-6">
-      <!-- Top Studio Header & 1-Click Publish Bar -->
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <!-- Clean Unified Co-Pilot Command Bar -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs space-y-4">
+        <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
           <div>
-            <div class="flex items-center gap-2">
-              <span class="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full flex items-center gap-1.5">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Visual Ad Studio & Bot Control
-              </span>
-              <span id="platformBadge" class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full shadow-sm"></span>
-              <span id="postingStatusPill" class="px-2.5 py-0.5 bg-slate-200 text-slate-700 text-xs font-semibold rounded-full">Draft</span>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h2 class="text-xl font-bold text-slate-900 tracking-tight">Posting Co-Pilot & Ad Studio</h2>
+              <span id="platformBadge" class="px-2.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold rounded-full"></span>
+              <span id="postingStatusPill" class="px-2.5 py-0.5 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">Draft</span>
             </div>
-            <h2 class="text-xl font-bold text-slate-900 mt-1.5">1-Click Bot Posting, Deletion & 7-Day Auto-Renewal</h2>
-            <p class="text-sm text-slate-500">Use the 3 action pods below to post ads via the bot, schedule 7-day auto-renewals, or take down listings at the click of a button.</p>
+            <p class="text-xs text-slate-500 mt-0.5">Edit your master ad once — automatically formatted for Facebook, Kijiji, Zumper & Rentals.ca with 1-click copy.</p>
           </div>
 
-          <!-- Utility Links -->
+          <!-- Primary Co-Pilot Actions -->
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="copyListingText()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 shadow-sm transition">
-              <i class="fa-solid fa-copy text-blue-600"></i> Copy Ad Text
+            <button onclick="startPostAllVerificationQueue()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-2">
+              <i class="fa-solid fa-layer-group"></i> Guided 4-Site Queue
             </button>
-            <button onclick="copyLeadReplySnippet()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 shadow-sm transition" title="Copy a friendly reply with your Google Form link for tenants who message you">
-              <i class="fa-solid fa-comment-dots text-purple-600"></i> Copy Reply for Inquiries
+            <button onclick="assistedOpenInChrome()" class="px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-1.5" title="Copies description & opens selected rental website in your Chrome tab">
+              <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i> Copy & Open Site
             </button>
-            <a id="platformDirectPostBtn" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-blue-700 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 shadow-sm transition">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Website
-            </a>
+            <button onclick="downloadCurrentUnitPhotoZip()" class="px-3.5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-semibold rounded-xl transition flex items-center gap-1.5" title="Download numbered .zip pack of Building Exterior + Suite Photos">
+              <i class="fa-solid fa-file-zipper text-amber-600"></i> Photo Pack (.zip)
+            </button>
+            <button onclick="markCurrentPlatformPosted()" class="px-3.5 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold rounded-xl transition flex items-center gap-1.5" title="Record current channel as Posted & reset 7-day cycle">
+              <i class="fa-solid fa-check text-emerald-600"></i> Mark Posted
+            </button>
+            <a id="platformDirectPostBtn" href="#" target="_blank" class="hidden">Open</a>
           </div>
         </div>
 
-        <!-- 3-Pod Command Center: 1. POST | 2. SCHEDULE 7-DAY RENEW | 3. DELETE POSTING -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <!-- POD 1: POST AD (BOT) -->
-          <div class="p-4 rounded-2xl bg-gradient-to-br from-blue-50 via-indigo-50/60 to-white border border-blue-200 flex flex-col justify-between space-y-3 shadow-sm">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-blue-800 flex items-center gap-1.5">
-                  <i class="fa-solid fa-paper-plane text-blue-600"></i> 1. Post Listing (Bot)
-                </span>
-                <label class="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-900 cursor-pointer bg-blue-100/80 px-2 py-0.5 rounded-full">
-                  <input id="autoPublishCheckbox" type="checkbox" class="rounded text-blue-600 focus:ring-0">
-                  <span>Auto-Click Publish</span>
-                </label>
-              </div>
-              <p class="text-[11px] text-slate-600 mt-1">Auto-downloads Google Drive photos, fills price & specs, and stages or submits your ad.</p>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-2">
-              <button onclick="executeOneClickPost()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition" title="Launch automated Playwright bot to fill in form and upload photos">
-                <i class="fa-solid fa-robot"></i> Launch Bot Browser
-              </button>
-              <button onclick="startPostAllVerificationQueue()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl shadow-sm transition" title="Step-by-step verified posting across Facebook, Kijiji, Zumper, Rentals.ca">
-                <i class="fa-solid fa-layer-group text-yellow-300"></i> Post All 4 Sites
-              </button>
-            </div>
-            <div class="text-right pt-0.5">
-              <button onclick="assistedOpenInChrome()" class="text-[11px] text-slate-500 hover:text-blue-700 font-medium inline-flex items-center gap-1 transition">
-                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Or open directly in your personal Chrome (copies ad copy)
-              </button>
-            </div>
-          </div>
-
-          <!-- POD 2: SCHEDULE 7-DAY AUTO-RENEW -->
-          <div class="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-800/50 flex flex-col justify-between space-y-3 shadow-sm">
-            <div class="flex items-start gap-3">
-              <div id="lifecycleIconBox" class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-sm shadow-inner shrink-0">
-                <i id="lifecycleIcon" class="fa-solid fa-arrows-rotate animate-spin" style="animation-duration: 9s;"></i>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-300">2. 7-Day Auto-Renew</span>
-                  <span id="lifecycleStatusBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500 text-white">● ACTIVE</span>
-                </div>
-                <p id="lifecycleCountdownLabel" class="text-[11px] font-bold text-emerald-200 mt-0.5">Auto-refreshes in 6 days</p>
-                <p class="text-[10px] text-slate-300 mt-0.5">Takes down old ad & re-posts fresh every 7 days for top ranking.</p>
-              </div>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-2">
-              <button onclick="refreshCurrentUnitNow(false)" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow-sm" title="Schedule 7-day cycle & refresh status immediately">
-                <i class="fa-solid fa-calendar-check"></i> Schedule / Renew Now
-              </button>
-              <button onclick="refreshCurrentUnitNow(true)" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm" title="Run Bot to delete old post & re-post fresh ad">
-                <i class="fa-solid fa-robot"></i> Bot Renew (Take Down + Post)
-              </button>
-            </div>
-          </div>
-
-          <!-- POD 3: DELETE / TAKE DOWN POSTINGS -->
-          <div class="p-4 rounded-2xl bg-gradient-to-br from-rose-50 via-amber-50/40 to-white border border-rose-200 flex flex-col justify-between space-y-3 shadow-sm">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-rose-800 flex items-center gap-1.5">
-                  <i class="fa-solid fa-trash-can text-rose-600"></i> 3. Delete / Take Down Ad
-                </span>
-                <span class="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full">1-Click Removal</span>
-              </div>
-              <p class="text-[11px] text-slate-600 mt-1">Remove active listings on the current platform or take down all 5 sites and pause auto-renewal.</p>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-2">
-              <button onclick="deleteCurrentPlatformAd(true)" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition shadow-sm" title="Launch Bot to delete listing on selected platform">
-                <i class="fa-solid fa-trash-can"></i> Delete Current Site (Bot)
-              </button>
-              <button id="lifecycleToggleBtn" onclick="toggleCurrentUnitActive()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition shadow-sm bg-amber-500 hover:bg-amber-400 text-slate-950">
-                <i class="fa-solid fa-power-off"></i> <span id="lifecycleToggleText">Take Down All 5</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 1: Easy Unit & Website Selector Bar -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pt-4 border-t border-slate-100 items-center">
+        <!-- Clean Unit & Platform Selector Strip -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pt-3 border-t border-slate-100 items-end">
           <div class="md:col-span-4">
-            <label class="text-xs font-bold text-slate-700 block mb-1.5">
-              <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-white text-[11px] mr-1">1</span>
-              Choose Apartment Unit:
-            </label>
-            <select id="postingUnitSelect" onchange="renderPlatformListing()" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl p-2.5 font-semibold focus:ring-2 focus:ring-blue-500">
+            <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Apartment Unit</label>
+            <select id="postingUnitSelect" onchange="renderPlatformListing()" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl px-3 py-2 font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none">
               <!-- Populated by JS -->
             </select>
           </div>
 
           <div class="md:col-span-8">
-            <label class="text-xs font-bold text-slate-700 block mb-1.5">
-              <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-white text-[11px] mr-1">2</span>
-              Choose Rental Website to Customize & Preview:
-            </label>
-            <!-- Hidden select kept synced for compatibility -->
+            <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Target Channel</label>
             <select id="postingPlatformSelect" onchange="renderPlatformListing()" class="hidden">
               <option value="facebook">Facebook Marketplace & Groups</option>
               <option value="kijiji">Kijiji Ontario (YouTube Embed Badge)</option>
               <option value="zumper">Zumper & PadMapper (Virtual Tour Link)</option>
               <option value="rentals_ca">Rentals.ca (Top Google Rank)</option>
             </select>
-            <!-- Friendly Visual Website Pills -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              <button onclick="switchPreviewPlatform('facebook')" id="prevTab-facebook" class="px-3 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition flex items-center justify-center gap-1.5">
+              <button onclick="switchPreviewPlatform('facebook')" id="prevTab-facebook" class="px-3 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-xs transition flex items-center justify-center gap-1.5">
                 <i class="fa-brands fa-facebook"></i> Facebook
               </button>
               <button onclick="switchPreviewPlatform('kijiji')" id="prevTab-kijiji" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
@@ -502,213 +433,199 @@
         </div>
       </div>
 
-      <!-- SIDE-BY-SIDE VISUAL AD EDITOR (LEFT) & LIVE WEBSITE PREVIEW (RIGHT) -->
+      <!-- BALANCED 2-COLUMN WORKSPACE: SPACIOUS EDITOR (7/12) + CHECKLIST & LIFECYCLE (5/12) -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
-        <!-- LEFT COLUMN: USER-FRIENDLY AD BUILDER -->
-        <div class="lg:col-span-5 space-y-5">
 
-          <!-- MASTER AD CONTENT SYNC BANNER (Single Source of Truth) -->
-          <div class="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 p-4 rounded-2xl border border-blue-200/90 shadow-sm flex items-start gap-3">
-            <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-sm shrink-0 mt-0.5">
-              <i class="fa-solid fa-link"></i>
+        <!-- LEFT COLUMN (7/12): MASTER AD EDITOR & 1-CLICK COPY HUB -->
+        <div class="lg:col-span-7 space-y-5">
+
+          <!-- Quick 1-Click Copy Strip -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-xs">
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">1-Click Clipboard Copy</span>
+              <button onclick="copyLeadReplySnippet()" class="text-[11px] font-semibold text-purple-700 hover:text-purple-900 flex items-center gap-1">
+                <i class="fa-solid fa-comment-dots"></i> Copy Inquiry Auto-Reply
+              </button>
             </div>
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <h4 class="text-xs font-bold text-slate-900">Master Ad Content (Single Source of Truth)</h4>
-                <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">
-                  Synced Across 4 Sites
-                </span>
-              </div>
-              <p class="text-[11px] text-slate-600 leading-snug">
-                One change to price, headline, or description automatically updates Facebook, Kijiji, Rentals.ca & Zumper. For Zumper, the form link is automatically adapted to bypass URL filters!
-              </p>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="copyToClipboard(document.getElementById('listingTitle').value, this)" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                <i class="fa-regular fa-copy text-blue-600"></i> Headline
+              </button>
+              <button onclick="copyToClipboard(document.getElementById('listingPrice').value.replace(/[^0-9]/g,''), this)" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-dollar-sign text-emerald-600"></i> Price
+              </button>
+              <button onclick="copyToClipboard('315 Kent Street, Whitby, ON', this)" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-location-dot text-rose-500"></i> Address
+              </button>
+              <button onclick="copyToClipboard(document.getElementById('listingVideo').value, this)" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                <i class="fa-brands fa-youtube text-red-600"></i> Video URL
+              </button>
+              <button onclick="copyToClipboard('https://forms.gle/UZSrP8PUSh9GsdLX8', this)" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-clipboard-question text-purple-600"></i> Form URL
+              </button>
+              <button onclick="copyToClipboard(document.getElementById('listingDescription').value, this)" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-bold text-blue-700 flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-copy"></i> Full Description
+              </button>
             </div>
           </div>
-          
-          <!-- Card 1: Headline, Price & Move-In Date -->
-          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-sliders text-blue-600"></i> Step 3: Key Listing Details
-              </h3>
-              <span class="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold">Updates Live Preview &rarr;</span>
+
+          <!-- Key Listing Specs Card -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-slate-900">Master Listing Fields</h3>
+              <span class="text-[11px] text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full font-semibold border border-emerald-200">Synced Across All 4 Sites</span>
             </div>
 
-            <!-- Headline Input -->
             <div>
-              <div class="flex items-center justify-between mb-1">
-                <label class="text-xs font-semibold text-slate-700">Ad Headline / Title</label>
-                <button onclick="copyInput('listingTitle')" class="text-[11px] text-blue-600 hover:underline font-medium"><i class="fa-regular fa-copy mr-1"></i>Copy Title</button>
-              </div>
-              <input id="listingTitle" type="text" oninput="onFieldChanged()" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 transition">
+              <label class="text-xs font-semibold text-slate-600 block mb-1">Ad Headline / Title</label>
+              <input id="listingTitle" type="text" oninput="onFieldChanged()" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-3.5 py-2 text-sm font-semibold text-slate-900 transition">
             </div>
 
-            <!-- Price, Bedrooms & Move-in Date -->
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label class="text-xs font-semibold text-slate-700 block mb-1">Monthly Rent</label>
+                <label class="text-xs font-semibold text-slate-600 block mb-1">Monthly Rent</label>
                 <input id="listingPrice" type="text" oninput="onFieldChanged()" class="w-full bg-emerald-50/60 border border-emerald-300 focus:bg-white focus:border-emerald-500 rounded-xl px-3 py-2 text-sm font-extrabold text-emerald-800">
               </div>
               <div>
-                <label class="text-xs font-semibold text-slate-700 block mb-1">Bedrooms</label>
+                <label class="text-xs font-semibold text-slate-600 block mb-1">Bedrooms</label>
                 <input id="listingBeds" type="text" oninput="onFieldChanged()" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800">
               </div>
               <div>
-                <label class="text-xs font-semibold text-slate-700 block mb-1">Move-In Date</label>
-                <input id="listingAvailableDate" type="text" oninput="onFieldChanged()" placeholder="e.g. Dec 1" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800">
+                <label class="text-xs font-semibold text-slate-600 block mb-1">Move-In Date</label>
+                <input id="listingAvailableDate" type="text" oninput="onFieldChanged()" placeholder="e.g. Immediate" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800">
               </div>
             </div>
 
-            <!-- Quick Move-in Date Chips -->
-            <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
-              <span class="text-[11px] text-slate-500 mr-1">Quick Set Date:</span>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[11px] text-slate-400 mr-1">Quick Date:</span>
               <button type="button" onclick="setQuickAvailDate('Immediate')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-lg transition">Immediate</button>
               <button type="button" onclick="setQuickAvailDate('December 1')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-lg transition">December 1</button>
               <button type="button" onclick="setQuickAvailDate('January 1')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-lg transition">January 1</button>
             </div>
 
-            <!-- Video Walkthrough & Photos Links -->
-            <div class="pt-2 border-t border-slate-100 space-y-2.5">
-              <div>
-                <div class="flex items-center justify-between mb-1">
-                  <label class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-                    <i class="fa-brands fa-youtube text-red-600"></i> YouTube Video Walkthrough Link
-                  </label>
-                  <button onclick="copyInput('listingVideo')" class="text-[11px] text-blue-600 hover:underline font-medium"><i class="fa-regular fa-copy mr-1"></i>Copy Link</button>
-                </div>
+            <div class="pt-3 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-3 items-end">
+              <div class="sm:col-span-2">
+                <label class="text-xs font-semibold text-slate-600 block mb-1"><i class="fa-brands fa-youtube text-red-600 mr-1"></i>YouTube Walkthrough URL</label>
                 <input id="listingVideo" type="text" oninput="onFieldChanged()" class="w-full bg-slate-50/70 border border-slate-300 focus:bg-white focus:border-blue-500 rounded-xl px-3 py-2 text-xs text-blue-700 font-medium">
               </div>
-              <!-- Google Drive Photos Database Links (Unit + Building Exterior) -->
-              <div class="space-y-2">
-                <div class="flex items-center justify-between p-2.5 bg-blue-50/60 rounded-xl border border-blue-200 text-xs">
-                  <div class="space-y-0.5 overflow-hidden">
-                    <span class="text-[10px] uppercase font-bold text-blue-800 tracking-wider flex items-center gap-1">
-                      <i class="fa-brands fa-google-drive text-blue-600"></i> Unit Photos Folder (Google Drive)
-                    </span>
-                    <p id="listingPhotosPath" class="text-slate-700 font-semibold truncate text-[11px]">Google Drive Unit Photos</p>
-                  </div>
-                  <a id="listingPhotosOpenBtn" href="https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt" target="_blank" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[11px] font-bold shadow-sm transition shrink-0 ml-2">
-                    Open Photos &rarr;
-                  </a>
-                </div>
-
-                <div class="flex items-center justify-between p-2.5 bg-emerald-50/60 rounded-xl border border-emerald-200 text-xs">
-                  <div class="space-y-0.5 overflow-hidden">
-                    <div class="flex items-center gap-1.5">
-                      <span class="text-[10px] uppercase font-bold text-emerald-800 tracking-wider flex items-center gap-1">
-                        <i class="fa-solid fa-camera text-emerald-600"></i> Building Exterior Photo
-                      </span>
-                      <span class="text-[9px] bg-emerald-200 text-emerald-900 font-bold px-1.5 py-0.2 rounded">Required on all ads</span>
-                    </div>
-                    <p class="text-slate-700 font-medium truncate text-[11px]">Copy of Screenshot 2026-09-10 12.54.46 PM.png</p>
-                  </div>
-                  <a id="listingBuildingOpenBtn" href="https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0" target="_blank" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-[11px] font-bold shadow-sm transition shrink-0 ml-2">
-                    Open Building &rarr;
-                  </a>
-                </div>
-
-                <!-- Zumper Dedicated Virtual Tour Highlight Box -->
-                <div id="zumperVirtualTourBox" class="p-3 bg-purple-50/80 rounded-xl border border-purple-200 text-xs space-y-1.5">
-                  <div class="flex items-center justify-between">
-                    <span class="font-bold text-purple-900 flex items-center gap-1.5">
-                      <i class="fa-solid fa-vr-cardboard text-purple-600"></i> Zumper Dedicated Virtual Tour URL
-                    </span>
-                    <button type="button" onclick="copyZumperVirtualTourLink()" class="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-[11px] font-bold shadow-sm transition">
-                      <i class="fa-regular fa-copy mr-1"></i> Copy for Zumper
-                    </button>
-                  </div>
-                  <p class="text-[11px] text-purple-800 leading-tight">
-                    ⚡ <strong>Zumper Specific Field:</strong> On Zumper (<a href="https://www.zumper.com/manage" target="_blank" class="underline font-semibold">zumper.com/manage</a>), paste this link directly into the dedicated <strong>Virtual Tour / Video</strong> box so Zumper displays the <em>"1 Video / Tour 315 Kent Street"</em> tab for renters!
-                  </p>
-                </div>
-              </div>
+              <a id="listingPhotosOpenBtn" href="https://drive.google.com/drive/folders/1TAeTgXcOFydiAh6xYD7hBCZ0oAjXrqTt" target="_blank" class="px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 flex items-center justify-between transition">
+                <span><i class="fa-brands fa-google-drive text-blue-600 mr-1.5"></i>Unit Photos Folder</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
+              </a>
+              <a id="listingBuildingOpenBtn" href="https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0" target="_blank" class="px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 flex items-center justify-between transition">
+                <span><i class="fa-solid fa-camera text-emerald-600 mr-1.5"></i>Exterior Building Photo</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
+              </a>
+              <span id="listingPhotosPath" class="hidden"></span>
+              <div id="zumperVirtualTourBox" class="hidden"></div>
             </div>
           </div>
 
-          <!-- Card 2: Friendly Ad Description Pad (No Dark Programmer Box!) -->
-          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <!-- Description Editor Card -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div class="flex items-center gap-2">
-                <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                  <i class="fa-solid fa-align-left text-indigo-600"></i> Step 4: Ad Description
-                </h3>
+                <h3 class="text-sm font-bold text-slate-900">Ad Description</h3>
                 <span id="customSavedBadge" class="hidden text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Saved</span>
               </div>
               <div class="flex items-center gap-2">
                 <span id="charCount" class="text-[11px] text-slate-400">0 chars</span>
-                <button onclick="saveCustomDescription()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
-                  <i class="fa-solid fa-check"></i> Save Changes
+                <button onclick="saveCustomDescription()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1">
+                  <i class="fa-solid fa-check"></i> Save Master
                 </button>
-                <button onclick="resetDefaultDescription()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition" title="Restore original template">
-                  <i class="fa-solid fa-rotate-left"></i> Reset
-                </button>
-              </div>
-            </div>
-
-            <!-- 1-Click Quick-Insert Highlight Chips -->
-            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1.5">
-              <span class="text-[11px] font-bold text-slate-600 block">1-Click Add Highlights into Description:</span>
-              <div class="flex flex-wrap gap-1.5">
-                <button type="button" onclick="insertAdSnippet('form')" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 rounded-lg text-[11px] font-semibold transition">
-                  + Intake Form Link
-                </button>
-                <button type="button" onclick="insertAdSnippet('go_train')" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-lg text-[11px] font-semibold transition">
-                  + 5-Min Walk to GO Train
-                </button>
-                <button type="button" onclick="insertAdSnippet('parking')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-lg text-[11px] font-semibold transition">
-                  + Winter Parking Included
-                </button>
-                <button type="button" onclick="insertAdSnippet('video')" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-800 border border-red-200 rounded-lg text-[11px] font-semibold transition">
-                  + Video Tour Callout
+                <button onclick="resetDefaultDescription()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition" title="Restore default template">
+                  Reset
                 </button>
               </div>
             </div>
 
-            <!-- Clean, Easy-to-Read Paper-Style Textarea -->
-            <textarea id="listingDescription" oninput="onDescriptionEdited()" rows="16" class="w-full p-4 font-sans text-sm bg-slate-50/40 focus:bg-white text-slate-800 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 leading-relaxed shadow-inner"></textarea>
-
-            <!-- Platform Helpful Note Box -->
-            <div id="platformRulesBox" class="bg-amber-50/80 p-3.5 rounded-xl border border-amber-200 text-xs text-amber-900 space-y-1">
-              <!-- Populated by JS -->
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="insertAdSnippet('form')" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 rounded-lg text-[11px] font-semibold transition">+ Intake Form</button>
+              <button type="button" onclick="insertAdSnippet('go_train')" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-lg text-[11px] font-semibold transition">+ 5-Min to GO Train</button>
+              <button type="button" onclick="insertAdSnippet('parking')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-lg text-[11px] font-semibold transition">+ Parking Included</button>
+              <button type="button" onclick="insertAdSnippet('video')" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-800 border border-red-200 rounded-lg text-[11px] font-semibold transition">+ Video Callout</button>
             </div>
 
-            <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
-              <span><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> Ready for clean 1-click pasting</span>
-              <button onclick="exportAllCustomDescriptions()" class="text-blue-600 hover:text-blue-800 font-semibold">
-                <i class="fa-solid fa-file-arrow-down mr-1"></i> Backup Custom Ads
-              </button>
-            </div>
+            <textarea id="listingDescription" oninput="onDescriptionEdited()" rows="15" class="w-full p-4 font-sans text-sm bg-slate-50/50 focus:bg-white text-slate-800 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 leading-relaxed"></textarea>
           </div>
-
         </div>
 
-        <!-- RIGHT COLUMN: LIVE WEBSITE MOCKUP PREVIEW (STICKY SIDE-BY-SIDE) -->
-        <div class="lg:col-span-7 lg:sticky lg:top-28 space-y-3">
-          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              <h3 class="text-base font-bold text-slate-900">Live Website Preview</h3>
-              <span class="text-[11px] bg-blue-50 text-blue-700 font-semibold px-2.5 py-0.5 rounded-full border border-blue-200">See exactly what renters see</span>
-            </div>
+        <!-- RIGHT COLUMN (5/12): PLATFORM CHECKLIST, 7-DAY LIFECYCLE & RENTER PREVIEW -->
+        <div class="lg:col-span-5 space-y-5 lg:sticky lg:top-6">
 
-            <!-- Desktop / Mobile Phone Toggle -->
-            <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
-              <button onclick="setPreviewDevice('desktop')" id="btnPreviewDesktop" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white text-blue-600 shadow-sm transition flex items-center gap-1.5">
-                <i class="fa-solid fa-desktop"></i> Computer View
-              </button>
-              <button onclick="setPreviewDevice('mobile')" id="btnPreviewMobile" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
-                <i class="fa-solid fa-mobile-screen"></i> Phone App View
-              </button>
-            </div>
+          <!-- Platform Specific Guidance -->
+          <div id="platformRulesBox" class="bg-amber-50/90 p-4 rounded-2xl border border-amber-200/90 text-xs text-amber-950 space-y-1.5 shadow-2xs">
+            <!-- Populated by JS -->
           </div>
 
-          <!-- Mockup Shell Frame -->
-          <div id="mockupViewportWrapper" class="w-full transition-all duration-300 mx-auto">
-            <div id="mockupContentContainer" class="bg-white rounded-2xl border border-slate-300 shadow-lg overflow-hidden">
-              <!-- Dynamically populated by updateLiveMockupPreview() -->
+          <!-- Clean 7-Day Refresh & Ad Lifecycle Card -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs space-y-3.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div id="lifecycleIconBox" class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center text-xs shrink-0">
+                  <i id="lifecycleIcon" class="fa-solid fa-arrows-rotate"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h4 class="text-xs font-bold text-slate-900">7-Day Refresh & Lifecycle</h4>
+                    <span id="lifecycleStatusBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">● ACTIVE</span>
+                  </div>
+                  <p id="lifecycleCountdownLabel" class="text-[11px] text-slate-500">Auto-refresh reminder active</p>
+                </div>
+              </div>
             </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="refreshCurrentUnitNow(false)" class="px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-calendar-check"></i> Reset 7d Timer
+              </button>
+              <button id="lifecycleToggleBtn" onclick="toggleCurrentUnitActive()" class="px-3 py-2 rounded-xl text-xs font-semibold bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-power-off"></i> <span id="lifecycleToggleText">Mark Taken Down</span>
+              </button>
+            </div>
+
+            <!-- Secondary Experimental Playwright Bot Drawer -->
+            <details class="pt-2 border-t border-slate-100 text-xs text-slate-500">
+              <summary class="cursor-pointer font-medium hover:text-slate-800 select-none flex items-center justify-between">
+                <span><i class="fa-solid fa-robot mr-1.5 text-slate-400"></i>Experimental Local Browser Bot</span>
+                <span class="text-[10px] text-slate-400">Optional</span>
+              </summary>
+              <div class="pt-3 space-y-2">
+                <p class="text-[11px] text-slate-500 leading-relaxed">For zero Cloudflare/2FA blocks, use the <strong>Chrome Extension Co-Pilot</strong> or <strong>Copy & Open Site</strong> above. You can still test the local Playwright window here:</p>
+                <div class="flex items-center justify-between gap-2">
+                  <label class="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-700 cursor-pointer">
+                    <input id="autoPublishCheckbox" type="checkbox" class="rounded text-blue-600">
+                    <span>Auto-click Publish</span>
+                  </label>
+                  <button onclick="executeOneClickPost()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-[11px] font-semibold transition">
+                    Launch Bot Window
+                  </button>
+                </div>
+              </div>
+            </details>
           </div>
+
+          <!-- Collapsible Live Renter Mockup Preview -->
+          <details open class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <summary class="p-4 cursor-pointer select-none flex items-center justify-between hover:bg-slate-50/60 transition">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <h3 class="text-xs font-bold text-slate-900">Live Renter Preview</h3>
+              </div>
+              <div class="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200" onclick="event.stopPropagation()">
+                <button onclick="setPreviewDevice('desktop')" id="btnPreviewDesktop" class="px-2 py-1 text-[10px] font-semibold rounded-md bg-white text-blue-600 shadow-2xs transition">Desktop</button>
+                <button onclick="setPreviewDevice('mobile')" id="btnPreviewMobile" class="px-2 py-1 text-[10px] font-semibold rounded-md text-slate-600 hover:text-slate-900 transition">Mobile</button>
+              </div>
+            </summary>
+            <div class="p-3 border-t border-slate-100 bg-slate-50/50">
+              <div id="mockupViewportWrapper" class="w-full transition-all duration-300 mx-auto">
+                <div id="mockupContentContainer" class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                  <!-- Dynamically populated by updateLiveMockupPreview() -->
+                </div>
+              </div>
+            </div>
+          </details>
+
         </div>
 
       </div>
@@ -1248,8 +1165,37 @@
       </div>
     </section>
 
-    <!-- TAB 5: DURHAM FREE CHANNELS & RENTAL GROUPS -->
+    <!-- TAB 5: DURHAM FREE CHANNELS & CHROME EXTENSION CO-PILOT -->
     <section id="tab-platforms" class="hidden space-y-6">
+      <!-- Chrome Extension Co-Pilot Card -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-800/50 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-[11px] font-bold uppercase tracking-wider">New Architectural Upgrade</span>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2 pt-1">
+              <i class="fa-brands fa-chrome text-amber-400"></i> Real-Browser Chrome Extension Co-Pilot
+            </h2>
+            <p class="text-xs text-slate-300 max-w-2xl">
+              Instead of a separate bot browser getting blocked by Cloudflare or 2FA, load the built-in <code>chrome_extension/</code> folder into your normal Chrome browser to auto-fill visible fields in 1 click while staying logged into your own accounts.
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-1">
+          <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+            <span class="font-bold text-blue-300 block mb-1">1. Open Extensions</span>
+            <p class="text-slate-300">In Chrome, visit <code>chrome://extensions</code> and toggle <strong>Developer mode</strong> ON (top right).</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+            <span class="font-bold text-emerald-300 block mb-1">2. Load Unpacked</span>
+            <p class="text-slate-300">Click <strong>Load unpacked</strong> and select the <code>Property Management Posting/chrome_extension</code> folder in Linux files.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+            <span class="font-bold text-amber-300 block mb-1">3. 1-Click Auto-Fill</span>
+            <p class="text-slate-300">Open FB, Kijiji, Zumper, or Rentals.ca in Chrome, click the extension icon, and click <strong>⚡ Auto-Fill Visible Fields</strong>!</p>
+          </div>
+        </div>
+      </div>
+
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-8">
         <div>
           <h2 class="text-xl font-bold text-slate-900 mb-1">Durham Region & Whitby Rental Marketing Guide</h2>
@@ -1393,7 +1339,8 @@
       </div>
     </section>
 
-  </main>
+    </main>
+  </div>
 
   <!-- 1-Click Auto Post Progress Modal -->
   <div id="autoPostModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
@@ -2654,12 +2601,8 @@
       renderUnitsGrid();
     }
 
-    function initApp() {
-      // Check if running on local backend
-      tryFetchFromBackend();
-      checkBotServerStatus();
+    async function initApp() {
       populateSelects();
-      // Default Ad Studio to Unit 3 (Available Immediately) or Unit 2
       const postSel = document.getElementById('postingUnitSelect');
       if (postSel) postSel.value = 'unit_3';
       renderUnitsGrid();
@@ -2669,6 +2612,8 @@
       renderPlatformsDirectory();
       calculateTotalRevenue();
       initScreeningModule();
+      await tryFetchFromBackend();
+      checkBotServerStatus();
       fetchAnalyticsFromBackend();
     }
 
@@ -2676,25 +2621,21 @@
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const dot = document.getElementById('botStatusDot');
       const text = document.getElementById('botStatusText');
-      const action = document.getElementById('botStatusAction');
-      if (!dot || !text || !action) return;
+      if (!dot || !text) return;
 
       if (isLocal) {
         try {
           const res = await fetch('/api/units');
           if (res.ok) {
-            dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-            text.innerHTML = `<strong>Local Bot Server Connected (Port 8000)</strong> — Playwright Browser Bot & Google Drive Photo Auto-Upload Ready!`;
-            action.innerHTML = `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-600/50 px-2.5 py-0.5 rounded text-[11px] font-semibold flex items-center gap-1.5"><i class="fa-solid fa-robot"></i> 1-Click Bot Active</span>`;
+            dot.className = "w-2 h-2 rounded-full bg-emerald-400 shrink-0";
+            text.innerHTML = `Local Server Synced (8000)`;
             return;
           }
         } catch(e) {}
       }
 
-      // Cloud preview fallback
-      dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400";
-      text.innerHTML = `<strong>Cloud Preview Mode (${window.location.hostname})</strong> — Web security restricts automated browser control from cloud URLs.`;
-      action.innerHTML = `<a href="http://localhost:8000" target="_blank" class="px-2.5 py-1 bg-amber-400 text-slate-950 font-bold rounded text-[11px] hover:bg-amber-300 transition flex items-center gap-1 shadow-sm"><i class="fa-solid fa-bolt"></i> Switch to Local Bot (localhost:8000)</a>`;
+      dot.className = "w-2 h-2 rounded-full bg-amber-400 shrink-0";
+      text.innerHTML = `Static Preview Mode`;
     }
 
     async function tryFetchFromBackend() {
@@ -2703,36 +2644,86 @@
         if (res.ok) {
           const json = await res.json();
           if (json.properties && json.properties.length > 0) {
-            console.log("Connected to backend SQLite database!");
+            // Merge live SQLite properties into portfolioData as Single Source of Truth
+            json.properties.forEach(dbUnit => {
+              const cleanInt = (v) => {
+                const n = Number(v);
+                return Number.isFinite(n) ? (Number.isInteger(n) ? n : Math.round(n * 10) / 10) : v;
+              };
+              if (dbUnit.specs) {
+                dbUnit.specs.bedrooms = cleanInt(dbUnit.specs.bedrooms);
+                dbUnit.specs.bathrooms = cleanInt(dbUnit.specs.bathrooms);
+                dbUnit.specs.sqft = cleanInt(dbUnit.specs.sqft);
+              }
+              if (dbUnit.financials) {
+                dbUnit.financials.target_rent = cleanInt(dbUnit.financials.target_rent);
+              }
+              const existing = portfolioData.find(u => u.id === dbUnit.id);
+              if (existing) {
+                existing.financials = Object.assign(existing.financials || {}, dbUnit.financials || {});
+                existing.specs = Object.assign(existing.specs || {}, dbUnit.specs || {});
+                existing.cloud_media = Object.assign(existing.cloud_media || {}, dbUnit.cloud_media || {});
+                if (dbUnit.postings) existing.postings = dbUnit.postings;
+                if (dbUnit.master_title) existing.master_title = dbUnit.master_title;
+                if (dbUnit.master_description) existing.master_description = dbUnit.master_description;
+              } else {
+                portfolioData.push(dbUnit);
+              }
+            });
+            const currentPostUnit = document.getElementById('postingUnitSelect')?.value || 'unit_3';
+            populateSelects();
+            const postSel = document.getElementById('postingUnitSelect');
+            if (postSel) postSel.value = currentPostUnit;
+            calculateTotalRevenue();
+            renderUnitsGrid();
+            renderPlatformListing();
+            renderMediaGallery();
           }
         }
       } catch(e) {
-        // running purely on static GitHub Pages
+        // Running purely on static GitHub Pages
       }
     }
 
     function calculateTotalRevenue() {
-      const total = portfolioData.reduce((acc, u) => acc + u.financials.target_rent, 0);
-      document.getElementById('totalMonthlyRent').innerText = `$${total.toLocaleString()} CAD/mo`;
+      const total = portfolioData.reduce((acc, u) => acc + Number(u.financials.target_rent || 0), 0);
+      const el = document.getElementById('totalMonthlyRent');
+      if (el) el.innerText = `$${total.toLocaleString()}/mo`;
     }
 
     function populateSelects() {
-      const selects = ['compsUnitSelect', 'postingUnitSelect', 'mediaUnitSelect'];
+      const selects = ['compsUnitSelect', 'postingUnitSelect', 'mediaUnitSelect', 'newAppUnit', 'logViewUnit'];
       selects.forEach(sId => {
         const sel = document.getElementById(sId);
         if (!sel) return;
+        const prev = sel.value;
         sel.innerHTML = '';
         portfolioData.forEach(u => {
           const opt = document.createElement('option');
           opt.value = u.id;
-          opt.innerText = `${u.name} (${u.address.city})`;
+          opt.innerText = `${u.name} ($${Number(u.financials.target_rent).toLocaleString()}/mo • ${u.specs.bedrooms} Bed)`;
           sel.appendChild(opt);
         });
+        if (prev) sel.value = prev;
       });
+
+      const analyticsFilter = document.getElementById('analyticsUnitFilter');
+      if (analyticsFilter) {
+        const prevA = analyticsFilter.value || 'all';
+        analyticsFilter.innerHTML = `<option value="all">All Units Combined</option>`;
+        portfolioData.forEach(u => {
+          const opt = document.createElement('option');
+          opt.value = u.id;
+          opt.innerText = `${u.name} ($${Number(u.financials.target_rent).toLocaleString()}/mo)`;
+          analyticsFilter.appendChild(opt);
+        });
+        analyticsFilter.value = prevA;
+      }
     }
 
     function renderUnitsGrid() {
       const grid = document.getElementById('unitsGrid');
+      if (!grid) return;
       grid.innerHTML = '';
 
       let vacantCount = 0;
@@ -2746,130 +2737,107 @@
       if (vLbl) vLbl.innerText = vacantCount;
       if (oLbl) oLbl.innerText = occupiedCount;
 
+      const channelMeta = [
+        { key: 'facebook', label: 'Facebook' },
+        { key: 'kijiji', label: 'Kijiji' },
+        { key: 'zumper', label: 'Zumper' },
+        { key: 'rentals_ca', label: 'Rentals.ca' }
+      ];
+
       portfolioData.forEach(u => {
         const vacant = isUnitVacant(u.id);
         if (currentUnitFilter === 'vacant' && !vacant) return;
         if (currentUnitFilter === 'occupied' && vacant) return;
 
         const master = getUnitMaster(u.id);
-        const displayRent = (master && master.price) ? (String(master.price).startsWith('$') ? master.price : `$${master.price}`) : `$${u.financials.target_rent.toLocaleString()}`;
-        const psqft = (u.financials.target_rent / u.specs.sqft).toFixed(2);
+        const displayRent = (master && master.price)
+          ? (String(master.price).startsWith('$') ? master.price : `$${master.price}`)
+          : `$${Number(u.financials.target_rent).toLocaleString()}`;
         const driveUrl = (u.cloud_media && u.cloud_media.google_drive_photos_folder) || 'https://drive.google.com';
-        const lc = getUnitLifecycle(u.id);
-        const lifecycleBadgeHtml = lc.is_active
-          ? `<button onclick="toggleUnitActive('${u.id}')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-white hover:bg-amber-600 transition flex items-center gap-1 shadow" title="Click to Deactivate / Take Down Listing"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Active Ad (${lc.days_remaining}d left)</button>`
-          : `<button onclick="toggleUnitActive('${u.id}')" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-700 text-slate-300 hover:bg-emerald-600 hover:text-white transition flex items-center gap-1 shadow" title="Click to Activate & Re-post Listing"><i class="fa-solid fa-play text-[9px]"></i> Inactive (Taken Down)</button>`;
-        const buildingFolder = (u.cloud_media && u.cloud_media.building_exterior_folder) || 'https://drive.google.com/drive/folders/1kll_JpcjeQ3KHYk8WtLOjuFmH2Bl9Cy0';
         const videoUrl = (u.cloud_media && u.cloud_media.youtube_video_url) || '';
-        const fbStatus = u.postings.facebook.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
-        const kjStatus = u.postings.kijiji.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
-        const zmStatus = u.postings.zumper.status === "posted" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
-        const rcStatus = (u.postings.rentals_ca && u.postings.rentals_ca.status === "posted") ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600";
         const availBadge = u.financials.available_date || "Immediate";
+        const lc = getUnitLifecycle(u.id);
 
         const vacancyBadgeHtml = vacant
-          ? `<button onclick="toggleUnitVacancy('${u.id}')" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500 text-white shadow flex items-center gap-1 hover:bg-emerald-600 transition" title="Click to mark Occupied"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Available: ${availBadge}</button>`
-          : `<button onclick="toggleUnitVacancy('${u.id}')" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800/80 text-slate-200 hover:bg-slate-700 transition" title="Click to mark Available to Rent"><i class="fa-solid fa-house-lock mr-1"></i>Occupied</button>`;
+          ? `<button onclick="toggleUnitVacancy('${u.id}')" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 hover:bg-emerald-100 transition" title="Click to mark Occupied"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Vacant • ${availBadge}</button>`
+          : `<button onclick="toggleUnitVacancy('${u.id}')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200 transition" title="Click to mark Vacant"><i class="fa-solid fa-lock text-[9px] mr-1 text-slate-400"></i>Occupied</button>`;
+
+        const cycleHtml = vacant
+          ? (lc.is_active
+              ? `<button onclick="schedule7DayRenew('${u.id}', 'all', false)" class="text-[11px] font-medium text-slate-500 hover:text-emerald-700 transition" title="Click to reset 7-day cycle"><i class="fa-solid fa-arrows-rotate text-emerald-500 mr-1"></i>Renew in ${lc.days_remaining}d</button>`
+              : `<button onclick="toggleUnitActive('${u.id}')" class="text-[11px] font-medium text-slate-400 hover:text-slate-700 transition">Ads Paused</button>`)
+          : `<span class="text-[11px] text-slate-400">Leased</span>`;
+
+        const channelsHtml = channelMeta.map(ch => {
+          const st = (u.postings && u.postings[ch.key] && u.postings[ch.key].status) || 'draft';
+          const isPosted = st === 'posted';
+          return `
+            <button onclick="openStudioForChannel('${u.id}', '${ch.key}')" class="px-2.5 py-1.5 rounded-lg border text-left transition flex items-center justify-between ${
+              isPosted
+                ? 'bg-emerald-50/70 border-emerald-200 text-emerald-900 hover:bg-emerald-100/70'
+                : 'bg-slate-50 border-slate-200/80 text-slate-600 hover:bg-slate-100'
+            }" title="Open ${ch.label} in Co-Pilot Studio">
+              <span class="text-[11px] font-semibold truncate">${ch.label}</span>
+              ${isPosted
+                ? '<i class="fa-solid fa-check text-[10px] text-emerald-600"></i>'
+                : '<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>'}
+            </button>
+          `;
+        }).join('');
 
         const card = document.createElement('div');
-        card.className = `bg-white rounded-2xl border ${vacant ? 'border-emerald-300 ring-1 ring-emerald-500/20' : 'border-slate-200'} overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between`;
+        card.className = `bg-white rounded-2xl border ${vacant ? 'border-emerald-300 ring-1 ring-emerald-500/15' : 'border-slate-200/90'} shadow-xs hover:shadow-md transition flex flex-col justify-between`;
         card.innerHTML = `
-          <div>
-            <!-- Authentic Property Showcase Header (Zero stock photos) -->
-            <div class="relative p-5 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white flex flex-col justify-between min-h-[175px] overflow-hidden border-b border-slate-200">
-              <div class="absolute -right-4 -bottom-4 opacity-10 text-8xl pointer-events-none">
-                <i class="fa-solid fa-building-circle-check"></i>
+          <div class="p-5 space-y-4">
+            <!-- Top Row: Occupancy & Cycle -->
+            <div class="flex items-center justify-between gap-2">
+              ${vacancyBadgeHtml}
+              ${cycleHtml}
+            </div>
+
+            <!-- Unit Title & Rent -->
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h3 class="font-bold text-slate-900 text-base leading-snug">${u.name.replace(' - 315 Kent Street', '')}</h3>
+                <p class="text-xs text-slate-500 mt-0.5">${u.specs.bedrooms} Bed • ${u.specs.bathrooms} Bath • ${u.specs.sqft} sq ft</p>
               </div>
-              <div class="flex items-center justify-between z-10">
-                <div class="flex items-center gap-1.5">
-                  ${vacancyBadgeHtml}
-                  ${lifecycleBadgeHtml}
-                </div>
-                <div class="bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full shadow">
-                  ${displayRent}/mo
-                </div>
-              </div>
-              <div class="z-10 mt-3 mb-2">
-                <div class="text-[10px] font-bold tracking-wider uppercase text-blue-300 flex items-center gap-1.5">
-                  <i class="fa-solid fa-location-dot text-amber-400"></i> 315 Kent Street • Whitby Central
-                </div>
-                <div class="text-base font-extrabold text-white leading-tight mt-0.5">${u.name}</div>
-              </div>
-              <div class="z-10 flex flex-wrap items-center gap-1.5 pt-2 border-t border-white/10 text-[10px]">
-                <a href="${driveUrl}" target="_blank" class="px-2.5 py-1 rounded-lg bg-blue-600/90 hover:bg-blue-600 text-white font-semibold transition flex items-center gap-1 shadow-sm" title="Open Google Drive Photos Folder">
-                  <i class="fa-brands fa-google-drive"></i> Unit Photos
-                </a>
-                <a href="${buildingFolder}" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-700/90 hover:bg-emerald-600 text-white font-semibold transition flex items-center gap-1 shadow-sm" title="Google Drive Building Exterior Photo (Always Included)">
-                  <i class="fa-solid fa-camera"></i> Building Photo
-                </a>
-                ${videoUrl ? `
-                <a href="${videoUrl}" target="_blank" class="px-2.5 py-1 rounded-lg bg-red-600/90 hover:bg-red-600 text-white font-semibold transition flex items-center gap-1 shadow-sm" title="Watch YouTube Walkthrough Tour">
-                  <i class="fa-brands fa-youtube"></i> Video Tour
-                </a>` : ''}
+              <div class="text-right shrink-0">
+                <span class="text-lg font-extrabold text-slate-900">${displayRent}</span>
+                <span class="text-[10px] text-slate-400 block -mt-0.5">/month</span>
               </div>
             </div>
-            <div class="p-5 space-y-3">
-              <div class="flex items-center justify-between">
-                <h3 class="font-bold text-slate-900 text-base">${u.name}</h3>
-                <span class="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-mono font-semibold">${u.specs.sqft} sf</span>
-              </div>
-              <p class="text-xs text-slate-500">${u.address.street}, ${u.address.city}, ${u.address.region}</p>
-              
-              <!-- Posting Status Badges -->
-              <div class="flex flex-wrap items-center gap-1 pt-1 text-[10px] font-semibold">
-                <span class="px-2 py-0.5 rounded ${fbStatus}">FB: ${u.postings.facebook.status}</span>
-                <span class="px-2 py-0.5 rounded ${kjStatus}">Kijiji: ${u.postings.kijiji.status}</span>
-                <span class="px-2 py-0.5 rounded ${zmStatus}">Zumper: ${u.postings.zumper.status}</span>
-                <span class="px-2 py-0.5 rounded ${rcStatus}">Rentals.ca: ${u.postings.rentals_ca ? u.postings.rentals_ca.status : 'draft'}</span>
-              </div>
 
-              <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 text-center text-xs">
-                <div>
-                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Beds/Baths</span>
-                  <span class="font-bold text-slate-800">${u.specs.bedrooms}b / ${u.specs.bathrooms}ba</span>
-                </div>
-                <div>
-                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Move-In</span>
-                  <span class="font-bold ${vacant ? 'text-emerald-700' : 'text-slate-600'}">${vacant ? availBadge : 'Leased'}</span>
-                </div>
-                <div>
-                  <span class="text-slate-400 block text-[10px] uppercase font-semibold">Rate</span>
-                  <span class="font-bold text-blue-600">$${psqft}/sf</span>
-                </div>
-              </div>
+            <!-- 4-Channel Interactive Status Grid -->
+            <div class="grid grid-cols-2 gap-1.5 pt-1">
+              ${channelsHtml}
+            </div>
+
+            <!-- Clean Quick Asset Strip -->
+            <div class="flex items-center gap-3 pt-2 border-t border-slate-100 text-[11px] font-medium text-slate-500">
+              <a href="${driveUrl}" target="_blank" class="hover:text-blue-600 transition flex items-center gap-1">
+                <i class="fa-brands fa-google-drive text-blue-500"></i> Photos
+              </a>
+              <a href="/api/units/${u.id}/photos.zip" class="hover:text-amber-700 transition flex items-center gap-1" title="Download Ready-to-Upload Photo Zip">
+                <i class="fa-solid fa-file-zipper text-amber-500"></i> .Zip
+              </a>
+              ${videoUrl ? `
+              <button onclick="openVideoModal('${u.id}')" class="hover:text-red-600 transition flex items-center gap-1">
+                <i class="fa-brands fa-youtube text-red-500"></i> Tour
+              </button>` : ''}
             </div>
           </div>
 
-          <div class="p-3.5 bg-slate-50 border-t border-slate-100 space-y-2">
-            <!-- Row 1: 1-Click Bot & Lifecycle Actions -->
-            <div class="grid grid-cols-3 gap-1.5">
-              <button onclick="quickBotPostFromCard('${u.id}')" class="inline-flex items-center justify-center gap-1 text-[11px] font-bold text-white bg-blue-600 hover:bg-blue-700 py-1.5 px-2 rounded-lg shadow-xs transition" title="Launch Bot / Post Queue for ${u.name}">
-                <i class="fa-solid fa-paper-plane text-[10px]"></i> Post Ad
-              </button>
-              <button onclick="schedule7DayRenew('${u.id}', 'all', false)" class="inline-flex items-center justify-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 py-1.5 px-2 rounded-lg transition" title="Schedule or Trigger 7-Day Auto-Renewal">
-                <i class="fa-solid fa-arrows-rotate text-[10px]"></i> 7d Renew
-              </button>
-              <button onclick="deleteUnitPosting('${u.id}', 'all', false)" class="inline-flex items-center justify-center gap-1 text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 py-1.5 px-2 rounded-lg transition" title="Delete / Take Down Postings for ${u.name}">
-                <i class="fa-solid fa-trash-can text-[10px]"></i> Delete Ad
-              </button>
-            </div>
-            <!-- Row 2: Studio, Analytics, Screening & Video -->
-            <div class="flex items-center justify-between gap-1 pt-1 border-t border-slate-200/70">
-              <button onclick="openVideoModal('${u.id}')" class="inline-flex items-center gap-1 text-[11px] font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2 py-1 rounded-lg transition">
-                <i class="fa-solid fa-play text-[10px]"></i> Video
-              </button>
-              <div class="flex items-center gap-1">
-                <button onclick="goToUnitAnalytics('${u.id}')" class="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-2 py-1 rounded-lg transition" title="View Ad Views & Funnel">
-                  <i class="fa-solid fa-chart-pie text-[10px]"></i> Analytics
-                </button>
-                <button onclick="switchTab('screening')" class="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-2 py-1 rounded-lg transition">
-                  <i class="fa-solid fa-user-check text-[10px]"></i> Screen
-                </button>
-                <button onclick="goToPosting('${u.id}')" class="inline-flex items-center gap-1 text-[11px] font-bold text-slate-800 bg-amber-100 hover:bg-amber-200 border border-amber-300 px-2.5 py-1 rounded-lg transition">
-                  <i class="fa-solid fa-wand-magic-sparkles text-amber-700 text-[10px]"></i> Edit Ad
-                </button>
-              </div>
-            </div>
+          <!-- Clean 2-Action Footer -->
+          <div class="px-5 py-3.5 bg-slate-50/70 border-t border-slate-100 rounded-b-2xl flex items-center gap-2">
+            <button onclick="openCopilotForUnit('${u.id}')" class="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 py-2 px-3 rounded-xl shadow-2xs transition">
+              <i class="fa-solid fa-paper-plane text-[10px]"></i> Post Co-Pilot
+            </button>
+            <button onclick="goToPosting('${u.id}')" class="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 py-2 px-3 rounded-xl transition">
+              Edit Ad
+            </button>
+            <button onclick="switchTab('screening')" class="inline-flex items-center justify-center text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 py-2 px-2.5 rounded-xl transition" title="Tenant Screening">
+              <i class="fa-solid fa-user-check"></i>
+            </button>
           </div>
         `;
         grid.appendChild(card);
@@ -3707,23 +3675,23 @@
       if (!badge) return;
 
       if (lc.is_active) {
-        badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500 text-white shadow-xs";
-        badge.innerText = "● ACTIVE LISTING";
-        label.className = "text-xs font-bold text-emerald-300";
+        badge.className = "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200";
+        badge.innerText = "● ACTIVE";
+        label.className = "text-[11px] font-medium text-emerald-700";
         label.innerText = lc.countdown_label;
-        btn.className = "px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm bg-amber-500 hover:bg-amber-400 text-slate-950";
-        btnText.innerText = "Take Down / Deactivate";
-        if (icon) icon.className = "fa-solid fa-arrows-rotate animate-spin";
-        if (iconBox) iconBox.className = "w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg shadow-inner shrink-0";
+        if (btn) btn.className = "px-3 py-2 rounded-xl text-xs font-semibold bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 transition flex items-center justify-center gap-1.5";
+        if (btnText) btnText.innerText = "Mark Taken Down";
+        if (icon) icon.className = "fa-solid fa-arrows-rotate";
+        if (iconBox) iconBox.className = "w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center text-xs shrink-0";
       } else {
-        badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-600 text-slate-200 shadow-xs";
-        badge.innerText = "○ INACTIVE / TAKEN DOWN";
-        label.className = "text-xs font-semibold text-slate-400";
-        label.innerText = "Ads taken down. Auto-refresh paused.";
-        btn.className = "px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm bg-emerald-600 hover:bg-emerald-500 text-white";
-        btnText.innerText = "Re-activate & Re-post";
-        if (icon) icon.className = "fa-solid fa-power-off text-slate-400";
-        if (iconBox) iconBox.className = "w-11 h-11 rounded-xl bg-slate-800 text-slate-400 border border-slate-700 flex items-center justify-center text-lg shadow-inner shrink-0";
+        badge.className = "px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200";
+        badge.innerText = "○ PAUSED";
+        label.className = "text-[11px] font-medium text-slate-500";
+        label.innerText = "Ads paused / taken down.";
+        if (btn) btn.className = "px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center justify-center gap-1.5";
+        if (btnText) btnText.innerText = "Re-Activate Ads";
+        if (icon) icon.className = "fa-solid fa-power-off";
+        if (iconBox) iconBox.className = "w-8 h-8 rounded-lg bg-slate-100 text-slate-500 border border-slate-200 flex items-center justify-center text-xs shrink-0";
       }
     }
 
@@ -3891,24 +3859,65 @@
       if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
     }
 
+    function onUnitChange() {
+      renderPlatformListing();
+    }
+
+    function openCopilotForUnit(unitId) {
+      const unitSelect = document.getElementById('postingUnitSelect');
+      if (unitSelect) unitSelect.value = unitId;
+      renderPlatformListing();
+      startPostAllVerificationQueue();
+    }
+
+    function openStudioForChannel(unitId, platform) {
+      const unitSelect = document.getElementById('postingUnitSelect');
+      if (unitSelect) unitSelect.value = unitId;
+      switchTab('posting');
+      switchPreviewPlatform(platform);
+    }
+
+    function downloadCurrentUnitPhotoZip() {
+      const unitId = document.getElementById('postingUnitSelect')?.value || 'unit_3';
+      window.open(`/api/units/${unitId}/photos.zip`, '_blank');
+      showToast(`Downloading numbered Photo Pack (.zip) for ${unitId.replace('_', ' ').toUpperCase()}...`);
+    }
+
+    async function markCurrentPlatformPosted() {
+      const unitId = document.getElementById('postingUnitSelect')?.value || 'unit_3';
+      const platform = document.getElementById('postingPlatformSelect')?.value || 'facebook';
+      const unit = portfolioData.find(u => u.id === unitId);
+      if (unit && unit.postings) {
+        if (!unit.postings[platform]) unit.postings[platform] = {};
+        unit.postings[platform].status = 'posted';
+        unit.postings[platform].last_posted = new Date().toISOString();
+      }
+      try {
+        await fetch('/api/postings/mark-posted', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ unit_id: unitId, platform })
+        });
+      } catch(e) {}
+      renderUnitsGrid();
+      renderPlatformListing();
+      showToast(`✔ Marked ${platform.toUpperCase()} as Posted for ${unit ? unit.name : unitId}!`);
+    }
+
     function globalQuickAction(action) {
       const select = document.getElementById('globalQuickUnitSelect');
       const unitId = select ? select.value : 'unit_3';
       if (action === 'post') {
-        quickBotPostFromCard(unitId);
+        openCopilotForUnit(unitId);
       } else if (action === 'renew') {
-        schedule7DayRenew(unitId, 'all', true);
+        schedule7DayRenew(unitId, 'all', false);
       } else if (action === 'delete') {
-        deleteUnitPosting(unitId, 'all', true);
+        deleteUnitPosting(unitId, 'all', false);
       }
     }
 
     function quickBotPostFromCard(unitId) {
-      const unitSelect = document.getElementById('postingUnitSelect');
-      if (unitSelect) unitSelect.value = unitId;
-      switchTab('posting');
-      onUnitChange();
-      executeOneClickPost();
+      openCopilotForUnit(unitId);
     }
 
     function goToUnitAnalytics(unitId) {
@@ -3921,12 +3930,7 @@
     }
 
     async function postUnitWithBot(unitId, platform = 'facebook') {
-      const unitSelect = document.getElementById('postingUnitSelect');
-      const platSelect = document.getElementById('postingPlatformSelect');
-      if (unitSelect) unitSelect.value = unitId;
-      if (platSelect) platSelect.value = platform;
-      onUnitChange();
-      await executeOneClickPost();
+      openStudioForChannel(unitId, platform);
     }
 
     // =========================================================================
@@ -4308,7 +4312,6 @@ function renderPlatformsDirectory() {
         if (sec) sec.classList.add('hidden');
         if (btn) {
           btn.classList.remove('tab-active');
-          btn.classList.add('border-transparent', 'text-slate-500');
         }
       });
 
@@ -4317,7 +4320,12 @@ function renderPlatformsDirectory() {
       const activeBtn = document.getElementById(`tabBtn-${tabId}`);
       if (activeBtn) {
         activeBtn.classList.add('tab-active');
-        activeBtn.classList.remove('border-transparent', 'text-slate-500');
+      }
+
+      // Auto-close mobile drawer on small screens
+      if (window.innerWidth < 1024) {
+        const sb = document.getElementById('appSidebar');
+        if (sb) sb.classList.add('hidden');
       }
 
       if (tabId === 'comps') {

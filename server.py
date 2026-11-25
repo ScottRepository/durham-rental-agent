@@ -8,6 +8,8 @@ and executes 1-click automated posting to Facebook, Kijiji, and Zumper.
 import http.server
 import socketserver
 import json
+import io
+import zipfile
 import os
 import sys
 from datetime import datetime
@@ -110,6 +112,31 @@ class AgentAPIHandler(http.server.SimpleHTTPRequestHandler):
             self._set_cors_headers()
             self.end_headers()
             self.wfile.write(json.dumps({"success": True, "package": pkg}).encode("utf-8"))
+            return
+
+        elif path.startswith("/api/units/") and path.endswith("/photos.zip"):
+            # Ready-to-upload numbered photo pack (.zip) combining building exterior + suite photos
+            unit_id = path.split("/")[3]
+            unit = get_unit_by_id(unit_id)
+            if not unit:
+                self.send_error(404, "Unit not found")
+                return
+            poster = AutomatedPoster(unit_id=unit_id, platform="facebook")
+            photo_paths = poster._get_or_download_unit_photos()
+            buf = io.BytesIO()
+            with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+                for p_str in photo_paths:
+                    p = Path(p_str)
+                    if p.exists() and p.is_file():
+                        zf.write(p, arcname=p.name)
+            zip_bytes = buf.getvalue()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/zip")
+            self.send_header("Content-Disposition", f'attachment; filename="{unit_id}_315_kent_photos.zip"')
+            self.send_header("Content-Length", str(len(zip_bytes)))
+            self._set_cors_headers()
+            self.end_headers()
+            self.wfile.write(zip_bytes)
             return
 
         # Serve static media files if requested
