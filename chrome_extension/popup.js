@@ -4,6 +4,7 @@ let detectedPlatform = "facebook";
 
 function detectPlatformFromUrl(url = "") {
   const u = url.toLowerCase();
+  if (u.includes("facebook.com/groups")) return "facebook_groups";
   if (u.includes("kijiji.ca")) return "kijiji";
   if (u.includes("zumper.com")) return "zumper";
   if (u.includes("rentals.ca")) return "rentals_ca";
@@ -13,6 +14,7 @@ function detectPlatformFromUrl(url = "") {
 function getPayloadForPlatform(pkg, plat) {
   if (!pkg) return null;
   if (plat === "facebook") return Object.assign({ unit_id: pkg.unit_id }, pkg.facebook_marketplace);
+  if (plat === "facebook_groups") return Object.assign({ unit_id: pkg.unit_id }, pkg.facebook_groups || pkg.facebook_marketplace);
   return Object.assign({ unit_id: pkg.unit_id }, pkg[plat] || pkg.facebook_marketplace);
 }
 
@@ -90,8 +92,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const pl = getPayloadForPlatform(currentPackage, detectedPlatform);
     copyText(pl?.virtual_tour_url || pl?.youtube_video_url || pl?.video_link, "YouTube URL");
   });
-  document.getElementById("copyAddrBtn").addEventListener("click", () => {
-    copyText("315 Kent Street, Whitby, ON", "Address");
+  document.getElementById("copyFbGroupBtn").addEventListener("click", () => {
+    const pl = getPayloadForPlatform(currentPackage, "facebook_groups");
+    copyText(pl?.description, "Link-Free FB Group Post");
   });
 
   document.getElementById("markPostedBtn").addEventListener("click", async () => {

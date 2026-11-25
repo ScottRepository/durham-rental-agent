@@ -466,6 +466,9 @@
               <button onclick="copyToClipboard(document.getElementById('listingDescription').value, this)" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-bold text-blue-700 flex items-center gap-1.5 transition">
                 <i class="fa-solid fa-copy"></i> Full Description
               </button>
+              <button onclick="copyLinkFreeGroupPost(this)" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg text-xs font-bold text-indigo-700 flex items-center gap-1.5 transition" title="Strips all URLs so Facebook Housing Groups won't auto-deny your post">
+                <i class="fa-solid fa-users"></i> FB Group Post (No Links)
+              </button>
             </div>
           </div>
 
@@ -4653,6 +4656,20 @@ function renderPlatformsDirectory() {
       const snippet = `Hi! Thank you for your interest in ${unit.name || '315 Kent Street'}. To arrange a private showing date & time, please fill out our quick pre-screening form here: ${formUrl} — We review these daily and will reach out directly to qualified candidates to schedule a viewing time.`;
       navigator.clipboard.writeText(snippet);
       showToast("Lead reply message with form link copied!");
+    }
+
+    function copyLinkFreeGroupPost(btnElem) {
+      const raw = document.getElementById('listingDescription')?.value || '';
+      const clean = raw
+        .replace(/https?:\/\/\S+/gi, '')
+        .replace(/forms\s*\.\s*gle\s*\/\s*\S+(\s*\([^)]+\))?/gi, '')
+        .replace(/FILL OUT FORM TO SET SHOWING DATE\/TIME:/gi, '📩 COMMENT "INTERESTED" or MESSAGE ME directly for the showing request form & video tour!')
+        .replace(/🎥 YouTube Walkthrough Tour.*?:/gi, '🎥 Video Walkthrough Tour available — comment or DM me and I will send it right over!')
+        .replace(/We will contact qualified candidates for a showing\. DO NOT EMAIL, USE THE FORM PLEASE\./gi, 'We will message qualified candidates right away with our quick pre-screening form to book a showing!')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+      copyToClipboard(clean, btnElem);
+      showToast("✔ Link-free FB Group post copied (safe from group auto-denials)!");
     }
 
     function copyInput(elemId) {

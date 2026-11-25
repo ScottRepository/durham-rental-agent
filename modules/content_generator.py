@@ -257,11 +257,57 @@ def generate_liv_rent_listing(unit: Dict[str, Any]) -> Dict[str, str]:
         "intake_form": media_info['intake_form']
     }
 
+def generate_facebook_groups_listing(unit: Dict[str, Any]) -> Dict[str, str]:
+    """Generates a 100% link-free post formatted for Facebook Housing Groups (avoids Admin Assist URL auto-denials)."""
+    import re
+    specs = unit["specs"]
+    financials = unit["financials"]
+    media_info = _get_media(unit)
+
+    beds = _fmt_num(specs['bedrooms'])
+    baths = _fmt_num(specs['bathrooms'])
+    price = _fmt_num(financials['target_rent'])
+    title = f"FOR RENT: {beds} Bed {baths} Bath — {unit['name']} | Whitby Central (${price}/mo)"
+
+    raw_desc = generate_standard_description(unit, include_emojis=True)
+    # Strip all URLs (http/https/forms.gle/youtube.com) and replace with Comment/DM CTAs
+    clean_desc = re.sub(r'https?://\S+', '', raw_desc)
+    clean_desc = clean_desc.replace(
+        "FILL OUT FORM TO SET SHOWING DATE/TIME:",
+        "📩 COMMENT \"INTERESTED\" or MESSAGE ME directly for the showing request form & video tour!"
+    )
+    clean_desc = clean_desc.replace(
+        "🎥 YouTube Walkthrough Tour (Model Suite / Similar Finishes):",
+        "🎥 Video Walkthrough Tour available — message me or comment below and I will send it right over!"
+    )
+    clean_desc = clean_desc.replace(
+        "🎥 YouTube Walkthrough Tour:",
+        "🎥 Video Walkthrough Tour available — message me or comment below and I will send it right over!"
+    )
+    clean_desc = clean_desc.replace(
+        "We will contact qualified candidates for a showing. DO NOT EMAIL, USE THE FORM PLEASE.",
+        "We will message qualified candidates right away with the quick pre-screening form to book a showing!"
+    )
+    clean_desc = re.sub(r'\n{3,}', '\n\n', clean_desc).strip()
+
+    return {
+        "platform": "Facebook Groups (Link-Free)",
+        "title": title,
+        "price": price,
+        "bedrooms": beds,
+        "bathrooms": baths,
+        "sqft": _fmt_num(specs.get('sqft', 800)),
+        "description": clean_desc,
+        "drive_folder": media_info['drive_folder'],
+        "intake_form": media_info['intake_form']
+    }
+
 def package_all_listings_for_unit(unit: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "unit_id": unit["id"],
         "unit_name": unit["name"],
         "facebook_marketplace": generate_facebook_marketplace_listing(unit),
+        "facebook_groups": generate_facebook_groups_listing(unit),
         "kijiji": generate_kijiji_listing(unit),
         "zumper": generate_zumper_listing(unit),
         "rentals_ca": generate_rentals_ca_listing(unit)

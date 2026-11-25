@@ -32,7 +32,17 @@ window.__kentStAutoFill = function(payload, platform) {
   const cleanPrice = String(payload.price || '').replace(/[^0-9]/g, '');
   const videoUrl = payload.virtual_tour_url || payload.youtube_video_url || payload.video_link || '';
 
-  if (platform === 'facebook') {
+  if (platform === 'facebook_groups') {
+    const boxes = Array.from(document.querySelectorAll('div[role="textbox"][contenteditable="true"]'));
+    const visibleBox = boxes.reverse().find(b => b.offsetParent !== null);
+    if (visibleBox) {
+      visibleBox.focus();
+      document.execCommand('selectAll', false, null);
+      document.execCommand('insertText', false, payload.description || '');
+      visibleBox.dispatchEvent(new Event('input', { bubbles: true }));
+      filledCount++;
+    }
+  } else if (platform === 'facebook') {
     // Facebook Marketplace labels wrap inputs/textareas
     const labels = Array.from(document.querySelectorAll('label'));
     for (const lbl of labels) {
